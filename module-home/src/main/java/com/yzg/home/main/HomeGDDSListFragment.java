@@ -88,13 +88,11 @@ public class HomeGDDSListFragment
             Intent intent = new Intent();
             intent.setClass(getContext(), HomeGddsRankListctivity.class);
             getActivity().startActivity(intent);
-//            RxToast.info("开发中");
         });
         binding.tvSubMore.setOnClickListener(view -> {
             Intent intent = new Intent();
             intent.setClass(getContext(), HomeGddsRankListctivity.class);
             getActivity().startActivity(intent);
-//            RxToast.info("开发中");
         });
     }
 

@@ -136,10 +136,10 @@ public class HomeMainFragment
             getActivity().startActivity(intent);
         });
         binding.llFerg.setOnClickListener(view -> {
-            RxToast.info("开发中");
+            RxToast.normal("开发中");
         });
         binding.llJlyt.setOnClickListener(view -> {
-            RxToast.info("开发中");
+            RxToast.normal("开发中");
         });
         binding.llSszx.setOnClickListener(view -> {
 //            ARouter.getInstance().build(RouterFragmentPath.More.PAGER_MORE)

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yzg.base.fragment.MvvmBaseFragment;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.viewmodel.IMvvmBaseViewModel;
@@ -25,9 +26,7 @@ import com.yzg.deal.deal.DealMainActivity;
  */
 @Route(path = RouterFragmentPath.Deal.PAGER_DEAL)
 public class DealFragment
-        extends MvvmLazyFragment<DealFragmentMainBinding, IMvvmBaseViewModel> {
-
-//    private RecyclerAdapter adapter;
+        extends MvvmLazyFragment<DealFragmentMainBinding, IMvvmBaseViewModel> implements View.OnClickListener {
 
     @Override
     public int getLayoutId() {
@@ -43,7 +42,9 @@ public class DealFragment
     }
 
     private void initData() {
-        binding.tvBuy.setOnClickListener(v -> startActivity(new Intent(getContext(), DealMainActivity.class)));
+        binding.tvBuy.setOnClickListener(this);
+        binding.tvSale.setOnClickListener(this);
+        binding.tvProduct.setOnClickListener(this);
     }
 
     private void start(Context context) {
@@ -66,5 +67,12 @@ public class DealFragment
     @Override
     protected void onRetryBtnClick() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.tv_buy||view.getId() == R.id.tv_sale||view.getId() == R.id.tv_product) {
+            startActivity(new Intent(getContext(), DealMainActivity.class));
+        }
     }
 }

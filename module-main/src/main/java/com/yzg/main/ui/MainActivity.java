@@ -3,6 +3,7 @@ package com.yzg.main.ui;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Observer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.orhanobut.logger.Logger;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.storage.MmkvHelper;
 import com.yzg.base.viewmodel.IMvvmBaseViewModel;
@@ -68,7 +71,11 @@ public class MainActivity
                 .init();
         initView();
         initFragment();
-
+        LiveEventBus
+                .get("index", Integer.class)
+                .observe(this, s -> {
+                    mNavigationController.setSelect(s);
+                });
     }
 
     private void initView() {

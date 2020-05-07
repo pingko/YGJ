@@ -19,7 +19,6 @@ import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
-import com.yzg.common.alipay.AlipayActivity;
 import com.yzg.common.alipay.AuthResult;
 import com.yzg.common.alipay.OrderInfoUtil2_0;
 import com.yzg.common.alipay.PayResult;

@@ -6,21 +6,14 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.contract.TestApi;
-import com.yzg.common.router.RouterActivityPath;
 import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.IUserLoginView;
 import com.yzg.user.R;
-import com.yzg.user.databinding.UserActivityRegisterBinding;
 import com.yzg.user.databinding.UserActivitySettingBinding;
-import com.yzg.user.register.RegisterViewModel;
-
-import java.util.TreeMap;
 
 /**
  * @author darryrzhoong

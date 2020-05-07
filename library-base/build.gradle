@@ -63,4 +63,6 @@ dependencies {
     api rootProject.ext.dependencies["immersionbar"]
     api rootProject.ext.dependencies["glide"]
     api 'com.alibaba:fastjson:1.2.9'
+    api 'com.jeremyliao:live-event-bus-x:1.6.1'
+
 }

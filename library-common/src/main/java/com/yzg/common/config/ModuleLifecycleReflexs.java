@@ -9,17 +9,22 @@ package com.yzg.common.config;
  * @author darryrzhoong
  * @since 2020-02-25
  */
-public class ModuleLifecycleReflexs
-{
-    /** 基础库 */
+public class ModuleLifecycleReflexs {
+    /**
+     * 基础库
+     */
     private static final String BaseInit = "com.yzg.common.CommonModuleInit";
-    
-    /** main组件库 */
-    private static final String MainInit =
-        "com.yzg.main.application.MainModuleInit";
 
-    /**用户组件初始化*/
+    /**
+     * main组件库
+     */
+    private static final String MainInit =
+            "com.yzg.main.application.MainModuleInit";
+
+    /**
+     * 用户组件初始化
+     */
     private static final String UserInit = "com.yzg.user.UserModuleInit";
-    
-    public static String[] initModuleNames = {BaseInit, MainInit,UserInit};
+
+    public static String[] initModuleNames = {BaseInit, MainInit, UserInit};
 }

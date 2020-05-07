@@ -187,6 +187,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/tv_buy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -197,6 +198,7 @@
                         android:textColor="@color/common_colorWhite" />
 
                     <TextView
+                        android:id="@+id/tv_sale"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -207,6 +209,7 @@
                         android:textColor="@color/common_colorWhite" />
 
                     <TextView
+                        android:id="@+id/tv_product"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

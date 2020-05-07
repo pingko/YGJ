@@ -8,18 +8,19 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
-import com.yzg.base.fragment.MvvmBaseFragment;
 import com.yzg.base.fragment.MvvmLazyFragment;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.databinding.UserFragmentLayoutBinding;
@@ -36,7 +37,7 @@ import com.yzg.user.setting.UserSettingActivity;
  */
 @Route(path = RouterFragmentPath.User.PAGER_USER)
 public class UserFragment
-        extends MvvmLazyFragment<UserFragmentLayoutBinding, UserViewModel> {
+        extends MvvmLazyFragment<UserFragmentLayoutBinding, UserViewModel> implements View.OnClickListener {
 
 
     public boolean isLogin;
@@ -52,7 +53,7 @@ public class UserFragment
         super.onViewCreated(view, savedInstanceState);
         isLogin = SharedPreferenceUtil.getToken().isEmpty() ? false : true;
 //        setLogin(isLogin);
-        Logger.e(SharedPreferenceUtil.getToken()+"");
+        Logger.e(SharedPreferenceUtil.getToken() + "");
         initView();
         viewModel.isLoginLivedata.set(isLogin);
     }
@@ -128,6 +129,11 @@ public class UserFragment
             RxToast.normal("开发中");
         });
 
+
+        binding.tvBuy.setOnClickListener(this);
+        binding.tvSale.setOnClickListener(this);
+        binding.tvProduct.setOnClickListener(this);
+
     }
 
     private View getFooterView() {
@@ -147,5 +153,14 @@ public class UserFragment
     @Override
     protected void onRetryBtnClick() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.tv_buy||view.getId() == R.id.tv_sale||view.getId() == R.id.tv_product) {
+            LiveEventBus
+                    .get("index")
+                    .post(2);
+        }
     }
 }

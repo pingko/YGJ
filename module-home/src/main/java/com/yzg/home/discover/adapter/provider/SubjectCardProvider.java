@@ -74,7 +74,7 @@ public class SubjectCardProvider extends BaseItemProvider<BaseCustomViewModel> {
                     R.layout.home_item_category_item_subject_card_view);
             binding.rvCategoryView.setAdapter(adapter);
             adapter.setOnItemClickListener((adapter1, view, position) -> {
-                RxToast.info("开发中");
+                RxToast.normal("开发中");
             });
             adapter.setNewData(dataList);
         }
