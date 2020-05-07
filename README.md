@@ -3,10 +3,6 @@
 ## 项目结构
 该开源项目采用组件化的方式开发，使用MVVM + AndroidX + jetpack 组件为基本架构进行开发。
 
-- 项目结构图
-
-![app_12.png](https://upload-images.jianshu.io/upload_images/5549640-9fcdc7803944ba5a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 ## app 使用技术介绍
 
 - Mvvm 架构设计
