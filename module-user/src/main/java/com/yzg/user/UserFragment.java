@@ -68,7 +68,6 @@ public class UserFragment
         switch (requestCode) {
             case 1001:
                 isLogin = true;
-//                setLogin(isLogin);
                 viewModel.isLoginLivedata.set(isLogin);
                 break;
             case 1002:
