@@ -19,7 +19,8 @@ import java.util.ArrayList;
 public class HomeMainViewModel
         extends MvmBaseViewModel<IHomeMainView, HomeMainModel>
         implements IModelListener<ArrayList<BaseCustomViewModel>> {
-    public ArrayList<String> banners;
+//    public ArrayList<String> banners;
+    public ArrayList<Integer> banners;
 
 
     /**

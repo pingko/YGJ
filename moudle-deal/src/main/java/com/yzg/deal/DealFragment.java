@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.jeremyliao.liveeventbus.LiveEventBus;
-import com.yzg.base.fragment.MvvmBaseFragment;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.viewmodel.IMvvmBaseViewModel;
 import com.yzg.common.router.RouterFragmentPath;

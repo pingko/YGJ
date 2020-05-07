@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
@@ -23,7 +24,6 @@ import com.yzg.home.databinding.HomeFragmentMainBinding;
 import com.yzg.home.discover.adapter.GDDSItemAdapter;
 import com.yzg.home.discover.adapter.HomeMainJLYTAdapter;
 import com.yzg.home.discover.bean.SquareCard;
-import com.yzg.main.ui.MainActivity;
 
 import java.util.ArrayList;
 
@@ -103,28 +103,12 @@ public class HomeMainFragment
             getContext().startActivity(intent);
         });
         binding.rvGdds.setAdapter(gddsAdapter);
-//        gddsAdapter.setNewData(dataList);
 
-
-//        binding.rvGdds.setHasFixedSize(true);
-//        binding.rvGdds
-//                .setLayoutManager(new LinearLayoutManager(getContext()));
-//        gddsAdapter = new ProviderGDDSAdapter();
-////        adapter.addFooterView(getFooterView());
-//        binding.rvGdds.setAdapter(gddsAdapter);
         textView = binding.tvScroll;
         textView.setText(strings[0]);
         textView.postDelayed(() -> handler.sendEmptyMessage(199), 1000);
 
         binding.llGdds.setOnClickListener(view -> {
-
-//           MvvmBaseFragment baseFragment= (MvvmBaseFragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_GDDS).navigation();
-
-//            ARouter.getInstance()
-//                    .build(RouterActivityPath.Home.PAGER_HOME_GDDSLIST)
-//                    .navigation();
-
-
             Intent intent = new Intent();
             intent.setClass(getContext(), HomeGddsListctivity.class);
             getActivity().startActivity(intent);
@@ -142,11 +126,9 @@ public class HomeMainFragment
             RxToast.normal("开发中");
         });
         binding.llSszx.setOnClickListener(view -> {
-//            ARouter.getInstance().build(RouterFragmentPath.More.PAGER_MORE)
-//                    .withInt("type",1)
-//                    .navigation();
-
-            ((MainActivity) getActivity()).mNavigationController.setSelect(3);
+            LiveEventBus
+                    .get("index")
+                    .post(3);
         });
         setLoadSir(binding.refreshLayout);
         showLoading();

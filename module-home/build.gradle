@@ -19,5 +19,4 @@ dependencies {
     //组件依赖基础库
     api project(':library-common')
     implementation 'com.github.paradoxie:AutoVerticalTextview:0.1'
-    compile project(path: ':module-main')
 }
