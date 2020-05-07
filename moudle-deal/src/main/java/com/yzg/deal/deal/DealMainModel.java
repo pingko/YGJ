@@ -1,4 +1,4 @@
-package com.yzg.user.setting;
+package com.yzg.deal.deal;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 import io.reactivex.disposables.Disposable;
 
-public class UserSettingModel<T> extends BaseModel<T> {
+public class DealMainModel<T> extends BaseModel<T> {
 
     private Disposable disposable;
 

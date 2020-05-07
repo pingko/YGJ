@@ -1,6 +1,7 @@
 package com.yzg.deal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,9 +10,11 @@ import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.yzg.base.fragment.MvvmBaseFragment;
+import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.viewmodel.IMvvmBaseViewModel;
 import com.yzg.common.router.RouterFragmentPath;
-import com.yzg.deal.databinding.DealFragmentLayoutBinding;
+import com.yzg.deal.databinding.DealFragmentMainBinding;
+import com.yzg.deal.deal.DealMainActivity;
 
 /**
  * 应用模块:
@@ -19,18 +22,16 @@ import com.yzg.deal.databinding.DealFragmentLayoutBinding;
  * 类描述:交易首页
  * <p>
  *
- * @author darryrzhoong
- * @since 2020-02-28
  */
 @Route(path = RouterFragmentPath.Deal.PAGER_DEAL)
 public class DealFragment
-        extends MvvmBaseFragment<DealFragmentLayoutBinding, IMvvmBaseViewModel> {
+        extends MvvmLazyFragment<DealFragmentMainBinding, IMvvmBaseViewModel> {
 
 //    private RecyclerAdapter adapter;
 
     @Override
     public int getLayoutId() {
-        return R.layout.deal_fragment_layout;
+        return R.layout.deal_fragment_main;
     }
 
     @Override
@@ -42,6 +43,7 @@ public class DealFragment
     }
 
     private void initData() {
+        binding.tvBuy.setOnClickListener(v -> startActivity(new Intent(getContext(), DealMainActivity.class)));
     }
 
     private void start(Context context) {

@@ -1,8 +1,4 @@
-package com.yzg.user;
-
-import androidx.databinding.Observable;
-import androidx.databinding.ObservableBoolean;
-import androidx.lifecycle.MutableLiveData;
+package com.yzg.deal.deal;
 
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.model.IModelListener;
@@ -11,16 +7,17 @@ import com.yzg.common.contract.BaseCustomViewModel;
 
 import java.util.TreeMap;
 
-public class UserViewModel extends MvmBaseViewModel<IUserLoginView, UserModel>
+public class DealMainViewModel extends MvmBaseViewModel<IDealMainView, DealMainModel>
         implements IModelListener<BaseCustomViewModel> {
-
-//    public MutableLiveData<Boolean> isLoginLivedata = new MutableLiveData<>();
-    public ObservableBoolean isLoginLivedata=new ObservableBoolean(false);
 
 
     public void setRequestParams(TreeMap map) {
         model.setMap(map);
     }
+
+
+
+
     @Override
     public void onLoadFinish(BaseModel model, BaseCustomViewModel data) {
         if (getPageView() != null) {
@@ -31,7 +28,6 @@ public class UserViewModel extends MvmBaseViewModel<IUserLoginView, UserModel>
             }
         }
     }
-
 
     @Override
     public void onLoadFail(BaseModel model, String prompt) {
@@ -44,9 +40,10 @@ public class UserViewModel extends MvmBaseViewModel<IUserLoginView, UserModel>
         model.load();
     }
 
+
     @Override
     public void initModel() {
-        model = new UserModel();
+        model = new DealMainModel();
         model.register(this);
 //        model.getCacheDataAndLoad();
     }

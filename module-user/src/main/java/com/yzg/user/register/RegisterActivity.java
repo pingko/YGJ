@@ -2,8 +2,6 @@ package com.yzg.user.register;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -16,8 +14,6 @@ import com.yzg.common.contract.TestApi;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.user.IUserLoginView;
 import com.yzg.user.R;
-import com.yzg.user.UserViewModel;
-import com.yzg.user.databinding.UserActivityLoginBinding;
 import com.yzg.user.databinding.UserActivityRegisterBinding;
 
 import java.util.TreeMap;

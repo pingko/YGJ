@@ -71,14 +71,9 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
 
     private void initView() {
         binding.tvQuit.setOnClickListener(view -> {
-
-//            TreeMap map = new TreeMap();
-//            viewModel.setRequestParams(map);
-//            viewModel.tryToRefresh();
-//            setResult(RESULT_OK);
-//            finish();
             RxToast.normal("退出成功");
             SharedPreferenceUtil.clearAll();
+            setResult(RESULT_OK);
             finish();
         });
 

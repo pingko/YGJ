@@ -2,9 +2,6 @@ package com.yzg.user;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -76,10 +73,9 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Us
             }
             TreeMap map = new TreeMap();
             map.put("username", binding.etPhone.getText().toString());
-            map.put("rememberMe", binding.etPwd.getText().toString());
-            map.put("password", 1);
+            map.put("password", binding.etPwd.getText().toString());
+            map.put("rememberMe", 1);
             viewModel.setRequestParams(map);
-
             viewModel.tryToRefresh();
 
         });

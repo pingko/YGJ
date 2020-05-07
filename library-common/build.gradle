@@ -41,7 +41,6 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-
 }
 
 dependencies {
@@ -60,4 +59,5 @@ dependencies {
     //banner
     api 'com.github.zhpanvip:BannerViewPager:2.6.6'
     api 'com.github.zhpanvip:viewpagerindicator:1.0.0'
+    api (name: 'alipaySdk_15.7.5_20200422171619', ext: 'aar')
 }

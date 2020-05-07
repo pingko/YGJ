@@ -1,3 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yzg.deal">
+
+    <application >
+        <activity android:name=".deal.DealMainActivity" />
+    </application>
 </manifest>

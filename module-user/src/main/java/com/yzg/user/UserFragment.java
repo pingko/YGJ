@@ -3,31 +3,27 @@ package com.yzg.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.yzg.base.fragment.MvvmBaseFragment;
-import com.yzg.base.viewmodel.IMvvmBaseViewModel;
+import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.common.router.RouterFragmentPath;
-import com.yzg.user.adapter.RecyclerAdapter;
+import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.databinding.UserFragmentLayoutBinding;
 import com.yzg.user.setting.UserSettingActivity;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * 应用模块:
@@ -40,8 +36,10 @@ import static android.app.Activity.RESULT_OK;
  */
 @Route(path = RouterFragmentPath.User.PAGER_USER)
 public class UserFragment
-        extends MvvmBaseFragment<UserFragmentLayoutBinding, IMvvmBaseViewModel> {
+        extends MvvmLazyFragment<UserFragmentLayoutBinding, UserViewModel> {
 
+
+    public boolean isLogin;
 
     @Override
     public int getLayoutId() {
@@ -52,9 +50,13 @@ public class UserFragment
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setLogin(false);
+        isLogin = SharedPreferenceUtil.getToken().isEmpty() ? false : true;
+//        setLogin(isLogin);
+        Logger.e(SharedPreferenceUtil.getToken()+"");
         initView();
+        viewModel.isLoginLivedata.set(isLogin);
     }
+
 
     private void start(Context context) {
         startActivityForResult(new Intent(context, LoginActivity.class), 1001);
@@ -63,75 +65,84 @@ public class UserFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001 && resultCode == RESULT_OK) {
-            setLogin(true);
+        switch (requestCode) {
+            case 1001:
+                isLogin = true;
+//                setLogin(isLogin);
+                viewModel.isLoginLivedata.set(isLogin);
+                break;
+            case 1002:
+                isLogin = false;
+//                setLogin(isLogin);
+                viewModel.isLoginLivedata.set(isLogin);
+                break;
         }
     }
 
 
-    private void setLogin(boolean isLogin) {
-        viewDataBinding.rlLogin.setVisibility(isLogin ? View.VISIBLE : View.GONE);
-        viewDataBinding.rlNo.setVisibility(!isLogin ? View.VISIBLE : View.GONE);
-        viewDataBinding.rlSubscrible.setVisibility(isLogin ? View.VISIBLE : View.GONE);
-        viewDataBinding.viewSubscrible.setVisibility(isLogin ? View.VISIBLE : View.GONE);
-    }
+//    private void setLogin(boolean isLogin) {
+//        binding.rlLogin.setVisibility(isLogin ? View.VISIBLE : View.GONE);
+//        binding.rlNo.setVisibility(!isLogin ? View.VISIBLE : View.GONE);
+//        binding.rlSubscrible.setVisibility(isLogin ? View.VISIBLE : View.GONE);
+//        binding.viewSubscrible.setVisibility(isLogin ? View.VISIBLE : View.GONE);
+//    }
 
     private void initView() {
         Glide.with(getContext()).load(getContext().getDrawable(R.drawable.avatar))
                 .apply(RequestOptions.bitmapTransform(new CircleCrop()))
-                .into(viewDataBinding.ivAvatar);
-        viewDataBinding.rvTables.setHasFixedSize(true);
-        viewDataBinding.rvTables
+                .into(binding.ivAvatar);
+        binding.rvTables.setHasFixedSize(true);
+        binding.rvTables
                 .setLayoutManager(new LinearLayoutManager(getContext()));
-        viewDataBinding.rlLogin.setOnClickListener(v -> {
+        binding.rlLogin.setOnClickListener(v -> {
 //            start(getContext());
         });
-        viewDataBinding.rlNo.setOnClickListener(v -> {
+        binding.rlNo.setOnClickListener(v -> {
             start(getContext());
         });
-        viewDataBinding.ivShow.setOnClickListener(v -> {
-            if (viewDataBinding.ivShow.getTag().equals("cancle")) {
-                viewDataBinding.ivShow.setTag("sure");
-                viewDataBinding.ivShow.setImageResource(R.drawable.user_money_show);
-                viewDataBinding.tvMoney.setText("100000.00");
+        binding.ivShow.setOnClickListener(v -> {
+            if (binding.ivShow.getTag().equals("cancle")) {
+                binding.ivShow.setTag("sure");
+                binding.ivShow.setImageResource(R.drawable.user_money_show);
+                binding.tvMoney.setText("100000.00");
             } else {
-                viewDataBinding.ivShow.setTag("cancle");
-                viewDataBinding.ivShow.setImageResource(R.drawable.user_money_hide);
-                viewDataBinding.tvMoney.setText("******");
+                binding.ivShow.setTag("cancle");
+                binding.ivShow.setImageResource(R.drawable.user_money_hide);
+                binding.tvMoney.setText("******");
             }
         });
 
-        viewDataBinding.rlHelp.setOnClickListener(view -> {
+        binding.rlHelp.setOnClickListener(view -> {
             RxToast.normal("开发中");
         });
-        viewDataBinding.rlSetting.setOnClickListener(view -> {
+        binding.rlSetting.setOnClickListener(view -> {
 
-            getActivity().startActivity(new Intent(getContext(),UserSettingActivity.class));
+            startActivityForResult(new Intent(getContext(), UserSettingActivity.class), 1002);
         });
-        viewDataBinding.rlSubscrible.setOnClickListener(view -> {
+        binding.rlSubscrible.setOnClickListener(view -> {
             RxToast.normal("开发中");
         });
-        viewDataBinding.rlFeedback.setOnClickListener(view -> {
+        binding.rlFeedback.setOnClickListener(view -> {
             RxToast.normal("开发中");
         });
-        viewDataBinding.rlAbout.setOnClickListener(view -> {
+        binding.rlAbout.setOnClickListener(view -> {
             RxToast.normal("开发中");
         });
 
     }
 
     private View getFooterView() {
-        return LayoutInflater.from(getContext()).inflate(R.layout.user_item_footer_view, viewDataBinding.rvTables, false);
+        return LayoutInflater.from(getContext()).inflate(R.layout.user_item_footer_view, binding.rvTables, false);
     }
 
     @Override
     public int getBindingVariable() {
-        return 0;
+        return BR.userVm;
     }
 
     @Override
-    protected IMvvmBaseViewModel getViewModel() {
-        return null;
+    protected UserViewModel getViewModel() {
+        return ViewModelProviders.of(this).get(UserViewModel.class);
     }
 
     @Override

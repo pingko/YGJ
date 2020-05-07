@@ -38,6 +38,9 @@ buildscript {
 
 allprojects {
     repositories {
+        flatDir {
+            dirs 'libs'
+        }
         maven {
             url 'https://maven.aliyun.com/repository/google'
         }

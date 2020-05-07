@@ -1,17 +1,13 @@
 package com.yzg.user;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.orhanobut.logger.Logger;
 import com.yzg.base.model.BaseModel;
-import com.yzg.base.utils.GsonUtils;
-import com.yzg.common.contract.TestResult;
 import com.yzg.user.bean.TokenBean;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.api.HttpService;
 import com.zhouyou.http.callback.SimpleCallBack;
 import com.zhouyou.http.exception.ApiException;
-
-import org.json.JSONException;
 
 import java.util.TreeMap;
 
@@ -49,8 +45,8 @@ public class UserModel<T> extends BaseModel<T> {
     }
 
     private void parseJson(String s) {
+        Logger.d(s);
         TokenBean result = JSONObject.parseObject(JSONObject.parseObject(s).getString("data"),TokenBean.class);
-
         loadSuccess((T) result);
 
 //        try {
