@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_main_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                android:background="@color/common_colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_net_candle"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:scaleType="fitCenter"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/common_messaage"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="首页"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_net_search"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:scaleType="fitCenter"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/service"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.yzg.main.views.CustomNoTouchViewPager
+                android:id="@+id/cv_content_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintBottom_toTopOf="@id/bottom_view"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout" />
+
+            <me.majiajie.pagerbottomtabstrip.PageNavigationView
+                android:id="@+id/bottom_view"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom"
+                android:background="@android:color/white"
+                android:elevation="8dp"
+
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <!--        app:layout_behavior="com.yzg.main.behavior.BottomNavigationBehavior"-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

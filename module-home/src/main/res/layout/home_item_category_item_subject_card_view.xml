@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.yzg.home.discover.bean.SquareCard" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@drawable/home_financing_item_bg">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="1个月,100克起"
+            android:textColor="#333333"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="11dp"
+            android:text="拆借利率"
+            android:textColor="#999999"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_zf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4.00%"
+            android:textColor="#FF7B12"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_sub"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_category_bg"
+            imageUrl="@{viewModel.image}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/common_tools_iv_bg" />
+
+        <com.yzg.common.views.CommonCustomTextView
+            android:id="@+id/tv_label"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{viewModel.title}"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/iv_category_bg"
+            app:layout_constraintEnd_toEndOf="@+id/iv_category_bg"
+            app:layout_constraintStart_toStartOf="@id/iv_category_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_category_bg"
+            tools:text="异地恋也可以很甜" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

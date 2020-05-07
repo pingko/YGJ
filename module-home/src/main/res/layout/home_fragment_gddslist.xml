@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="HomeVM"
+            type="com.yzg.home.gdds.HomeGDDSListViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:visibility="gone"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/common_back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="跟单大师"
+                android:textColor="@color/common_color_title_text"
+                android:textSize="14sp" />
+        </RelativeLayout>
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
+
+
+
+
+                    <com.zhpan.bannerview.BannerViewPager
+                        android:id="@+id/bv_top"
+                        initBannerView="@{HomeVM.banners}"
+                        android:layout_width="match_parent"
+                        android:layout_height="112dp"
+                        android:layout_margin="15dp"
+                        android:background="@color/common_colorWhite"
+                        app:bvp_indicator_checked_color="@android:color/holo_red_dark"
+                        app:bvp_indicator_normal_color="@android:color/darker_gray"
+                        app:bvp_page_margin="10dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="15dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_sy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="9dp"
+                                android:text="总收益榜"
+                                android:textColor="@color/common_color_111111"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_sy"
+                                android:text="从签约到现在，跟单大师白银产品的累计收益率"
+                                android:textColor="@color/common_color_9a9a9a"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_sy_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:drawableRight="@drawable/home_ic_right"
+                                android:drawablePadding="6dp"
+                                android:gravity="center_vertical"
+                                android:text="更多"
+                                android:textColor="@color/common_color_9a9a9a"
+                                android:textSize="11sp" />
+                        </RelativeLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sy_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="15dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="9dp"
+                                android:text="总订阅榜"
+                                android:textColor="@color/common_color_111111"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_sub"
+                                android:text="被订阅的数量"
+                                android:textColor="@color/common_color_9a9a9a"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tv_sub_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:drawableRight="@drawable/home_ic_right"
+                                android:drawablePadding="6dp"
+                                android:gravity="center_vertical"
+                                android:text="更多"
+                                android:textColor="@color/common_color_9a9a9a"
+                                android:textSize="11sp" />
+                        </RelativeLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_gdds"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </LinearLayout>
+
+</layout>

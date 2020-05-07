@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.yzg.home.discover.bean.SquareCard" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="110dp"
+        android:layout_height="120dp"
+        android:background="@drawable/home_financing_item_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:src="@drawable/home_ic_user_head" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:text="风筝"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:text="3800关注"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="700% 总收益率"
+            android:textSize="12sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_category_bg"
+            imageUrl="@{viewModel.image}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@drawable/common_tools_iv_bg" />
+
+        <com.yzg.common.views.CommonCustomTextView
+            android:id="@+id/tv_label"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@{viewModel.title}"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/iv_category_bg"
+            app:layout_constraintEnd_toEndOf="@+id/iv_category_bg"
+            app:layout_constraintStart_toStartOf="@id/iv_category_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_category_bg"
+            tools:text="异地恋也可以很甜" />
+
+    </LinearLayout>
+</layout>

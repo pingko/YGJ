@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yzg.user">
+
+    <application >
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name="com.yzg.user.AttentionActivity"/>
+        <activity android:name=".register.RegisterActivity"/>
+        <activity android:name=".setting.UserSettingActivity"/>
+    </application>
+
+</manifest>

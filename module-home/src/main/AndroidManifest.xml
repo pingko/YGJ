@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yzg.home">
+
+    <application >
+        <activity android:name=".main.HomeGddsListctivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".main.HomeGddsDetailActivity"/>
+        <activity android:name=".gdds.gddslist.HomeGddsRankListctivity"/>
+    </application>
+</manifest>

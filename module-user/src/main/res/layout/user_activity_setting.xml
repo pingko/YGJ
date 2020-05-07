@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".register.RegisterActivity">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:src="@drawable/common_back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="设置"
+                android:textColor="@color/common_color_title_text"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/rl_title">
+
+
+
+            <TextView
+                android:id="@+id/tv_tip_version"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/user_seeting_item_bg"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:text="版本检查" />
+
+            <TextView
+                app:layout_constraintTop_toTopOf="@id/tv_tip_version"
+                app:layout_constraintBottom_toBottomOf="@id/tv_tip_version"
+                app:layout_constraintRight_toRightOf="@id/tv_tip_version"
+                android:text="已是最新版本"
+                android:layout_marginRight="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+
+
+
+
+
+
+<!--        <View-->
+<!--            android:id="@+id/view_line_tel"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0.1dp"-->
+<!--            android:background="#f2f2f4"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_tip_tel" />-->
+
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_regis"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="44dp"-->
+<!--            android:layout_margin="15dp"-->
+<!--            android:background="@drawable/user_shape_ic_login_bg"-->
+<!--            android:gravity="center"-->
+<!--            android:text="注册"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/view_line_pwd2" />-->
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_quit"
+            android:text="退出登录"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/white"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/cl_main"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
