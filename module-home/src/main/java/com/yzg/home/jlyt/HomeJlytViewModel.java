@@ -1,4 +1,4 @@
-package com.yzg.deal.deal;
+package com.yzg.home.jlyt;
 
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.model.IModelListener;
@@ -7,7 +7,7 @@ import com.yzg.common.contract.BaseCustomViewModel;
 
 import java.util.TreeMap;
 
-public class DealMainViewModel extends MvmBaseViewModel<IDealMainView, DealMainModel>
+public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel>
         implements IModelListener<BaseCustomViewModel> {
 
 
@@ -41,7 +41,7 @@ public class DealMainViewModel extends MvmBaseViewModel<IDealMainView, DealMainM
 
     @Override
     public void initModel() {
-        model = new DealMainModel();
+        model = new HomeJlytModel();
         model.register(this);
 //        model.getCacheDataAndLoad();
     }

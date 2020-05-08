@@ -24,6 +24,7 @@ import com.yzg.home.databinding.HomeFragmentMainBinding;
 import com.yzg.home.discover.adapter.GDDSItemAdapter;
 import com.yzg.home.discover.adapter.HomeMainJLYTAdapter;
 import com.yzg.home.discover.bean.SquareCard;
+import com.yzg.home.jlyt.HomeJlytActivity;
 
 import java.util.ArrayList;
 
@@ -123,7 +124,7 @@ public class HomeMainFragment
             RxToast.normal("开发中");
         });
         binding.llJlyt.setOnClickListener(view -> {
-            RxToast.normal("开发中");
+            startActivity(new Intent(getContext(), HomeJlytActivity.class));
         });
         binding.llSszx.setOnClickListener(view -> {
             LiveEventBus

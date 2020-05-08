@@ -7,5 +7,6 @@
             />
         <activity android:name=".main.HomeGddsDetailActivity"/>
         <activity android:name=".gdds.gddslist.HomeGddsRankListctivity"/>
+        <activity android:name=".jlyt.HomeJlytActivity"/>
     </application>
 </manifest>

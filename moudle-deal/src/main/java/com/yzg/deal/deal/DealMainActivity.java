@@ -29,7 +29,7 @@ import com.yzg.deal.databinding.DealActivityMainBinding;
 
 import java.util.Map;
 
-public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,DealMainViewModel> implements IDealMainView {
+public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements IDealMainView, View.OnClickListener {
     @Override
     protected DealMainViewModel getViewModel() {
         return ViewModelProviders.of(this).get(DealMainViewModel.class);
@@ -53,12 +53,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding.tvTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                payV2(v);
-            }
-        });
+        binding.ivBack.setOnClickListener(this);
+        binding.tvTest.setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +67,16 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
     public void showFailure(String message) {
         super.showFailure(message);
         RxToast.normal(message);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_back) {
+            finish();
+        } else if (v.getId() == R.id.tv_test) {
+            payV2(v);
+        }
+
     }
 
     /**
@@ -89,20 +95,20 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
     public static final String TARGET_ID = "";
 
     /**
-     *  pkcs8 格式的商户私钥。
-     *
-     * 	如下私钥，RSA2_PRIVATE 或者 RSA_PRIVATE 只需要填入一个，如果两个都设置了，本 Demo 将优先
-     * 	使用 RSA2_PRIVATE。RSA2_PRIVATE 可以保证商户交易在更加安全的环境下进行，建议商户使用
-     * 	RSA2_PRIVATE。
-     *
-     * 	建议使用支付宝提供的公私钥生成工具生成和获取 RSA2_PRIVATE。
-     * 	工具地址：https://doc.open.alipay.com/docs/doc.htm?treeId=291&articleId=106097&docType=1
+     * pkcs8 格式的商户私钥。
+     * <p>
+     * 如下私钥，RSA2_PRIVATE 或者 RSA_PRIVATE 只需要填入一个，如果两个都设置了，本 Demo 将优先
+     * 使用 RSA2_PRIVATE。RSA2_PRIVATE 可以保证商户交易在更加安全的环境下进行，建议商户使用
+     * RSA2_PRIVATE。
+     * <p>
+     * 建议使用支付宝提供的公私钥生成工具生成和获取 RSA2_PRIVATE。
+     * 工具地址：https://doc.open.alipay.com/docs/doc.htm?treeId=291&articleId=106097&docType=1
      */
-    public  static String est="MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCUEE2U67/f26fkQSBQTH9/o9weey/XwFlCTbkTZRjg4+V9Kwrcur+HtK+UGRZAFjTBHF7AfFtLdaH1TWdUCgh/0/+/h2A+z7ZWv7799ONGTgVCey/WIA2mndrdnJIawAMs+iakwrB9FZN9AHceLmPDsXVn2IsohAVXPQQWDTfGzzHmafMlXdNATjDCYRyvEY8B632YVmGHHbnuAxEg5mFSDalKjn9MpuXNewAOPNhBT2xLIrwYBh7f+qG//BppNQmEwFTPVGOu1s+6qYfZzTIN5mLq2RBVt1G0m84+NxzvZDb7hryyPO/u68FQ9emUDGfcj5hAGJSpRzWva8S6ITUrAgMBAAECggEAMPyv3mydYAA5rRBLE6YrrNxW8JLLQnO2VHSInj0dnRJplB8QifUTd1+1k6c1MGDodVfglYjPX8j8m79PR4PGShynCgRNOJradhscosNKCrG3lcZSDmMugQjLJ/UsdcM/ibr93Bc58ziXQo1L2+V3RoDJGmGPsQj1B2b9mhoncRQMptYCscilrkZY8OoZu5et2ip3UuKBJWUCFlaBLbZ2fEHnhXSbjt1HP6tPSHjayMzApcLXB2GtZe2EVHmxuDd805TOWyliAK822QG7DAAi1JeezkAAiC7WgpRS3ZbD+pSxe4Q7W+BYe8/GJkiRQZ5+a8wdYtpTgi+yU7M58BBVeQKBgQDX5M2wRLFhkyjyTIdGUqBLvrtq8tFHHzOnqImWZPpGxerL3PqvfnyNUopCLrWSwlEikrg5i5BMFNQOUCm+1Z+7Rt1tw9+WbkHfdOWJ99MBs+PHVK8Bu1XbIh7uxny3zPQqHyAY8ztagv1tXqtbqcr99S+vuVx3bXYNXCD6kE2wpwKBgQCvkbltxeR43g815cah4okeT1tEWQQU3q+NgN2v0D7XWSOupYDQoE+bBa8A9c48ulmYEu48xQ1cu76Ft78cYJ+99zeRS21HctblJfC2zI7kvv9eOtTjPFNty4nm6yoZ71fVmqdsXFG70H7dBODDCsMATZzKzEdF4JkC+g1dZgxD3QKBgQCBsZfHDl0o6sisVkDlg/l7x0a7hscl3J6hV2PgDyUyou7cLRIDnw6frzgTbg/x6/3lsRIur6Ktsc16E7ogRCDC1l1q9UI6El5MKONDsLb3zONG+Z5wgeOf0q2Wb3K4z8zWCQC1PFkplIs9yqNSW3vwd/x/qfDcZcuHVxMQsuOY/QKBgEym/eNMZAzVPqTUdh2VrzH5iapUhvCprNHF8oPhEp6ov2hvv8bWRwsytw5fQzTGU3mOwk7r5YKYQX1WFO1JzlR9C9i2qrZoECSppOfadYSvUwUMAIhZfT9Rfxq/j3kVQy7yP6iSweiTBeBvUcY1+581Q4BTIccDYSqoi488j5xNAoGBAL07y7Q81QySQiX6HdzpjudAMZsmIwfWQkRKRsYPfhzevi3OtSMhLEzpw/upiWDMfultkdWzHxJWtqVjEvzzsnf0HFkZp3r7rZNruZGJy1RpnUGdS2bV7+0oq9JsJhZCrfSYeCrev082KpnhTLoXXUzaOAmiGz9zFaorpeIIEXUd";
 
     public static final String RSA_PRIVATE = "";
-    //    public static final String RSA2_PRIVATE = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCt+BEGFtMKHONU5IYz+9ZupuUOGKbF/Eueh3HNYK1pBRGspdZ6wtmhWFi6IwCD9BpKpc3eYUqeqKa8eMOOa3PY2AjrW9HKHAX0lYGRiQjUOMTpvserz+XyX+hWlNMlCFVJqWS32H9qFC9EKPlFjP9HgFauMgQ/LOPqkypkNzrZn2Kx9UmVvVudbJ6KodrrHaYaQsDwNepOQ9u0fqodj65YJb9K8GL2XgDc+KtL7voiYiddk07Ip0iHw3GHINqB89X1FiGeB33WvIb/fKU5LN8cBTTuxLIkseCwHKHf9HNIrQSxT5cwH7D5TzGkUbMsCdPMNjinFF5IgfFittCPuAmNAgMBAAECggEAYVE0jLh14+FXFiUkIa5OPOXlmmYV3QkOcCcKdT4Qo3/vbCn0+gVH4ubd83ojDq2di4aGzFCWgnyLkUDo/CGF05a+HpLln27fsft0WKpUowsCtFNBtQ3+bwBRoyVrm/q2Yxd8PQ/B7uBNtI5LKyn9n8zeMGHQWFrPQGiEvTzcEeIW6VNKtUfNSdeZsg0g3/H/GSXmW+l6dpT3N9YOv/77OaDyZ0n98ko7wOOd8eYyEArCMiWyT6tbKC7jvQI2NBt5A3ISJw4euWuvxmWMuXwN+i32CpxQPvVCjd02YoJlTanPKy77Ie2WQYnZ5QoCfk+SPg/Ai4E2TnqKe0tQJHM/4QKBgQDpqiI2yhUEbTm92ROqzbsC7nRhwWBplNHqhF9j5bVK7sxKn7QFErJXj220LmKKAmOw4sULIYDDfE7stK+X6RGOs7P0zfdxf7e+KwyVXiVEv2Et53Wc7pdmGPYgzlxsbNEozSbTTAQ5j0PQ2MPgLWxuwYVo5psLfu54QJHiTrgGtQKBgQC+mSh7IxDgp/TJ/NUQm4EafKPiYst8mqP52uo4m661cT0pKwxJsV1QHAgQp78CJlCUfGJ1h3p2Wx9pbcjIRMGXLqXVzEh1JHd0zdYt0ac4x/8ItRqQw8v+mCEwPl6mTk7HFQ82aw3B+9UnI1uM9DIlwiGk2N3rmnFMlWmRy4YmeQKBgDVKs0Dxt/dpfejZsI2dHFDf17VP6FBMO9AT3rmm80Ei038Vi3Y4vGoR8UBN7/Vv9BKstaoDOx3apRmBYCbyZim4vItRymSdb2e048rRTQiv6VcR2hYvqGIFwWTcC+JCszVuDLPWO4RxM1NXjNz9HyTniCjTp3rouTS97UfDEl+dAoGAVGIMiQ/KThwuBSs5zYN7UhWynOzueDkiteDU58ENRWlgEZTseMfcrzXp4C3UJAiAjmzPTodvkWzgaFXhmcDPELbnVtN9lNdTR9RFqb1zUnFBGULNAyCcdRg3QVurned3ey54sLgOvD5ZbV17D9mhRhQ/vvMAtWmIFcbkmVbJCskCgYBqBWdbp6yAjrtf0iQwk7+wYBdiereH11mVpXO1oWeCcCoqeVjWNYDcAJRtnuUK8yrWzpqZGv59DItegdmPR1E9epOIo8qQ4P2EO6kUDF/nlAGAxRNGDBNp2PSSFmrG717pVO8VK1SGTgduC/g6so3Gfeqo033bySfatxyPM364sA==";
-    public static final String RSA2_PRIVATE =est;
+
+    public static final String RSA2_PRIVATE = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCUEE2U67/f26fkQSBQTH9/o9weey/XwFlCTbkTZRjg4+V9Kwrcur+HtK+UGRZAFjTBHF7AfFtLdaH1TWdUCgh/0/+/h2A+z7ZWv7799ONGTgVCey/WIA2mndrdnJIawAMs+iakwrB9FZN9AHceLmPDsXVn2IsohAVXPQQWDTfGzzHmafMlXdNATjDCYRyvEY8B632YVmGHHbnuAxEg5mFSDalKjn9MpuXNewAOPNhBT2xLIrwYBh7f+qG//BppNQmEwFTPVGOu1s+6qYfZzTIN5mLq2RBVt1G0m84+NxzvZDb7hryyPO/u68FQ9emUDGfcj5hAGJSpRzWva8S6ITUrAgMBAAECggEAMPyv3mydYAA5rRBLE6YrrNxW8JLLQnO2VHSInj0dnRJplB8QifUTd1+1k6c1MGDodVfglYjPX8j8m79PR4PGShynCgRNOJradhscosNKCrG3lcZSDmMugQjLJ/UsdcM/ibr93Bc58ziXQo1L2+V3RoDJGmGPsQj1B2b9mhoncRQMptYCscilrkZY8OoZu5et2ip3UuKBJWUCFlaBLbZ2fEHnhXSbjt1HP6tPSHjayMzApcLXB2GtZe2EVHmxuDd805TOWyliAK822QG7DAAi1JeezkAAiC7WgpRS3ZbD+pSxe4Q7W+BYe8/GJkiRQZ5+a8wdYtpTgi+yU7M58BBVeQKBgQDX5M2wRLFhkyjyTIdGUqBLvrtq8tFHHzOnqImWZPpGxerL3PqvfnyNUopCLrWSwlEikrg5i5BMFNQOUCm+1Z+7Rt1tw9+WbkHfdOWJ99MBs+PHVK8Bu1XbIh7uxny3zPQqHyAY8ztagv1tXqtbqcr99S+vuVx3bXYNXCD6kE2wpwKBgQCvkbltxeR43g815cah4okeT1tEWQQU3q+NgN2v0D7XWSOupYDQoE+bBa8A9c48ulmYEu48xQ1cu76Ft78cYJ+99zeRS21HctblJfC2zI7kvv9eOtTjPFNty4nm6yoZ71fVmqdsXFG70H7dBODDCsMATZzKzEdF4JkC+g1dZgxD3QKBgQCBsZfHDl0o6sisVkDlg/l7x0a7hscl3J6hV2PgDyUyou7cLRIDnw6frzgTbg/x6/3lsRIur6Ktsc16E7ogRCDC1l1q9UI6El5MKONDsLb3zONG+Z5wgeOf0q2Wb3K4z8zWCQC1PFkplIs9yqNSW3vwd/x/qfDcZcuHVxMQsuOY/QKBgEym/eNMZAzVPqTUdh2VrzH5iapUhvCprNHF8oPhEp6ov2hvv8bWRwsytw5fQzTGU3mOwk7r5YKYQX1WFO1JzlR9C9i2qrZoECSppOfadYSvUwUMAIhZfT9Rfxq/j3kVQy7yP6iSweiTBeBvUcY1+581Q4BTIccDYSqoi488j5xNAoGBAL07y7Q81QySQiX6HdzpjudAMZsmIwfWQkRKRsYPfhzevi3OtSMhLEzpw/upiWDMfultkdWzHxJWtqVjEvzzsnf0HFkZp3r7rZNruZGJy1RpnUGdS2bV7+0oq9JsJhZCrfSYeCrev082KpnhTLoXXUzaOAmiGz9zFaorpeIIEXUd";
+    ;
 
 
     private static final int SDK_PAY_FLAG = 1;
@@ -124,10 +130,12 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
+//                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
+                        RxToast.showToast("支付成功");
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        showAlert(DealMainActivity.this, getString(R.string.pay_failed) + payResult);
+//                        showAlert(DealMainActivity.this, getString(R.string.pay_failed) + payResult);
+                        RxToast.showToast("支付失败");
                     }
                     break;
                 }
@@ -151,9 +159,10 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
                 default:
                     break;
             }
-        };
-    };
+        }
 
+        ;
+    };
 
 
     /**
@@ -178,7 +187,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
-        final String orderInfo = orderParam     + "&" + sign;
+        final String orderInfo = orderParam + "&" + sign;
 
         final Runnable payRunnable = new Runnable() {
 
@@ -200,7 +209,6 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
-
 
 
     /**
@@ -282,7 +290,6 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
 //        intent.putExtras(extras);
 //        startActivity(intent);
 //    }
-
     private static void showAlert(Context ctx, String info) {
         showAlert(ctx, info, null);
     }
@@ -304,9 +311,11 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding,D
             return "null";
         }
         final StringBuilder sb = new StringBuilder();
-        for (String key: bundle.keySet()) {
+        for (String key : bundle.keySet()) {
             sb.append(key).append("=>").append(bundle.get(key)).append("\n");
         }
         return sb.toString();
     }
+
+
 }

@@ -26,7 +26,8 @@ ext {
             "androidx.navigation-fragment"        : "androidx.navigation:navigation-fragment:2.1.0",
             "androidx.navigation-ui:"             : "androidx.navigation:navigation-ui:2.1.0",
             "junit"                               : "junit:junit:4.12",
-            "androidx.test.ext-junit"             : "androidx.test.ext:junit:1.1.0",
+            "androidx.test.ext-junit"             :
+                    "androidx.test.ext:junit:1.1.0",
             "androidx.test.espresso:espresso-core": "androidx.test.espresso:espresso-core:3.1.1",
     ]
 
@@ -41,10 +42,13 @@ ext {
             "immersionbar"                 : "com.gyf.immersionbar:immersionbar:3.0.0",
             "glide"                        : "com.github.bumptech.glide:glide:4.9.0",
             "glide-compiler"               : "com.github.bumptech.glide:compiler:4.9.0",
-            "arouter-api" : "com.alibaba:arouter-api:1.5.0",
-            "arouter-compiler" : "com.alibaba:arouter-compiler:1.2.2",
-            "RxKit"                         :"com.github.tamsiree.RxTool:RxKit:2.5.9",
-            "RxUI"                          :"com.github.tamsiree.RxTool:RxUI:2.5.9",
+            "arouter-api"                  : "com.alibaba:arouter-api:1.5.0",
+            "arouter-compiler"             : "com.alibaba:arouter-compiler:1.2.2",
+            "RxKit"                        : "com.github.tamsiree.RxTool:RxKit:2.5.9",
+            "RxUI"                         : "com.github.tamsiree.RxTool:RxUI:2.5.9",
+            "LiveEventBus"                 : "com.jeremyliao:live-event-bus-x:1.6.1",
+            "SmartRefreshLayout"           : 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0',
+            "numberPickerView"             : "cn.carbswang.android:NumberPickerView:1.2.0"
     ]
 
 }
