@@ -2,13 +2,10 @@ package com.yzg.home.jlyt;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
@@ -47,24 +44,16 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
         jlytAdapter = new CommonAdapter<JlytBean>(this, R.layout.home_jlyt_item, jlytBeanList) {
             @Override
             protected void convert(ViewHolder holder, JlytBean bean, int position) {
-
-
                 holder.setText(R.id.tv_name,bean.getName());
                 holder.setText(R.id.tv_rate,bean.getRate());
-
             }
         };
         binding.rvJlyt.setLayoutManager(new LinearLayoutManager(this));
 //        binding.rvJlyt.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.common_color_text_gray), ConvertUtils.dp2px(15),ConvertUtils.dp2px(15)));
-
         binding.rvJlyt.setAdapter(jlytAdapter);
 
-        binding.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                binding.refreshLayout.finishRefresh(500);
-            }
-        });
+        binding.refreshLayout.setOnRefreshListener(refreshLayout -> binding.refreshLayout.finishRefresh(500));
+        binding.ivBack.setOnClickListener(view -> finish());
 
     }
 
