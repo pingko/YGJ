@@ -1,22 +1,18 @@
 package com.yzg.home.jlyt;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.yanzhenjie.recyclerview.widget.DefaultItemDecoration;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeActivityJlytBinding;
-import com.zhpan.idea.utils.ConvertUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 

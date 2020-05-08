@@ -65,7 +65,6 @@ dependencies {
     api rootProject.ext.dependencies["LiveEventBus"]
     api rootProject.ext.dependencies["SmartRefreshLayout"]
     api rootProject.ext.dependencies["numberPickerView"]
+    api rootProject.ext.dependencies["RvAdapter"]
     api 'com.alibaba:fastjson:1.2.9'
-    api 'com.zhy:base-rvadapter:3.0.3'
-
 }
