@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
@@ -56,7 +57,13 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
 //        binding.rvJlyt.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.common_color_text_gray), ConvertUtils.dp2px(15),ConvertUtils.dp2px(15)));
         binding.rvJlyt.setAdapter(jlytAdapter);
 
-        binding.refreshLayout.setOnRefreshListener(refreshLayout -> binding.refreshLayout.finishRefresh(500));
+//        binding.refreshLayout.setOnRefreshListener(refreshLayout -> binding.refreshLayout.finishRefresh(500));
+        binding.refreshLayout
+                .setRefreshHeader(new ClassicsHeader(this));
+        binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
+//            viewModel.tryToRefresh();
+            binding.refreshLayout.finishRefresh(500);
+        });
         binding.ivBack.setOnClickListener(view -> finish());
         jlytAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override

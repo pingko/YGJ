@@ -42,7 +42,7 @@ public class HomeMainFragment
         extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel>
         implements IHomeMainView {
     private HomeMainJLYTAdapter adapter;
-//    private ProviderGDDSAdapter gddsAdapter;
+    //    private ProviderGDDSAdapter gddsAdapter;
     GDDSItemAdapter gddsAdapter;
     AutoVerticalScrollTextView textView;
     ArrayList<SquareCard> dataList = new ArrayList<>();
@@ -96,7 +96,7 @@ public class HomeMainFragment
                 0, DensityUtils.dip2px(getContext(), 16), 0));
 
 
-       gddsAdapter = new GDDSItemAdapter(
+        gddsAdapter = new GDDSItemAdapter(
                 R.layout.home_item_category_item_subject_gdds_view);
         gddsAdapter.setOnItemClickListener((adapter1, view, position) -> {
             Intent intent = new Intent();

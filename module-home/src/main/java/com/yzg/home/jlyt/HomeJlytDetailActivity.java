@@ -32,6 +32,8 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
         if (bean != null)
             binding.tvTitle.setText(bean.getName());
 
+        binding.progressBar.setProgress(33);
+
     }
 
     @Override

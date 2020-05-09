@@ -109,19 +109,17 @@
 
 
         </RelativeLayout>
-
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
             app:layout_constraintTop_toBottomOf="@id/rl_deal"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_jlyt"
             android:layout_width="match_parent"
             android:overScrollMode="never"
-            android:layout_height="match_parent"/>
-
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="wrap_content"/>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

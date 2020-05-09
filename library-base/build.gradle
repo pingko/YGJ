@@ -63,7 +63,7 @@ dependencies {
     api rootProject.ext.dependencies["immersionbar"]
     api rootProject.ext.dependencies["glide"]
     api rootProject.ext.dependencies["LiveEventBus"]
-    api rootProject.ext.dependencies["SmartRefreshLayout"]
+//    api rootProject.ext.dependencies["SmartRefreshLayout"]
     api rootProject.ext.dependencies["numberPickerView"]
     api rootProject.ext.dependencies["RvAdapter"]
     api 'com.alibaba:fastjson:1.2.9'
