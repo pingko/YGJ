@@ -554,6 +554,7 @@
                 android:layout_alignRight="@id/view1"
                 android:layout_toRightOf="@id/tv1"
                 android:hint="数量"
+                android:inputType="number"
                 android:background="@null"/>
 
             <TextView
