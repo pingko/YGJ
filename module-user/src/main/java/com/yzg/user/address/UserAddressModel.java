@@ -1,8 +1,7 @@
-package com.yzg.home.jlyt;
+package com.yzg.user.address;
 
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.orhanobut.logger.Logger;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.TestApi;
 import com.zhouyou.http.EasyHttp;
@@ -15,7 +14,7 @@ import java.util.TreeMap;
 
 import io.reactivex.disposables.Disposable;
 
-public class HomeJlytModel<T> extends BaseModel<T> {
+public class UserAddressModel<T> extends BaseModel<T> {
 
     private Disposable disposable;
 
@@ -28,21 +27,21 @@ public class HomeJlytModel<T> extends BaseModel<T> {
     @Override
     protected void load() {
 
-        disposable = EasyHttp.post(HttpService.Gold_info_list)
-//                .params(map)
-                .cacheKey(getClass().getSimpleName())
-                .execute(new SimpleCallBack<String>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        loadFail(e.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(String s) {
-                        HttpLog.e(s);
-//                        parseJson(s);
-                    }
-                });
+//        disposable = EasyHttp.post(HttpService.Gold_info_list)
+////                .params(map)
+//                .cacheKey(getClass().getSimpleName())
+//                .execute(new SimpleCallBack<String>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        loadFail(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(String s) {
+//                        HttpLog.e(s);
+////                        parseJson(s);
+//                    }
+//                });
     }
 
     private void parseJson(String s) {

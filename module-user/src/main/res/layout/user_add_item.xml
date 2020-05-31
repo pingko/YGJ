@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/user_address_del"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名，15160001234"
+                android:textSize="14sp"
+                android:textColor="@color/common_color_111111"/>
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_name"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
+                android:maxLines="2"
+                android:text="安徽省 合肥市 北京路  朝阳科技工业园西区15栋 007号"
+                android:textSize="14sp"
+                android:textColor="@color/common_color_111111"/>
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#f2f2f4"
+                android:layout_below="@id/tv_address" />
+
+            <TextView
+                android:id="@+id/tv_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_line"
+                android:layout_marginTop="15dp"
+                android:text="当前默认地址"
+                android:textSize="12sp"
+                android:textColor="@color/common_color_main"/>
+
+            <TextView
+                android:id="@+id/tv_select_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_line"
+                android:layout_marginTop="15dp"
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/user_address_select"
+                android:drawablePadding="10dp"
+                android:text="当前默认地址"
+                android:textSize="12sp"
+                android:textColor="@color/common_color_main"/>
+
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_select"
+                android:layout_alignBottom="@id/tv_select"
+                android:text="编辑"
+                android:textSize="12sp"
+                android:textColor="@color/common_color_main"/>
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

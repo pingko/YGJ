@@ -45,7 +45,7 @@ public class UserModel<T> extends BaseModel<T> {
     }
 
     private void parseJson(String s) {
-        Logger.d(s);
+        Logger.e(s);
         TokenBean result = JSONObject.parseObject(JSONObject.parseObject(s).getString("data"),TokenBean.class);
         loadSuccess((T) result);
 

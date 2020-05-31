@@ -1,12 +1,19 @@
 package com.yzg.main.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.tencent.mmkv.MMKV;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.adapter.ScreenAutoAdapter;
+import com.yzg.common.router.RouterActivityPath;
+import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.main.R;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
@@ -37,9 +44,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startToMain() {
-//        if (MmkvHelper.getInstance().getMmkv().decodeBool("first",true)){
+//        if (MmkvHelper.getInstance().getMmkv().decodeBool("first", true)) {
 //            startActivity(new Intent(this, GuideActivity.class));
-//        }else {
+//        } else {
+//
 //        }
         MainActivity.start(this);
 

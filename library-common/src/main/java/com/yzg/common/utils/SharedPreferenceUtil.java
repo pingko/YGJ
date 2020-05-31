@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.yzg.base.base.BaseApplication;
+import com.yzg.common.router.RouterActivityPath;
 
 
 /**
@@ -14,7 +16,12 @@ import com.yzg.base.base.BaseApplication;
 
 public class SharedPreferenceUtil {
 
-    private static final String SHAREDPREFERENCES_NAME = "LDS_DC";
+//     if (TextUtils.isEmpty(SharedPreferenceUtil.getToken())) {
+//        ARouter.getInstance()
+//                .build(RouterActivityPath.User.PAGER_REGISTER)
+//                .navigation();
+//    }
+    private static final String SHAREDPREFERENCES_NAME = "YGJ";
 
     private static final boolean DEFAULT_FIRST_TAG = false;
     public static final boolean DEFAULT_LOGIN_TAG = false;

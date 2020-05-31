@@ -1,4 +1,4 @@
-package com.yzg.home.jlyt;
+package com.yzg.user.address;
 
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.model.IModelListener;
@@ -7,7 +7,7 @@ import com.yzg.common.contract.BaseCustomViewModel;
 
 import java.util.TreeMap;
 
-public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel>
+public class UserAddressViewModel extends MvmBaseViewModel<IAddressView, UserAddressModel>
         implements IModelListener<BaseCustomViewModel> {
 
 
@@ -41,9 +41,9 @@ public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel
 
     @Override
     public void initModel() {
-        model = new HomeJlytModel();
+        model = new UserAddressModel();
         model.register(this);
-        model.getCacheDataAndLoad();
+//        model.getCacheDataAndLoad();
     }
 
     @Override

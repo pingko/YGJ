@@ -9,6 +9,7 @@
         <activity android:name="com.yzg.user.AttentionActivity"/>
         <activity android:name=".register.RegisterActivity"/>
         <activity android:name=".setting.UserSettingActivity"/>
+        <activity android:name=".address.UserAddressActivity"/>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.yzg.user.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,12 +14,12 @@ import com.yzg.common.contract.TestApi;
 import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.IUserLoginView;
 import com.yzg.user.R;
+import com.yzg.user.address.UserAddressActivity;
 import com.yzg.user.databinding.UserActivitySettingBinding;
 
 /**
  * @author darryrzhoong
  */
-//@Route(path = RouterActivityPath.User.PAGER_REGISTER)
 public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBinding, UserSettingViewModel> implements IUserLoginView {
 
     public static String token;
@@ -59,6 +60,7 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
         showLoading();
         viewModel.initModel();
         binding.ivBack.setOnClickListener(view -> finish());
+        binding.tvAddress.setOnClickListener(view -> startActivity(new Intent(UserSettingActivity.this, UserAddressActivity.class)));
 
     }
 
