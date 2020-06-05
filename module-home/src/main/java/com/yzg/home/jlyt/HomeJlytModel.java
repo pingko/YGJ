@@ -1,10 +1,13 @@
 package com.yzg.home.jlyt;
 
+import android.graphics.Shader;
+
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.orhanobut.logger.Logger;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.TestApi;
+import com.yzg.common.utils.SharedPreferenceUtil;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.api.HttpService;
 import com.zhouyou.http.callback.SimpleCallBack;
@@ -28,8 +31,11 @@ public class HomeJlytModel<T> extends BaseModel<T> {
     @Override
     protected void load() {
 
+        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("token", SharedPreferenceUtil.getToken());
         disposable = EasyHttp.post(HttpService.Gold_info_list)
-//                .params(map)
+                .headers("token",SharedPreferenceUtil.getToken())
+                .upJson(jsonObject.toJSONString())
                 .cacheKey(getClass().getSimpleName())
                 .execute(new SimpleCallBack<String>() {
                     @Override

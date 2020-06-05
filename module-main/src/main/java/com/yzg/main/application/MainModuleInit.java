@@ -13,6 +13,7 @@ import com.orhanobut.logger.Logger;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.cache.converter.GsonDiskConverter;
 import com.zhouyou.http.cache.model.CacheMode;
+import com.zhouyou.http.cookie.CookieManger;
 
 /**
  * 应用模块: main
@@ -41,6 +42,7 @@ public class MainModuleInit implements IModuleInit {
                 .setWriteTimeOut(15 * 1000)
                 .setConnectTimeout(15 * 1000)
                 .setRetryCount(3)
+                .setCookieStore(new CookieManger(application))
                 .setCacheDiskConverter(new GsonDiskConverter())
                 .setCacheMode(CacheMode.FIRSTREMOTE);
         LoadSir.beginBuilder()
