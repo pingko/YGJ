@@ -23,7 +23,7 @@ import com.yzg.home.databinding.HomeActivityJlytDetailBinding;
 
 import java.util.Map;
 
-public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> implements IJLYTView {
+public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> implements IjlytDetailView {
 
 
     private JlytBean bean;
@@ -43,7 +43,7 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
     private void initData() {
         binding.ivBack.setOnClickListener(view -> finish());
         if (bean != null)
-            binding.tvTitle.setText(bean.getName());
+            binding.tvTitle.setText(bean.getProductName());
 
         binding.progressBar.setProgress(33);
 

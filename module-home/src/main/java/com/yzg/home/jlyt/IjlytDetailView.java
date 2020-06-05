@@ -1,6 +1,5 @@
 package com.yzg.home.jlyt;
 
-import com.yzg.base.activity.IBasePagingView;
 import com.yzg.base.activity.IBaseView;
 import com.yzg.common.contract.BaseCustomViewModel;
 
@@ -16,19 +15,13 @@ import java.util.ArrayList;
  * @author darryrzhoong
  * @since 2020-02-15
  */
-public interface IJLYTView extends IBasePagingView {
+public interface IjlytDetailView extends IBaseView {
 
     /**
      * 数据加载完成
      *
      * @param viewModel data
      */
-    /**
-     * 数据加载完成
-     *
-     * @param viewModels data
-     */
-    void onDataLoadFinish(ArrayList<BaseCustomViewModel> viewModels,
-                          boolean isFirstPage);
+    void onDataLoadFinish(BaseCustomViewModel viewModel);
 
 }

@@ -14,17 +14,19 @@ import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeActivityJlytBinding;
+import com.zhouyou.http.utils.HttpLog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,HomeJlytViewModel> implements IJLYTView {
 
     private CommonAdapter jlytAdapter;
-    private List<JlytBean> jlytBeanList;
+    private ArrayList<JlytBean> jlytBeanList;
 
     @Override
     protected HomeJlytViewModel getViewModel() {
@@ -39,18 +41,12 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
 
     private void initData() {
         jlytBeanList = new ArrayList<>();
-        for (int i=0;i<4;i++){
-            JlytBean bean = new JlytBean();
-            bean.setName("白银"+(i+1)+"号(12个月)");
-            bean.setRate("4.35%");
-            jlytBeanList.add(bean);
-        }
 
         jlytAdapter = new CommonAdapter<JlytBean>(this, R.layout.home_jlyt_item, jlytBeanList) {
             @Override
             protected void convert(ViewHolder holder, JlytBean bean, int position) {
-                holder.setText(R.id.tv_name,bean.getName());
-                holder.setText(R.id.tv_rate,bean.getRate());
+                holder.setText(R.id.tv_name,bean.getProductName());
+                holder.setText(R.id.tv_rate,bean.getRate()+"");
             }
         };
         binding.rvJlyt.setLayoutManager(new LinearLayoutManager(this));
@@ -105,8 +101,22 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
 
     }
 
+
     @Override
-    public void onDataLoadFinish(BaseCustomViewModel viewModel) {
+    public void onDataLoadFinish(ArrayList<BaseCustomViewModel> viewModel,boolean a) {
+        jlytBeanList.clear();
+//        jlytBeanList.addAll(viewModel);
+        HttpLog.e(viewModel.size()+"");
+        jlytAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadMoreFailure(String message) {
+
+    }
+
+    @Override
+    public void onLoadMoreEmpty() {
 
     }
 }

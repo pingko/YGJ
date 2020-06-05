@@ -1,9 +1,8 @@
 package com.yzg.home.jlyt;
 
-import com.yzg.common.contract.BaseCustomViewModel;
+import java.io.Serializable;
 
-public class JlytBean extends BaseCustomViewModel {
-
+public class JlytDetailBean {
 
     /**
      * searchValue : null
@@ -13,22 +12,22 @@ public class JlytBean extends BaseCustomViewModel {
      * updateTime : null
      * remark : null
      * params : {}
-     * productId : 0001
-     * productName : 第二期产品
-     * productState : 1
+     * productId : 1
+     * productName : 租赁产品第一期
+     * productState : 0
      * productType : 2
-     * productSize : 11111
+     * productSize : 12
      * rate : 12
-     * productStart : 2020-03-12
-     * productEnd : 2020-03-13
-     * raiseStart : 2020-03-13
+     * productStart : 2020-03-11
+     * productEnd : 2020-03-11
+     * raiseStart : 2020-03-05
      * startTime : 12:20
-     * raiseEnd : 2020-03-06
-     * endTime : 12:20
-     * length : 22
-     * point : 22
-     * yuliu : 22
-     * productLimit : 22
+     * raiseEnd : 2020-03-12
+     * endTime : 12:30
+     * length : 11
+     * point : 21.022
+     * yuliu : 1
+     * productLimit : 1
      */
 
     private Object searchValue;
@@ -51,7 +50,7 @@ public class JlytBean extends BaseCustomViewModel {
     private String raiseEnd;
     private String endTime;
     private int length;
-    private int point;
+    private double point;
     private int yuliu;
     private int productLimit;
 
@@ -215,11 +214,11 @@ public class JlytBean extends BaseCustomViewModel {
         this.length = length;
     }
 
-    public int getPoint() {
+    public double getPoint() {
         return point;
     }
 
-    public void setPoint(int point) {
+    public void setPoint(double point) {
         this.point = point;
     }
 
@@ -239,6 +238,6 @@ public class JlytBean extends BaseCustomViewModel {
         this.productLimit = productLimit;
     }
 
-    public static class ParamsBean {
+    public static class ParamsBean implements Serializable {
     }
 }

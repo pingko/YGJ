@@ -1,14 +1,45 @@
 package com.yzg.home.jlyt;
 
-import com.yzg.base.model.BaseModel;
-import com.yzg.base.model.IModelListener;
+import com.yzg.base.model.BasePagingModel;
+import com.yzg.base.model.IPagingModelListener;
 import com.yzg.base.viewmodel.MvmBaseViewModel;
 import com.yzg.common.contract.BaseCustomViewModel;
 
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel>
-        implements IModelListener<BaseCustomViewModel> {
+        implements IPagingModelListener<ArrayList<BaseCustomViewModel>> {
+
+    @Override
+    public void onLoadFinish(BasePagingModel model,
+                             ArrayList<BaseCustomViewModel> data, boolean isEmpty,
+                             boolean isFirstPage) {
+        if (getPageView() != null) {
+            if (isEmpty) {
+                if (isFirstPage) {
+                    getPageView().showEmpty();
+                } else {
+                    getPageView().onLoadMoreEmpty();
+                }
+            } else {
+                getPageView().onDataLoadFinish(data, isFirstPage);
+            }
+        }
+
+    }
+
+    @Override
+    public void onLoadFail(BasePagingModel model, String prompt,
+                           boolean isRefresh) {
+        if (getPageView() != null) {
+            if (isRefresh) {
+                getPageView().showFailure(prompt);
+            } else {
+                getPageView().onLoadMoreFailure(prompt);
+            }
+        }
+    }
 
 
     public void setRequestParams(TreeMap map) {
@@ -16,26 +47,9 @@ public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel
     }
 
 
-    @Override
-    public void onLoadFinish(BaseModel model, BaseCustomViewModel data) {
-        if (getPageView() != null) {
-            if (data != null) {
-                getPageView().onDataLoadFinish(data);
-            } else {
-                getPageView().showEmpty();
-            }
-        }
-    }
-
-    @Override
-    public void onLoadFail(BaseModel model, String prompt) {
-        if (getPageView() != null) {
-            getPageView().showFailure(prompt);
-        }
-    }
-
     public void tryToRefresh() {
-        model.load();
+        model.refresh();
+
     }
 
 
@@ -55,3 +69,4 @@ public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel
 
     }
 }
+

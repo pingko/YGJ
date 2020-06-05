@@ -7,7 +7,7 @@ import com.yzg.common.contract.BaseCustomViewModel;
 
 import java.util.TreeMap;
 
-public class HomeJlytDetailViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytDetailModel>
+public class HomeJlytDetailViewModel extends MvmBaseViewModel<IjlytDetailView, HomeJlytDetailModel>
         implements IModelListener<BaseCustomViewModel> {
 
 
