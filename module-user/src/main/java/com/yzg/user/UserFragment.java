@@ -3,6 +3,7 @@ package com.yzg.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -12,7 +13,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
@@ -20,9 +20,8 @@ import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
-import com.yzg.common.router.RouterActivityPath;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterFragmentPath;
-import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.databinding.UserFragmentLayoutBinding;
 import com.yzg.user.setting.UserSettingActivity;
 
@@ -51,9 +50,9 @@ public class UserFragment
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isLogin = SharedPreferenceUtil.getToken().isEmpty() ? false : true;
+        isLogin = TextUtils.isEmpty( MmkvHelper.getInstance().getMmkv().decodeString("token")) ? false : true;
 //        setLogin(isLogin);
-        Logger.e(SharedPreferenceUtil.getToken() + "");
+        Logger.e(isLogin + "");
         initView();
         viewModel.isLoginLivedata.set(isLogin);
     }

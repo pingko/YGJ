@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.contract.TestApi;
-import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.IUserLoginView;
 import com.yzg.user.R;
 import com.yzg.user.address.UserAddressActivity;
@@ -55,7 +55,7 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
 
     private void initData() {
 //        setLoadSir(binding.tvLogin);
-        token = SharedPreferenceUtil.getToken();
+        token = MmkvHelper.getInstance().getMmkv().decodeString("token");
         binding.tvQuit.setVisibility(!TextUtils.isEmpty(token) ? View.VISIBLE : View.GONE);
         showLoading();
         viewModel.initModel();
@@ -67,7 +67,7 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
     private void initView() {
         binding.tvQuit.setOnClickListener(view -> {
             RxToast.normal("退出成功");
-            SharedPreferenceUtil.clearAll();
+            MmkvHelper.getInstance().getMmkv().clearAll();
             setResult(RESULT_OK);
             finish();
         });

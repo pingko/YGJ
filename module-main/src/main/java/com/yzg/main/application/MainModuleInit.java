@@ -44,7 +44,7 @@ public class MainModuleInit implements IModuleInit {
                 .setRetryCount(3)
                 .setCookieStore(new CookieManger(application))
                 .setCacheDiskConverter(new GsonDiskConverter())
-                .setCacheMode(CacheMode.FIRSTREMOTE);
+                .setCacheMode(CacheMode.DEFAULT);
         LoadSir.beginBuilder()
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())

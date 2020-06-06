@@ -1,16 +1,13 @@
 package com.yzg.home.jlyt;
 
-import android.graphics.Shader;
-
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.orhanobut.logger.Logger;
-import com.yzg.base.model.BaseModel;
+import com.tencent.mmkv.MMKV;
 import com.yzg.base.model.BasePagingModel;
-import com.yzg.common.contract.TestApi;
-import com.yzg.common.utils.SharedPreferenceUtil;
+import com.yzg.base.storage.MmkvHelper;
+import com.yzg.common.router.RouterActivityPath;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.api.HttpService;
 import com.zhouyou.http.callback.SimpleCallBack;
@@ -35,19 +32,17 @@ public class HomeJlytModel<T> extends BasePagingModel<T> {
 
     @Override
     protected void load() {
-
         JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("token", SharedPreferenceUtil.getToken());
+        jsonObject.put("token", MmkvHelper.getInstance().getMmkv().decodeString("token",""));
         disposable = EasyHttp.post(HttpService.Gold_info_list)
-                .headers("token", SharedPreferenceUtil.getToken())
                 .upJson(jsonObject.toJSONString())
+                .addCookie("token", MmkvHelper.getInstance().getMmkv().decodeString("token",""))
                 .cacheKey(getClass().getSimpleName())
                 .execute(new SimpleCallBack<String>() {
                     @Override
                     public void onError(ApiException e) {
                         loadFail(e.getMessage(), isRefresh);
                     }
-
                     @Override
                     public void onSuccess(String s) {
                         parseJson(s);
@@ -61,14 +56,17 @@ public class HomeJlytModel<T> extends BasePagingModel<T> {
     }
 
     private void parseJson(String s) {
-
+        List<JlytBean> viewModels = new ArrayList<>();
         JSONObject jsonObject = JSON.parseObject(s);
-        int total = jsonObject.getInteger("total").intValue();
+        if (jsonObject.containsKey("code") && jsonObject.getString("code").equals("1")){
+            HttpLog.e("没有登录");
+        }else {
+            int total = jsonObject.getInteger("total").intValue();
+            List<JlytBean> beans =  JSONArray.parseArray(jsonObject.getString("rows"), JlytBean.class);
+            viewModels.addAll(beans);
+            loadSuccess((T) viewModels, total == 0, isRefresh);
+        }
 
-        ArrayList<JlytBean> beans = (ArrayList<JlytBean>) JSONArray.parseArray(jsonObject.getString("rows"), JlytBean.class);
-
-        HttpLog.e(beans.size()+"");
-        loadSuccess((T) beans, total > 0, isRefresh);
 
     }
 

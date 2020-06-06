@@ -57,7 +57,7 @@ public class HomeJlytViewModel extends MvmBaseViewModel<IJLYTView, HomeJlytModel
     public void initModel() {
         model = new HomeJlytModel();
         model.register(this);
-        model.getCacheDataAndLoad();
+//        model.getCacheDataAndLoad();
     }
 
     @Override

@@ -82,7 +82,7 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
 //        map.put("userName",binding.etName.getText().toString());
 //        map.put("password",binding.etPwd.getText().toString());
 //        viewModel.setRequestParams(map);
-//        viewModel.tryToRefresh();
+        viewModel.tryToRefresh();
 
     }
 
@@ -101,12 +101,18 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
 
     }
 
+    @Override
+    public void showEmpty() {
+        super.showEmpty();
+    }
 
     @Override
     public void onDataLoadFinish(ArrayList<BaseCustomViewModel> viewModel,boolean a) {
+        showContent();
         jlytBeanList.clear();
-//        jlytBeanList.addAll(viewModel);
-        HttpLog.e(viewModel.size()+"");
+        for (BaseCustomViewModel viewModel1: viewModel){
+            jlytBeanList.add((JlytBean) viewModel1);
+        }
         jlytAdapter.notifyDataSetChanged();
     }
 

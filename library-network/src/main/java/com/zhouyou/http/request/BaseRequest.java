@@ -18,7 +18,9 @@ package com.zhouyou.http.request;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.yzg.base.storage.MmkvHelper;
 import com.zhouyou.http.EasyHttp;
 import com.zhouyou.http.api.ApiService;
 import com.zhouyou.http.cache.RxCache;
@@ -124,6 +126,10 @@ public abstract class BaseRequest<R extends BaseRequest> {
         retryIncreaseDelay = config.getRetryIncreaseDelay();              //超时重试叠加延时
         //Okhttp  cache
         cache = config.getHttpCache();
+//        String token = MmkvHelper.getInstance().getMmkv().decodeString("token");
+//        Log.e("token", token);
+//        if (!TextUtils.isEmpty(token))
+//            headers.put("token", token);
         //默认添加 Accept-Language
         String acceptLanguage = HttpHeaders.getAcceptLanguage();
         if (!TextUtils.isEmpty(acceptLanguage))
@@ -411,24 +417,24 @@ public abstract class BaseRequest<R extends BaseRequest> {
             if (cookies.size() > 0) EasyHttp.getCookieJar().addCookies(cookies);
 
             //添加头  头添加放在最前面方便其他拦截器可能会用到
-            newClientBuilder.addInterceptor(new HeadersInterceptor(headers));
-
-            for (Interceptor interceptor : interceptors) {
-                if (interceptor instanceof BaseDynamicInterceptor) {
-                    ((BaseDynamicInterceptor) interceptor).sign(sign).timeStamp(timeStamp).accessToken(accessToken);
-                }
-                newClientBuilder.addInterceptor(interceptor);
-            }
-            for (Interceptor interceptor : newClientBuilder.interceptors()) {
-                if (interceptor instanceof BaseDynamicInterceptor) {
-                    ((BaseDynamicInterceptor) interceptor).sign(sign).timeStamp(timeStamp).accessToken(accessToken);
-                }
-            }
-            if (networkInterceptors.size() > 0) {
-                for (Interceptor interceptor : networkInterceptors) {
-                    newClientBuilder.addNetworkInterceptor(interceptor);
-                }
-            }
+//            newClientBuilder.addInterceptor(new HeadersInterceptor(headers));
+//
+//            for (Interceptor interceptor : interceptors) {
+//                if (interceptor instanceof BaseDynamicInterceptor) {
+//                    ((BaseDynamicInterceptor) interceptor).sign(sign).timeStamp(timeStamp).accessToken(accessToken);
+//                }
+//                newClientBuilder.addInterceptor(interceptor);
+//            }
+//            for (Interceptor interceptor : newClientBuilder.interceptors()) {
+//                if (interceptor instanceof BaseDynamicInterceptor) {
+//                    ((BaseDynamicInterceptor) interceptor).sign(sign).timeStamp(timeStamp).accessToken(accessToken);
+//                }
+//            }
+//            if (networkInterceptors.size() > 0) {
+//                for (Interceptor interceptor : networkInterceptors) {
+//                    newClientBuilder.addNetworkInterceptor(interceptor);
+//                }
+//            }
             return newClientBuilder;
         }
     }

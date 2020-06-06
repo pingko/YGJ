@@ -9,9 +9,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.router.RouterActivityPath;
-import com.yzg.common.utils.SharedPreferenceUtil;
 import com.yzg.user.bean.TokenBean;
 import com.yzg.user.databinding.UserActivityLoginBinding;
 
@@ -92,7 +92,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Us
     @Override
     public void onDataLoadFinish(BaseCustomViewModel viewModel) {
         TokenBean tokenBean = (TokenBean) viewModel;
-        SharedPreferenceUtil.setToken(tokenBean.token);
+        MmkvHelper.getInstance().getMmkv().encode("token",tokenBean.getToken());
         RxToast.normal("登录成功");
         setResult(RESULT_OK);
         finish();
