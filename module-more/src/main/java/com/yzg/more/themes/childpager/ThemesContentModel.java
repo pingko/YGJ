@@ -5,10 +5,6 @@ import android.text.TextUtils;
 import com.yzg.base.model.BasePagingModel;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.more.themes.childpager.bean.QuotationItemViewModel;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.model.CacheMode;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
 import java.util.ArrayList;
 
@@ -88,28 +84,28 @@ public class ThemesContentModel<T> extends BasePagingModel<T> {
     }
 
     private void loadMore(String nextPageUrl) {
-        disposable1 = EasyHttp.get(nextPageUrl)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<String>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        loadFail(e.getMessage(), isRefresh);
-                    }
-
-                    @Override
-                    public void onSuccess(String s) {
-                        parseData(s);
-                    }
-                });
+//        disposable1 = EasyHttp.get(nextPageUrl)
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .execute(new SimpleCallBack<String>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        loadFail(e.getMessage(), isRefresh);
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(String s) {
+//                        parseData(s);
+//                    }
+//                });
     }
 
     public void loadMore() {
-        isRefresh = false;
-        if (!TextUtils.isEmpty(nextPageUrl)) {
-            loadMore(nextPageUrl);
-        } else {
-            loadSuccess(null, true, isRefresh);
-        }
+//        isRefresh = false;
+//        if (!TextUtils.isEmpty(nextPageUrl)) {
+//            loadMore(nextPageUrl);
+//        } else {
+//            loadSuccess(null, true, isRefresh);
+//        }
     }
 
     public void refresh() {
@@ -120,7 +116,7 @@ public class ThemesContentModel<T> extends BasePagingModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
-        EasyHttp.cancelSubscription(disposable1);
+//        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable1);
     }
 }

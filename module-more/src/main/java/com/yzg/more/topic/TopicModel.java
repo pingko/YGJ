@@ -1,19 +1,13 @@
 package com.yzg.more.topic;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.text.TextUtils;
 
 import com.yzg.base.model.BasePagingModel;
-import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.more.themes.childpager.bean.ThemesItemViewModel;
-import com.yzg.more.topic.bean.TopicBean;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.model.CacheMode;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
-import android.text.TextUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -117,7 +111,7 @@ public class TopicModel<T> extends BasePagingModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
-        EasyHttp.cancelSubscription(disposable1);
+//        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable1);
     }
 }

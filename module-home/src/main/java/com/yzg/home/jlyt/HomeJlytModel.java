@@ -1,18 +1,15 @@
 package com.yzg.home.jlyt;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.tencent.mmkv.MMKV;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.yzg.base.http.HttpLog;
+import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BasePagingModel;
 import com.yzg.base.storage.MmkvHelper;
-import com.yzg.common.router.RouterActivityPath;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.api.HttpService;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
-import com.zhouyou.http.utils.HttpLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,20 +31,25 @@ public class HomeJlytModel<T> extends BasePagingModel<T> {
     protected void load() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token", MmkvHelper.getInstance().getMmkv().decodeString("token",""));
-        disposable = EasyHttp.post(HttpService.Gold_info_list)
+        TreeMap<String,String> map = new TreeMap<>();
+        map.put("token", MmkvHelper.getInstance().getMmkv().decodeString("token",""));
+        OkGo.<String>post(HttpService.Gold_info_list)
+//                .params(map)
                 .upJson(jsonObject.toJSONString())
-                .addCookie("token", MmkvHelper.getInstance().getMmkv().decodeString("token",""))
-                .cacheKey(getClass().getSimpleName())
-                .execute(new SimpleCallBack<String>() {
+                .tag(this)
+                .execute(new StringCallback() {
                     @Override
-                    public void onError(ApiException e) {
-                        loadFail(e.getMessage(), isRefresh);
+                    public void onSuccess(Response<String> response) {
+//                        HttpLog.e(response.body());
+                        parseJson(response.body());
                     }
+
                     @Override
-                    public void onSuccess(String s) {
-                        parseJson(s);
+                    public void onError(Response<String> response) {
+                        super.onError(response);
                     }
                 });
+
     }
 
     public void refresh() {
@@ -74,6 +76,6 @@ public class HomeJlytModel<T> extends BasePagingModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 }

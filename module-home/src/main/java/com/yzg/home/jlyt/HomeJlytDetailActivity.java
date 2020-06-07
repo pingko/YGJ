@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.alipay.sdk.app.PayTask;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.http.HttpLog;
 import com.yzg.common.alipay.AuthResult;
 import com.yzg.common.alipay.OrderInfoUtil2_0;
 import com.yzg.common.alipay.PayResult;
@@ -27,7 +28,7 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
 
 
     private JlytBean bean;
-
+    private String productId;
     @Override
     protected HomeJlytDetailViewModel getViewModel() {
         return ViewModelProviders.of(this).get(HomeJlytDetailViewModel.class);
@@ -37,6 +38,8 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bean = (JlytBean) getIntent().getSerializableExtra("JlytBean");
+        productId = getIntent().getStringExtra("productId");
+
         initData();
     }
 
@@ -56,6 +59,8 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
             payV2(view);
         });
 
+        viewModel.loadData(productId);
+
     }
 
     @Override
@@ -74,8 +79,8 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
     }
 
     @Override
-    public void onDataLoadFinish(BaseCustomViewModel viewModel) {
-
+    public void onDataLoadFinish(JlytDetailBean viewModel) {
+        HttpLog.e(viewModel.getProductName());
     }
 
 

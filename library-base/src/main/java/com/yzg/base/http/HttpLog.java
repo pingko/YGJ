@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zhouyou.http.utils;
+package com.yzg.base.http;
 
 import android.text.TextUtils;
 import android.util.Log;

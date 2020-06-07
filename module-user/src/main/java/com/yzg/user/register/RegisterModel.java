@@ -4,10 +4,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.TestApi;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.api.HttpService;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
 import java.util.TreeMap;
 
@@ -26,20 +22,20 @@ public class RegisterModel<T> extends BaseModel<T> {
     @Override
     protected void load() {
 
-        disposable = EasyHttp.get(HttpService.REGISTER)
-                .params(map)
-                .cacheKey(getClass().getSimpleName())
-                .execute(new SimpleCallBack<String>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        loadFail(e.getMessage());
-                    }
-
-                    @Override
-                    public void onSuccess(String s) {
-                        parseJson(s);
-                    }
-                });
+//        disposable = EasyHttp.get(HttpService.REGISTER)
+//                .params(map)
+//                .cacheKey(getClass().getSimpleName())
+//                .execute(new SimpleCallBack<String>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        loadFail(e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(String s) {
+//                        parseJson(s);
+//                    }
+//                });
     }
 
     private void parseJson(String s) {
@@ -60,6 +56,6 @@ public class RegisterModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 }

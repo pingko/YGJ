@@ -18,10 +18,6 @@ import com.yzg.home.nominate.bean.viewmodel.FollowCardViewModel;
 import com.yzg.home.nominate.bean.viewmodel.SingleTitleViewModel;
 import com.yzg.home.nominate.bean.viewmodel.TitleViewModel;
 import com.yzg.home.nominate.bean.viewmodel.VideoCardViewModel;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.model.CacheMode;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,49 +42,49 @@ public class NominateModel<T> extends BasePagingModel<T>
     @Override
     protected void load()
     {
-        disposable = EasyHttp.get("/api/v5/index/tab/allRec")
-            .cacheKey(getClass().getSimpleName())
-            .execute(new SimpleCallBack<String>()
-            {
-                @Override
-                public void onError(ApiException e)
-                {
-                    loadFail(e.getMessage(), isRefresh);
-                }
-                
-                @Override
-                public void onSuccess(String s)
-                {
-                    parseJson(s);
-                }
-            });
+//        disposable = EasyHttp.get("/api/v5/index/tab/allRec")
+//            .cacheKey(getClass().getSimpleName())
+//            .execute(new SimpleCallBack<String>()
+//            {
+//                @Override
+//                public void onError(ApiException e)
+//                {
+//                    loadFail(e.getMessage(), isRefresh);
+//                }
+//
+//                @Override
+//                public void onSuccess(String s)
+//                {
+//                    parseJson(s);
+//                }
+//            });
     }
 
     public void loadMore(String url){
-        disposable1 = EasyHttp.get(url)
-                 .cacheMode(CacheMode.NO_CACHE)
-                 .execute(new SimpleCallBack<String>()
-                 {
-                     @Override
-                     public void onError(ApiException e)
-                     {
-                         loadFail(e.getMessage(), isRefresh);
-                     }
-
-                     @Override
-                     public void onSuccess(String s)
-                     {
-                         parseJson(s);
-                         Log.d("NominateModel", s);
-                     }
-                 });
+//        disposable1 = EasyHttp.get(url)
+//                 .cacheMode(CacheMode.NO_CACHE)
+//                 .execute(new SimpleCallBack<String>()
+//                 {
+//                     @Override
+//                     public void onError(ApiException e)
+//                     {
+//                         loadFail(e.getMessage(), isRefresh);
+//                     }
+//
+//                     @Override
+//                     public void onSuccess(String s)
+//                     {
+//                         parseJson(s);
+//                         Log.d("NominateModel", s);
+//                     }
+//                 });
     }
 
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
-        EasyHttp.cancelSubscription(disposable1);
+//        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable1);
     }
 
     /**

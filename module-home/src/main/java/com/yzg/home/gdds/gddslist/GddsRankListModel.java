@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import com.yzg.base.model.BasePagingModel;
 import com.yzg.common.contract.BaseCustomViewModel;
-import com.zhouyou.http.EasyHttp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +109,7 @@ public class GddsRankListModel<T> extends BasePagingModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
-        EasyHttp.cancelSubscription(disposable1);
+//        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable1);
     }
 }

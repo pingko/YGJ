@@ -74,7 +74,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Us
             TreeMap map = new TreeMap();
             map.put("username", binding.etPhone.getText().toString());
             map.put("password", binding.etPwd.getText().toString());
-            map.put("rememberMe", 1);
+            map.put("rememberMe", "1");
             viewModel.setRequestParams(map);
             viewModel.tryToRefresh();
 

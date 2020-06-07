@@ -1,27 +1,8 @@
 package com.yzg.home.main;
 
 import com.yzg.base.model.BaseModel;
-import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.contract.BaseCustomViewModel;
-import com.yzg.home.discover.bean.BannerBean;
-import com.yzg.home.discover.bean.BriefCard;
-import com.yzg.home.discover.bean.CategoryCardBean;
 import com.yzg.home.discover.bean.SubjectCardBean;
-import com.yzg.home.discover.bean.TextCardbean;
-import com.yzg.home.discover.bean.TopBannerBean;
-import com.yzg.home.discover.bean.viewmodel.BriefCardViewModel;
-import com.yzg.home.discover.bean.viewmodel.ContentBannerViewModel;
-import com.yzg.home.discover.bean.viewmodel.TopBannerViewModel;
-import com.yzg.home.nominate.bean.VideoSmallCardBean;
-import com.yzg.home.nominate.bean.viewmodel.TitleViewModel;
-import com.yzg.home.nominate.bean.viewmodel.VideoCardViewModel;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +58,6 @@ public class HomeMainModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 }

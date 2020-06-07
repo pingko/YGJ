@@ -16,12 +16,12 @@ import java.lang.ref.WeakReference;
  * @author darryrzhoong
  * @since 2020-01-27
  */
-public abstract class MvmBaseViewModel<V, M extends SuperBaseModel> extends ViewModel
+public abstract class MvvmBaseViewModel<V> extends ViewModel
         implements IMvvmBaseViewModel<V> {
 
     private Reference<V> mUiRef;
 
-    protected M model;
+//    protected M model;
 
     @Override
     public void attachUi(V view) {
@@ -50,9 +50,6 @@ public abstract class MvmBaseViewModel<V, M extends SuperBaseModel> extends View
             mUiRef.clear();
             mUiRef = null;
         }
-        if (null != model) {
-            model.cancel();
-        }
     }
 
 
@@ -60,5 +57,5 @@ public abstract class MvmBaseViewModel<V, M extends SuperBaseModel> extends View
 //
 //    }
 
-    protected abstract void initModel();
+//    protected abstract void initModel();
 }

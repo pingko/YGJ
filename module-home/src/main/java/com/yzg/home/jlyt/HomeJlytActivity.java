@@ -14,7 +14,6 @@ import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeActivityJlytBinding;
-import com.zhouyou.http.utils.HttpLog;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -65,7 +64,7 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                 Intent intent =new Intent(HomeJlytActivity.this,HomeJlytDetailActivity.class);
-                intent.putExtra("JlytBean",jlytBeanList.get(i));
+                intent.putExtra("productId",jlytBeanList.get(i).getProductId());
                 startActivity(intent);
             }
 

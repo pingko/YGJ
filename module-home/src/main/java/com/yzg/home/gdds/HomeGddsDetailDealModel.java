@@ -3,7 +3,6 @@ package com.yzg.home.gdds;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.discover.bean.SubjectCardBean;
-import com.zhouyou.http.EasyHttp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +55,6 @@ public class HomeGddsDetailDealModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 }

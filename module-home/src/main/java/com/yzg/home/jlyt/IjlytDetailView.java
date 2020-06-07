@@ -22,6 +22,6 @@ public interface IjlytDetailView extends IBaseView {
      *
      * @param viewModel data
      */
-    void onDataLoadFinish(BaseCustomViewModel viewModel);
+    void onDataLoadFinish(JlytDetailBean viewModel);
 
 }

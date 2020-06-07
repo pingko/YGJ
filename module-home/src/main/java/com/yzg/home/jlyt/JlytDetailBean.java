@@ -2,7 +2,7 @@ package com.yzg.home.jlyt;
 
 import java.io.Serializable;
 
-public class JlytDetailBean {
+public class JlytDetailBean implements Serializable{
 
     /**
      * searchValue : null

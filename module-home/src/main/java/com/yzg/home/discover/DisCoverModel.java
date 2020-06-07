@@ -1,12 +1,5 @@
 package com.yzg.home.discover;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.contract.BaseCustomViewModel;
@@ -22,9 +15,13 @@ import com.yzg.home.discover.bean.viewmodel.TopBannerViewModel;
 import com.yzg.home.nominate.bean.VideoSmallCardBean;
 import com.yzg.home.nominate.bean.viewmodel.TitleViewModel;
 import com.yzg.home.nominate.bean.viewmodel.VideoCardViewModel;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -46,22 +43,22 @@ public class DisCoverModel<T> extends BaseModel<T>
     @Override
     protected void load()
     {
-        disposable = EasyHttp.get(DEFAULT_URL)
-              .cacheKey(getClass().getSimpleName())
-              .execute(new SimpleCallBack<String>()
-              {
-                  @Override
-                  public void onError(ApiException e)
-                  {
-                      loadFail(e.getMessage());
-                  }
-
-                  @Override
-                  public void onSuccess(String s)
-                  {
-                      parseJson(s);
-                  }
-              });
+//        disposable = EasyHttp.get(DEFAULT_URL)
+//              .cacheKey(getClass().getSimpleName())
+//              .execute(new SimpleCallBack<String>()
+//              {
+//                  @Override
+//                  public void onError(ApiException e)
+//                  {
+//                      loadFail(e.getMessage());
+//                  }
+//
+//                  @Override
+//                  public void onSuccess(String s)
+//                  {
+//                      parseJson(s);
+//                  }
+//              });
     }
     
     private void parseJson(String s)
@@ -162,6 +159,6 @@ public class DisCoverModel<T> extends BaseModel<T>
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 }

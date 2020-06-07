@@ -1,11 +1,6 @@
 package com.yzg.community.recommend;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.text.TextUtils;
 
 import com.yzg.base.model.BasePagingModel;
 import com.yzg.base.utils.GsonUtils;
@@ -13,12 +8,13 @@ import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.community.recommend.bean.CommunityColumnsCard;
 import com.yzg.community.recommend.bean.HorizontalScrollCard;
 import com.yzg.community.recommend.bean.viewmodel.CloumnsCardViewModel;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.model.CacheMode;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
-import android.text.TextUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -39,43 +35,43 @@ public class RecommendModel<T> extends BasePagingModel<T> {
 
     @Override
     protected void load() {
-        disposable =
-                EasyHttp.get("http://baobab.kaiyanapp.com/api/v7/community/tab/rec")
-                        .cacheKey(getClass().getSimpleName())
-                        .execute(new SimpleCallBack<String>() {
-                            @Override
-                            public void onError(ApiException e) {
-                                loadFail(e.getMessage(), isRefresh);
-                            }
-
-                            @Override
-                            public void onSuccess(String s) {
-                                parseJson(s);
-                            }
-                        });
+//        disposable =
+//                EasyHttp.get("http://baobab.kaiyanapp.com/api/v7/community/tab/rec")
+//                        .cacheKey(getClass().getSimpleName())
+//                        .execute(new SimpleCallBack<String>() {
+//                            @Override
+//                            public void onError(ApiException e) {
+//                                loadFail(e.getMessage(), isRefresh);
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(String s) {
+//                                parseJson(s);
+//                            }
+//                        });
     }
 
     private void loadMore(String nextPageUrl) {
-        disposable1 = EasyHttp.get(nextPageUrl)
-                .cacheMode(CacheMode.NO_CACHE)
-                .execute(new SimpleCallBack<String>() {
-                    @Override
-                    public void onError(ApiException e) {
-                        loadFail(e.getMessage(), isRefresh);
-                    }
-
-                    @Override
-                    public void onSuccess(String s) {
-                        parseJson(s);
-                    }
-                });
+//        disposable1 = EasyHttp.get(nextPageUrl)
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .execute(new SimpleCallBack<String>() {
+//                    @Override
+//                    public void onError(ApiException e) {
+//                        loadFail(e.getMessage(), isRefresh);
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(String s) {
+//                        parseJson(s);
+//                    }
+//                });
     }
 
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
-        EasyHttp.cancelSubscription(disposable1);
+//        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable1);
     }
 
     public void loadMore() {

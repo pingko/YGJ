@@ -2,7 +2,9 @@ package com.yzg.home.jlyt;
 
 import com.yzg.common.contract.BaseCustomViewModel;
 
-public class JlytBean extends BaseCustomViewModel {
+import java.io.Serializable;
+
+public class JlytBean extends BaseCustomViewModel implements Serializable {
 
 
     /**

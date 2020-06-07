@@ -9,10 +9,6 @@ import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.utils.DateTimeUtils;
 import com.yzg.more.message.bean.Message;
 import com.yzg.more.message.bean.MessageViewModel;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.cache.model.CacheMode;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
 import android.text.TextUtils;
 
@@ -37,44 +33,44 @@ public class MessageModel<T> extends BasePagingModel<T>
     @Override
     protected void load()
     {
-        disposable = EasyHttp.get("/api/v3/messages")
-            .params("vc", "591")
-            .params("deviceModel", "Che1-CL20")
-            .cacheKey(getClass().getSimpleName())
-            .execute(new SimpleCallBack<String>()
-            {
-                @Override
-                public void onError(ApiException e)
-                {
-                    loadFail(e.getMessage(), isRefresh);
-                }
-                
-                @Override
-                public void onSuccess(String s)
-                {
-                    parseData(s);
-                }
-            });
+//        disposable = EasyHttp.get("/api/v3/messages")
+//            .params("vc", "591")
+//            .params("deviceModel", "Che1-CL20")
+//            .cacheKey(getClass().getSimpleName())
+//            .execute(new SimpleCallBack<String>()
+//            {
+//                @Override
+//                public void onError(ApiException e)
+//                {
+//                    loadFail(e.getMessage(), isRefresh);
+//                }
+//
+//                @Override
+//                public void onSuccess(String s)
+//                {
+//                    parseData(s);
+//                }
+//            });
     }
     
     private void loadMore(String nextPageUrl)
     {
-        disposable1 = EasyHttp.get(nextPageUrl)
-            .cacheMode(CacheMode.NO_CACHE)
-            .execute(new SimpleCallBack<String>()
-            {
-                @Override
-                public void onError(ApiException e)
-                {
-                    loadFail(e.getMessage(), isRefresh);
-                }
-                
-                @Override
-                public void onSuccess(String s)
-                {
-                    parseData(s);
-                }
-            });
+//        disposable1 = EasyHttp.get(nextPageUrl)
+//            .cacheMode(CacheMode.NO_CACHE)
+//            .execute(new SimpleCallBack<String>()
+//            {
+//                @Override
+//                public void onError(ApiException e)
+//                {
+//                    loadFail(e.getMessage(), isRefresh);
+//                }
+//
+//                @Override
+//                public void onSuccess(String s)
+//                {
+//                    parseData(s);
+//                }
+//            });
     }
     
     private void parseData(String s)
@@ -118,8 +114,8 @@ public class MessageModel<T> extends BasePagingModel<T>
     public void cancel()
     {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
-        EasyHttp.cancelSubscription(disposable1);
+//        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable1);
     }
 
     /**

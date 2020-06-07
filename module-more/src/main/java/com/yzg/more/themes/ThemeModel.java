@@ -3,9 +3,6 @@ package com.yzg.more.themes;
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.utils.GsonUtils;
 import com.yzg.more.themes.bean.TabInfo;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
 
 import io.reactivex.disposables.Disposable;
 
@@ -42,7 +39,6 @@ public class ThemeModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
     }
 
     private void parseData(String s) {

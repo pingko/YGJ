@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.TestApi;
-import com.zhouyou.http.EasyHttp;
 
 import java.util.TreeMap;
 
@@ -57,6 +56,5 @@ public class DealMainModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
     }
 }

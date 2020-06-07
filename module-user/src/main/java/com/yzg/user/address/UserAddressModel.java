@@ -4,11 +4,6 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.TestApi;
-import com.zhouyou.http.EasyHttp;
-import com.zhouyou.http.api.HttpService;
-import com.zhouyou.http.callback.SimpleCallBack;
-import com.zhouyou.http.exception.ApiException;
-import com.zhouyou.http.utils.HttpLog;
 
 import java.util.TreeMap;
 
@@ -62,6 +57,6 @@ public class UserAddressModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 }

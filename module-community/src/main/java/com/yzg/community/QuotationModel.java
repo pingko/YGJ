@@ -1,7 +1,6 @@
 package com.yzg.community;
 
 import com.yzg.base.model.BaseModel;
-import com.zhouyou.http.EasyHttp;
 
 import io.reactivex.disposables.Disposable;
 
@@ -38,7 +37,7 @@ public class QuotationModel<T> extends BaseModel<T> {
     @Override
     public void cancel() {
         super.cancel();
-        EasyHttp.cancelSubscription(disposable);
+//        EasyHttp.cancelSubscription(disposable);
     }
 
 //    private void parseData(String s) {
