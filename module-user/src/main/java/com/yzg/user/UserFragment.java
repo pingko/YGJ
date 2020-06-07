@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -20,8 +22,10 @@ import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
+import com.yzg.base.http.HttpLog;
 import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterFragmentPath;
+import com.yzg.user.bean.UserStoreBean;
 import com.yzg.user.databinding.UserFragmentLayoutBinding;
 import com.yzg.user.setting.UserSettingActivity;
 
@@ -36,10 +40,9 @@ import com.yzg.user.setting.UserSettingActivity;
  */
 @Route(path = RouterFragmentPath.User.PAGER_USER)
 public class UserFragment
-        extends MvvmLazyFragment<UserFragmentLayoutBinding, UserViewModel> implements View.OnClickListener {
+        extends MvvmLazyFragment<UserFragmentLayoutBinding, UserViewModel> implements IUserMainView, View.OnClickListener {
 
-
-    public boolean isLogin;
+    String token;
 
     @Override
     public int getLayoutId() {
@@ -50,11 +53,14 @@ public class UserFragment
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        isLogin = TextUtils.isEmpty( MmkvHelper.getInstance().getMmkv().decodeString("token")) ? false : true;
-//        setLogin(isLogin);
-        Logger.e(isLogin + "");
+        token = MmkvHelper.getInstance().getMmkv().decodeString("token");
+        Log.e("UserFragment", token + "");
         initView();
-        viewModel.isLoginLivedata.set(isLogin);
+        viewModel.isLoginLivedata.setValue(TextUtils.isEmpty(token) ? false : true);
+        viewModel.isLoginLivedata.observe(this, aBoolean -> {
+            if (aBoolean)
+                viewModel.loadData();
+        });
     }
 
 
@@ -67,24 +73,14 @@ public class UserFragment
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1001:
-                isLogin = true;
-                viewModel.isLoginLivedata.set(isLogin);
+                viewModel.isLoginLivedata.setValue(true);
                 break;
             case 1002:
-                isLogin = false;
-//                setLogin(isLogin);
-                viewModel.isLoginLivedata.set(isLogin);
+                viewModel.isLoginLivedata.setValue(false);
                 break;
         }
     }
 
-
-//    private void setLogin(boolean isLogin) {
-//        binding.rlLogin.setVisibility(isLogin ? View.VISIBLE : View.GONE);
-//        binding.rlNo.setVisibility(!isLogin ? View.VISIBLE : View.GONE);
-//        binding.rlSubscrible.setVisibility(isLogin ? View.VISIBLE : View.GONE);
-//        binding.viewSubscrible.setVisibility(isLogin ? View.VISIBLE : View.GONE);
-//    }
 
     private void initView() {
         Glide.with(getContext()).load(getContext().getDrawable(R.drawable.avatar))
@@ -133,6 +129,7 @@ public class UserFragment
         binding.tvSale.setOnClickListener(this);
         binding.tvProduct.setOnClickListener(this);
 
+
     }
 
     private View getFooterView() {
@@ -156,10 +153,15 @@ public class UserFragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_buy||view.getId() == R.id.tv_sale||view.getId() == R.id.tv_product) {
+        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_sale || view.getId() == R.id.tv_product) {
             LiveEventBus
                     .get("index")
                     .post(2);
         }
+    }
+
+    @Override
+    public void onDataLoadFinish(UserStoreBean bean) {
+        HttpLog.e(bean.getAcctNo());
     }
 }

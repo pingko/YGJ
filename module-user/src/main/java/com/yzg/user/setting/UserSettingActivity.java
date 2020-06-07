@@ -54,7 +54,6 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
 
 
     private void initData() {
-//        setLoadSir(binding.tvLogin);
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
         binding.tvQuit.setVisibility(!TextUtils.isEmpty(token) ? View.VISIBLE : View.GONE);
         showLoading();

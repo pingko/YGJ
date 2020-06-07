@@ -13,6 +13,7 @@ import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.contract.TestApi;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.user.IUserLoginView;
+import com.yzg.user.IUserRegisterView;
 import com.yzg.user.R;
 import com.yzg.user.databinding.UserActivityRegisterBinding;
 
@@ -22,7 +23,7 @@ import java.util.TreeMap;
  * @author darryrzhoong
  */
 @Route(path = RouterActivityPath.User.PAGER_REGISTER)
-public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBinding, RegisterViewModel> implements IUserLoginView {
+public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBinding, RegisterViewModel> implements IUserRegisterView {
 
 
     @Override
@@ -57,8 +58,8 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
     private void initData() {
 //        setLoadSir(binding.tvLogin);
         showLoading();
-        viewModel.initModel();
         binding.ivBack.setOnClickListener(view -> finish());
+
 
     }
 
@@ -94,8 +95,7 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
             map.put("phonenumber",binding.etPhone.getText().toString());
             map.put("userName",binding.etName.getText().toString());
             map.put("password",binding.etPwd.getText().toString());
-            viewModel.setRequestParams(map);
-            viewModel.tryToRefresh();
+            viewModel.loadData(map);
 //            setResult(RESULT_OK);
 //            finish();
         });
@@ -104,8 +104,8 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
 
 
     @Override
-    public void onDataLoadFinish(BaseCustomViewModel viewModel) {
-        RxToast.normal(((TestApi)viewModel).getMsg());
+    public void onDataLoadFinish(String msg) {
+        RxToast.normal(msg);
         finish();
     }
 

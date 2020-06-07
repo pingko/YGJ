@@ -24,7 +24,6 @@ public class HomeJlytDetailViewModel extends MvvmBaseViewModel<IjlytDetailView> 
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-//                        HttpLog.e(response.body());
                         parseJson(response.body());
                     }
 
@@ -63,9 +62,7 @@ public class HomeJlytDetailViewModel extends MvvmBaseViewModel<IjlytDetailView> 
     @Override
     public void detachUi() {
         super.detachUi();
-//        if (model != null) {
-//            model.unRegister(this);
-//        }
+        OkGo.getInstance().cancelTag(this);
 
     }
 }

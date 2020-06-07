@@ -21,7 +21,7 @@ import java.util.TreeMap;
  * @author darryrzhoong
  */
 @Route(path = RouterActivityPath.User.PAGER_LOGIN)
-public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, UserViewModel> implements IUserLoginView {
+public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, LoginViewModel> implements IUserLoginView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,8 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Us
     }
 
     @Override
-    protected UserViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(UserViewModel.class);
+    protected LoginViewModel getViewModel() {
+        return ViewModelProviders.of(this).get(LoginViewModel.class);
     }
 
     @Override
@@ -85,6 +85,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Us
                     .build(RouterActivityPath.User.PAGER_REGISTER)
                     .navigation();
         });
+
 
     }
 

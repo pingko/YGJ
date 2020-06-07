@@ -5,7 +5,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
-import com.yzg.base.http.HttpLog;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BaseModel;
 import com.yzg.user.bean.TokenBean;
@@ -14,7 +13,7 @@ import java.util.TreeMap;
 
 import io.reactivex.disposables.Disposable;
 
-public class UserModel<T> extends BaseModel<T> {
+public class UserLoginModel<T> extends BaseModel<T> {
 
     private Disposable disposable;
 
