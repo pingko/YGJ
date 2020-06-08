@@ -22,9 +22,11 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
         viewModel.loadData();
         viewModel.successData.observe(this, bean -> {
             if (bean!=null){
-                binding.tvTitle.setText(bean.getOrderNo());
+                binding.tvTitle.setText(bean.getOrderNo()+"");
                 binding.tvPrice.setText(bean.getVolume()+"");
                 binding.tvChangeNumber.setText(bean.getChangePrice()+"   "+bean.getChangeMargin());
+                binding.tvChangeNumber.setTextColor(bean.getChangePrice()>0?getResources().getColor(R.color.community_red):getResources().getColor(R.color.community_green));
+                binding.tvPrice.setTextColor(bean.getChangePrice()>0?getResources().getColor(R.color.community_red):getResources().getColor(R.color.community_green));
                 binding.tvJj.setText(bean.getYesyPrice()+"");
                 binding.tvZd.setText(bean.getLowPrice()+"");
                 binding.tvJk.setText(bean.getOpenPrice()+"");
