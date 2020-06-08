@@ -21,10 +21,12 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<String> buyResponse = new MutableLiveData<>();
     public MutableLiveData<Boolean> buySuccessResponse = new MutableLiveData<>();
 
-    protected void paySuccess(String trade_no, String acctNo) {
+    protected void paySuccess(String trade_no, String acctNo,String orderNo) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
         map.put("acctNo", acctNo);
+        map.put("custUm", trade_no);
+        map.put("orderNo", orderNo);
         OkGo.<String>post(HttpService.EB_Pay_Success)
                 .params(map)
 //                .upJson(jsonObject.toJSONString())

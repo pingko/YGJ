@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterFragmentPath;
@@ -53,8 +54,8 @@ public class DealFragment
             viewModel.loadData();
         viewModel.successData.observe(this, userStoreBean -> {
             if (userStoreBean != null) {
-                binding.tvCcMonney.setText(userStoreBean.getCurrCanUse()+"");
-                binding.tvFe.setText(userStoreBean.getTakeFrozAmt()+"");
+                binding.tvCcMonney.setText(userStoreBean.getCurrCanUse() + "");
+                binding.tvFe.setText(userStoreBean.getTakeFrozAmt() + "");
                 acctNo = userStoreBean.getAcctNo();
             }
             Log.e("DealFragment", acctNo + "");
@@ -100,7 +101,9 @@ public class DealFragment
             if (view.getId() == R.id.tv_buy) {
                 intent.putExtra("type", 0);
             } else if (view.getId() == R.id.tv_sale) {
+                RxToast.showToast("开发中，暂不支持");
                 intent.putExtra("type", 1);
+                return;
             } else if (view.getId() == R.id.tv_take) {
                 intent.putExtra("type", 2);
             }

@@ -131,6 +131,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         viewModel.buyResponse.observe(this, s -> {
             Log.e("aa", s + "");
             if (!s.contains("error")) {
+                orderId =s;
                 payV2(s);
             }
         });
@@ -149,6 +150,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     }
 
     float price;
+    String orderId;
 
     @Override
     public void showFailure(String message) {
@@ -232,7 +234,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     if (TextUtils.equals(resultStatus, "9000")) {
                         AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
                         String trade_no = resultBean.getAlipay_trade_app_pay_response().getTrade_no();
-                        viewModel.paySuccess(trade_no,acctNo);
+                        viewModel.paySuccess(trade_no,acctNo,orderId);
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
                         RxToast.showToast("支付成功");

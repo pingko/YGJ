@@ -1,5 +1,6 @@
 package com.yzg.community;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.view.View;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.yzg.base.fragment.MvvmLazyFragment;
@@ -15,6 +18,7 @@ import com.yzg.community.adapter.IQuotationContentView;
 import com.yzg.community.adapter.QuoContentAdapter;
 import com.yzg.community.adapter.QuotationContentViewModel;
 import com.yzg.community.databinding.CommunityFragmentThemesContentBinding;
+import com.yzg.community.recommend.QuotationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +81,10 @@ public class QuotationChildFragment extends
         setLoadSir(binding.refreshLayout);
         showLoading();
         viewModel.initModel(typeName);
+
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            startActivity(new Intent(getActivity(), QuotationActivity.class));
+        });
 
     }
 
