@@ -1,25 +1,14 @@
 package com.yzg.home.discover.adapter;
 
-import java.util.List;
+import com.chad.library.adapter.base.BaseProviderMultiAdapter;
+import com.yzg.common.contract.BaseCustomViewModel;
+import com.yzg.home.discover.adapter.provider.IDisCoverItemType;
+import com.yzg.home.discover.adapter.provider.SubjectCardProvider;
+import com.yzg.home.discover.bean.SubjectCardBean;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.chad.library.adapter.base.BaseProviderMultiAdapter;
-import com.yzg.common.contract.BaseCustomViewModel;
-import com.yzg.home.discover.adapter.provider.CategoryCardProvider;
-import com.yzg.home.discover.adapter.provider.ContentBannerProvider;
-import com.yzg.home.discover.adapter.provider.IDisCoverItemType;
-import com.yzg.home.discover.adapter.provider.SubjectCardProvider;
-import com.yzg.home.discover.adapter.provider.ThemeProvider;
-import com.yzg.home.discover.adapter.provider.TitleProvider;
-import com.yzg.home.discover.adapter.provider.TopBannerProvider;
-import com.yzg.home.discover.adapter.provider.VideoCardProvider;
-import com.yzg.home.discover.bean.CategoryCardBean;
-import com.yzg.home.discover.bean.SubjectCardBean;
-import com.yzg.home.discover.bean.viewmodel.BriefCardViewModel;
-import com.yzg.home.discover.bean.viewmodel.ContentBannerViewModel;
-import com.yzg.home.nominate.bean.viewmodel.TitleViewModel;
-import com.yzg.home.nominate.bean.viewmodel.VideoCardViewModel;
+import java.util.List;
 
 
 /**

@@ -34,6 +34,14 @@ public class RouterActivityPath
         
     }
 
+    public static class Quotation
+    {
+        private static final String Quotation = "/quotation";
+
+        public static final String Quotation_main = Quotation + "/main";
+
+    }
+
     public static class Deal
     {
         private static final String DEAL = "/deal";

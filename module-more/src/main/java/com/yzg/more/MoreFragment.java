@@ -78,7 +78,7 @@ public class MoreFragment
 //        fragments.add(ThemesFragment.newInstance());
         fragments.add(TopicFragment.newInstance());
         fragments.add(TopicFragment.newInstance());
-        fragments.add(MessageFragment.newInstance());
+//        fragments.add(MessageFragment.newInstance());
         adapter.setData(fragments);
         binding.vpHomeContent.setCurrentItem(1);
     }

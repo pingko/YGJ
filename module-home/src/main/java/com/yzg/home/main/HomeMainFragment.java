@@ -3,6 +3,7 @@ package com.yzg.home.main;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.recyclerview.RecyclerItemDecoration;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.common.utils.DensityUtils;
 import com.yzg.home.R;
@@ -95,7 +97,9 @@ public class HomeMainFragment
         binding.rvGdds.addItemDecoration(new RecyclerItemDecoration(0,
                 0, DensityUtils.dip2px(getContext(), 16), 0));
 
-
+        binding.llQuotation.setOnClickListener(view -> ARouter.getInstance()
+                .build(RouterActivityPath.Quotation.Quotation_main)
+                .navigation());
         gddsAdapter = new GDDSItemAdapter(
                 R.layout.home_item_category_item_subject_gdds_view);
         gddsAdapter.setOnItemClickListener((adapter1, view, position) -> {
@@ -134,6 +138,7 @@ public class HomeMainFragment
         setLoadSir(binding.refreshLayout);
         showLoading();
         viewModel.initModel();
+
     }
 
     private Handler handler = new Handler() {
