@@ -80,6 +80,7 @@
                 android:layout_toRightOf="@id/tv1"
                 android:hint="数量"
                 android:maxLength="5"
+                android:text="10"
                 android:singleLine="true"
                 android:inputType="number"
                 android:background="@null"/>
@@ -154,7 +155,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:includeFontPadding="false"
-                        android:text="4.35%"
+                        android:text="@{DetailVm.successData.getRate()+@string/home_rate}"
                         android:textColor="@color/common_color_main"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -583,6 +584,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>
+        <variable
+            name="DetailVm"
+            type="com.yzg.home.jlyt.HomeJlytDetailViewModel" />
 
     </data>
 </layout>

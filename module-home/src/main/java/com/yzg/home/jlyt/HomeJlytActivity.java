@@ -2,6 +2,8 @@ package com.yzg.home.jlyt;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -10,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeActivityJlytBinding;
@@ -22,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,HomeJlytViewModel> implements IJLYTView {
+public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding, HomeJlytViewModel> implements IJLYTView {
 
     private CommonAdapter jlytAdapter;
     private ArrayList<JlytBean> jlytBeanList;
@@ -44,8 +48,8 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
         jlytAdapter = new CommonAdapter<JlytBean>(this, R.layout.home_jlyt_item, jlytBeanList) {
             @Override
             protected void convert(ViewHolder holder, JlytBean bean, int position) {
-                holder.setText(R.id.tv_name,bean.getProductName());
-                holder.setText(R.id.tv_rate,bean.getRate()+"");
+                holder.setText(R.id.tv_name, bean.getProductName());
+                holder.setText(R.id.tv_rate, bean.getRate() + "%");
             }
         };
         binding.rvJlyt.setLayoutManager(new LinearLayoutManager(this));
@@ -63,8 +67,8 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
         jlytAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                Intent intent =new Intent(HomeJlytActivity.this,HomeJlytDetailActivity.class);
-                intent.putExtra("productId",jlytBeanList.get(i).getProductId());
+                Intent intent = new Intent(HomeJlytActivity.this, HomeJlytDetailActivity.class);
+                intent.putExtra("productId", jlytBeanList.get(i).getProductId());
                 startActivity(intent);
             }
 
@@ -74,14 +78,15 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
             }
         });
 
+        binding.viewBg.setOnClickListener(v -> {
+            RxToast.showToast("功能正在开发中，敬请期待");
+        });
+
         viewModel.initModel();
-//        TreeMap map = new TreeMap();
-//        map.put("loginName",binding.etPhone.getText().toString());
-//        map.put("phonenumber",binding.etPhone.getText().toString());
-//        map.put("userName",binding.etName.getText().toString());
-//        map.put("password",binding.etPwd.getText().toString());
-//        viewModel.setRequestParams(map);
-        viewModel.tryToRefresh();
+        String token = MmkvHelper.getInstance().getMmkv().decodeString("token", "");
+        Log.e("HomeJlytActivity", token + "");
+        if (!TextUtils.isEmpty(token))
+            viewModel.tryToRefresh();
 
     }
 
@@ -106,10 +111,10 @@ public class HomeJlytActivity extends MvvmBaseActivity<HomeActivityJlytBinding,H
     }
 
     @Override
-    public void onDataLoadFinish(ArrayList<BaseCustomViewModel> viewModel,boolean a) {
+    public void onDataLoadFinish(ArrayList<BaseCustomViewModel> viewModel, boolean a) {
         showContent();
         jlytBeanList.clear();
-        for (BaseCustomViewModel viewModel1: viewModel){
+        for (BaseCustomViewModel viewModel1 : viewModel) {
             jlytBeanList.add((JlytBean) viewModel1);
         }
         jlytAdapter.notifyDataSetChanged();

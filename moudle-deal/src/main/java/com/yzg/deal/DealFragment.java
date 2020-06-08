@@ -3,14 +3,18 @@ package com.yzg.deal;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yzg.base.fragment.MvvmLazyFragment;
-import com.yzg.base.viewmodel.IMvvmBaseViewModel;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.deal.databinding.DealFragmentMainBinding;
 import com.yzg.deal.deal.DealMainActivity;
@@ -20,11 +24,12 @@ import com.yzg.deal.deal.DealMainActivity;
  * <p>
  * 类描述:交易首页
  * <p>
- *
  */
 @Route(path = RouterFragmentPath.Deal.PAGER_DEAL)
 public class DealFragment
-        extends MvvmLazyFragment<DealFragmentMainBinding, IMvvmBaseViewModel> implements View.OnClickListener {
+        extends MvvmLazyFragment<DealFragmentMainBinding, DealViewModel> implements View.OnClickListener {
+
+    String acctNo;
 
     @Override
     public int getLayoutId() {
@@ -42,7 +47,28 @@ public class DealFragment
     private void initData() {
         binding.tvBuy.setOnClickListener(this);
         binding.tvSale.setOnClickListener(this);
-        binding.tvProduct.setOnClickListener(this);
+        binding.tvTake.setOnClickListener(this);
+        String token = MmkvHelper.getInstance().getMmkv().decodeString("token");
+        if (!TextUtils.isEmpty(token))
+            viewModel.loadData();
+        viewModel.successData.observe(this, userStoreBean -> {
+            if (userStoreBean != null) {
+                binding.tvCcMonney.setText(userStoreBean.getCurrCanUse()+"");
+                binding.tvFe.setText(userStoreBean.getTakeFrozAmt()+"");
+                acctNo = userStoreBean.getAcctNo();
+            }
+            Log.e("DealFragment", acctNo + "");
+        });
+        LiveEventBus
+                .get("takeSuccess", Integer.class)
+                .observe(this, s -> {
+                    viewModel.loadData();
+                });
+        LiveEventBus
+                .get("buySuccess", Integer.class)
+                .observe(this, s -> {
+                    viewModel.loadData();
+                });
     }
 
     private void start(Context context) {
@@ -58,8 +84,8 @@ public class DealFragment
     }
 
     @Override
-    protected IMvvmBaseViewModel getViewModel() {
-        return null;
+    protected DealViewModel getViewModel() {
+        return ViewModelProviders.of(this).get(DealViewModel.class);
     }
 
     @Override
@@ -69,8 +95,17 @@ public class DealFragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_buy||view.getId() == R.id.tv_sale||view.getId() == R.id.tv_product) {
-            startActivity(new Intent(getContext(), DealMainActivity.class));
+        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_sale || view.getId() == R.id.tv_take) {
+            Intent intent = new Intent(getContext(), DealMainActivity.class);
+            if (view.getId() == R.id.tv_buy) {
+                intent.putExtra("type", 0);
+            } else if (view.getId() == R.id.tv_sale) {
+                intent.putExtra("type", 1);
+            } else if (view.getId() == R.id.tv_take) {
+                intent.putExtra("type", 2);
+            }
+            intent.putExtra("acctNo", acctNo);
+            startActivity(intent);
         }
     }
 }

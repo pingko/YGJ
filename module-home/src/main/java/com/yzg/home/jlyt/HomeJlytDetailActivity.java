@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alipay.sdk.app.PayTask;
@@ -24,11 +25,12 @@ import com.yzg.home.databinding.HomeActivityJlytDetailBinding;
 
 import java.util.Map;
 
-public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> implements IjlytDetailView {
+public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> {
 
 
     private JlytBean bean;
     private String productId;
+
     @Override
     protected HomeJlytDetailViewModel getViewModel() {
         return ViewModelProviders.of(this).get(HomeJlytDetailViewModel.class);
@@ -50,16 +52,36 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
 
         binding.progressBar.setProgress(33);
 
-        binding.tvBuy.setOnClickListener(view ->{
-            if (TextUtils.isEmpty(binding.etNum.getText().toString())){
+        binding.tvBuy.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(binding.etNum.getText().toString())) {
                 RxToast.normal("请输入数量");
-                return ;
-
+                return;
             }
-            payV2(view);
+            viewModel.buyjLYT(productId, binding.etNum.getText().toString());
         });
 
         viewModel.loadData(productId);
+        viewModel.successData.observe(this, bean -> {
+            if (bean != null) {
+                binding.tvDate.setText(bean.getLength() + "个月");
+            }
+        });
+
+        viewModel.errorLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                RxToast.showToast(s);
+            }
+        });
+        viewModel.buyResponse.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                RxToast.showToast(s);
+                if (s.equals("购买成功"))
+                    finish();
+            }
+        });
+
 
     }
 
@@ -77,11 +99,11 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
     protected void onRetryBtnClick() {
 
     }
-
-    @Override
-    public void onDataLoadFinish(JlytDetailBean viewModel) {
-        HttpLog.e(viewModel.getProductName());
-    }
+//
+//    @Override
+//    public void onDataLoadFinish(JlytDetailBean viewModel) {
+//        HttpLog.e(viewModel.getProductName());
+//    }
 
 
     /**
@@ -165,7 +187,7 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
      */
     public void payV2(View v) {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {
-            RxToast.normal(getString(R.string.error_missing_appid_rsa_private) );
+            RxToast.normal(getString(R.string.error_missing_appid_rsa_private));
             return;
         }
 
@@ -177,7 +199,7 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,"");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;

@@ -150,7 +150,7 @@ public class AlipayActivity extends AppCompatActivity {
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,"");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
@@ -179,52 +179,52 @@ public class AlipayActivity extends AppCompatActivity {
     }
 
 
-
-    /**
-     * 支付宝账户授权业务示例
-     */
-    public void authV2(View v) {
-        if (TextUtils.isEmpty(PID) || TextUtils.isEmpty(APPID)
-                || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))
-                || TextUtils.isEmpty(TARGET_ID)) {
-            showAlert(this, getString(R.string.error_auth_missing_partner_appid_rsa_private_target_id));
-            return;
-        }
-
-        /*
-         * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
-         * 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
-         * 防止商户私密数据泄露，造成不必要的资金损失，及面临各种安全风险；
-         *
-         * authInfo 的获取必须来自服务端；
-         */
-        boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> authInfoMap = OrderInfoUtil2_0.buildAuthInfoMap(PID, APPID, TARGET_ID, rsa2);
-        String info = OrderInfoUtil2_0.buildOrderParam(authInfoMap);
-
-        String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
-        String sign = OrderInfoUtil2_0.getSign(authInfoMap, privateKey, rsa2);
-        final String authInfo = info + "&" + sign;
-        Runnable authRunnable = new Runnable() {
-
-            @Override
-            public void run() {
-                // 构造AuthTask 对象
-                AuthTask authTask = new AuthTask(AlipayActivity.this);
-                // 调用授权接口，获取授权结果
-                Map<String, String> result = authTask.authV2(authInfo, true);
-
-                Message msg = new Message();
-                msg.what = SDK_AUTH_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
-        };
-
-        // 必须异步调用
-        Thread authThread = new Thread(authRunnable);
-        authThread.start();
-    }
+//
+//    /**
+//     * 支付宝账户授权业务示例
+//     */
+//    public void authV2(View v) {
+//        if (TextUtils.isEmpty(PID) || TextUtils.isEmpty(APPID)
+//                || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))
+//                || TextUtils.isEmpty(TARGET_ID)) {
+//            showAlert(this, getString(R.string.error_auth_missing_partner_appid_rsa_private_target_id));
+//            return;
+//        }
+//
+//        /*
+//         * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
+//         * 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
+//         * 防止商户私密数据泄露，造成不必要的资金损失，及面临各种安全风险；
+//         *
+//         * authInfo 的获取必须来自服务端；
+//         */
+//        boolean rsa2 = (RSA2_PRIVATE.length() > 0);
+//        Map<String, String> authInfoMap = OrderInfoUtil2_0.buildAuthInfoMap(PID, APPID, TARGET_ID, rsa2,"");
+//        String info = OrderInfoUtil2_0.buildOrderParam(authInfoMap);
+//
+//        String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
+//        String sign = OrderInfoUtil2_0.getSign(authInfoMap, privateKey, rsa2);
+//        final String authInfo = info + "&" + sign;
+//        Runnable authRunnable = new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                // 构造AuthTask 对象
+//                AuthTask authTask = new AuthTask(AlipayActivity.this);
+//                // 调用授权接口，获取授权结果
+//                Map<String, String> result = authTask.authV2(authInfo, true);
+//
+//                Message msg = new Message();
+//                msg.what = SDK_AUTH_FLAG;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
+//            }
+//        };
+//
+//        // 必须异步调用
+//        Thread authThread = new Thread(authRunnable);
+//        authThread.start();
+//    }
 
     /**
      * 获取支付宝 SDK 版本号。

@@ -13,6 +13,6 @@ public class HttpService {
     public static final String EB_Pay_url = BASE_URL+ "notify_alipay.asp";//支付宝支付地址
     public static final String EB_Pay = BASE_URL+ "system/goldFlow/buyStorage";//支付
     public static final String EB_Pay_Success = BASE_URL+ "system/goldFlow/upStorage";//支付成功
-    public static final String EB_Buy = BASE_URL+ "system/goldFlow/buyAg";//购买
+    public static final String EB_BuyJLYT = BASE_URL+ "system/goldFlow/buyAg";//购买 积利银条
     public static final String EB_Take = BASE_URL+ "system/goldFlow/takeAg";//提货
 }

@@ -58,8 +58,13 @@ public class UserFragment
         initView();
         viewModel.isLoginLivedata.setValue(TextUtils.isEmpty(token) ? false : true);
         viewModel.isLoginLivedata.observe(this, aBoolean -> {
-            if (aBoolean)
+            if (aBoolean) {
                 viewModel.loadData();
+            }
+            binding.rlNo.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
+            binding.rlLogin.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
+            binding.rlSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
+            binding.viewSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
         });
     }
 
@@ -71,6 +76,7 @@ public class UserFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.e("UserFragment", requestCode + "," + resultCode);
         switch (requestCode) {
             case 1001:
                 viewModel.isLoginLivedata.setValue(true);
@@ -132,10 +138,6 @@ public class UserFragment
 
     }
 
-    private View getFooterView() {
-        return LayoutInflater.from(getContext()).inflate(R.layout.user_item_footer_view, binding.rvTables, false);
-    }
-
     @Override
     public int getBindingVariable() {
         return BR.userVm;
@@ -163,5 +165,7 @@ public class UserFragment
     @Override
     public void onDataLoadFinish(UserStoreBean bean) {
         HttpLog.e(bean.getAcctNo());
+        binding.tvName.setText(bean.getAcctNo());
+        binding.tvMoney.setText(bean.getCurrCanUse()+"");
     }
 }

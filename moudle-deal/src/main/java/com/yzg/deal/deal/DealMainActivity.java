@@ -1,35 +1,43 @@
 package com.yzg.deal.deal;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.alipay.sdk.app.AuthTask;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.http.HttpLog;
 import com.yzg.common.alipay.AuthResult;
 import com.yzg.common.alipay.OrderInfoUtil2_0;
 import com.yzg.common.alipay.PayResult;
-import com.yzg.common.contract.BaseCustomViewModel;
-import com.yzg.common.contract.TestApi;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.deal.R;
 import com.yzg.deal.databinding.DealActivityMainBinding;
 
 import java.util.Map;
 
-public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements IDealMainView, View.OnClickListener {
+public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements View.OnClickListener {
+
+
+    private int type;//0 买入 1卖出 2提货
+    private String acctNo;
+
     @Override
     protected DealMainViewModel getViewModel() {
         return ViewModelProviders.of(this).get(DealMainViewModel.class);
@@ -55,13 +63,92 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         super.onCreate(savedInstanceState);
         binding.ivBack.setOnClickListener(this);
         binding.tvTest.setOnClickListener(this);
+        binding.rlAddress.setOnClickListener(this);
+        type = getIntent().getIntExtra("type", -1);
+        acctNo = getIntent().getStringExtra("acctNo");
+        if (type == 0) {
+            binding.tvMoneyTip.setText("购买金额:");
+            binding.tvFeTip.setText("购买份额(克):");
+        } else if (type == 1) {
+            binding.tvMoneyTip.setText("卖出金额:");
+            binding.tvFeTip.setText("卖出份额(克):");
+        } else if (type == 2) {
+            binding.tvMoneyTip.setText("提货手续费(kg/500元):");
+            binding.tvFeTip.setText("提货重量(kg):");
+            binding.etWeight.setHint("请输入提货重量");
+        }
+        binding.rlAddress.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
+
+
+        binding.etWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s)) {
+                    price = 0;
+                    binding.tvMoney.setText(price + "元");
+                    return;
+                } else {
+                    int a = Integer.parseInt(s.toString());
+                    if (type == 2) {
+                        price = (float) (a * 500);
+                    } else {
+
+                        price = (float) (a * 3.65);
+                    }
+                    binding.tvMoney.setText(price + "元");
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.length() > 0 && type != 2) {
+                    int a = Integer.parseInt(s.toString());
+                    if (a < 20) {
+                        RxToast.showToast("20克起，1克递增");
+                        return;
+                    }
+                }
+
+            }
+        });
+
+        viewModel.takeResponse.observe(this, s -> {
+            RxToast.showToast(s);
+            if (s.equals("提货成功")) {
+                LiveEventBus
+                        .get("takeSuccess")
+                        .post(0);
+                finish();
+            }
+        });
+        viewModel.buyResponse.observe(this, s -> {
+            Log.e("aa", s + "");
+            if (!s.contains("error")) {
+                payV2(s);
+            }
+        });
+
+        viewModel.buySuccessResponse.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    LiveEventBus
+                            .get("buySuccess")
+                            .post(0);
+                    finish();
+                }
+            }
+        });
     }
 
-    @Override
-    public void onDataLoadFinish(BaseCustomViewModel viewModel) {
-        RxToast.normal(((TestApi) viewModel).getMsg());
-    }
-
+    float price;
 
     @Override
     public void showFailure(String message) {
@@ -74,7 +161,31 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         if (v.getId() == R.id.iv_back) {
             finish();
         } else if (v.getId() == R.id.tv_test) {
-            payV2(v);
+//            payV2(v);
+            String s = binding.etWeight.getText().toString();
+            if (type == 2) {
+                if (TextUtils.isEmpty(s)) {
+                    RxToast.showToast("请输入提货重量");
+                    return;
+                }
+                int price = Integer.parseInt(s) * 500;
+                viewModel.take(price + "");
+            } else if (type == 0 || type == 1) {
+                if (TextUtils.isEmpty(s) || Integer.parseInt(s) < 20) {
+                    RxToast.showToast("20克起，1克递增");
+                    return;
+                }
+                double price = Integer.parseInt(s) * 3.65;
+                if (type == 0) {
+                    viewModel.buySirver(s, price, acctNo);
+                }
+            }
+
+        } else if (v.getId() == R.id.rl_address) {
+            ARouter.getInstance()
+                    .build(RouterActivityPath.User.PAGER_Address)
+                    .withInt("type", 1)
+                    .navigation();
         }
 
     }
@@ -117,7 +228,11 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     String resultInfo = payResult.getResult();// 同步返回需要验证的信息
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
+                    HttpLog.e(resultInfo);
                     if (TextUtils.equals(resultStatus, "9000")) {
+                        AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
+                        String trade_no = resultBean.getAlipay_trade_app_pay_response().getTrade_no();
+                        viewModel.paySuccess(trade_no,acctNo);
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
                         RxToast.showToast("支付成功");
@@ -132,7 +247,6 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     @SuppressWarnings("unchecked")
                     AuthResult authResult = new AuthResult((Map<String, String>) msg.obj, true);
                     String resultStatus = authResult.getResultStatus();
-
                     // 判断resultStatus 为“9000”且result_code
                     // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
                     if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
@@ -157,9 +271,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     /**
      * 支付宝支付业务示例
      */
-    public void payV2(View v) {
+    public void payV2(String orderId) {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {
-            RxToast.normal(getString(R.string.error_missing_appid_rsa_private) );
+            RxToast.normal(getString(R.string.error_missing_appid_rsa_private));
             return;
         }
 
@@ -171,7 +285,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, orderId);
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
@@ -198,8 +312,6 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
-
-
 
 
 }

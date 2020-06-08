@@ -73,7 +73,6 @@
             <RelativeLayout
                 android:id="@+id/rl_no"
                 android:layout_width="match_parent"
-                android:visibility="@{userVm.isLoginLivedata?View.GONE:View.VISIBLE, default=visible}"
                 android:layout_height="152dp"
                 android:layout_margin="14dp"
                 android:background="@drawable/user_select_bg"
@@ -148,7 +147,6 @@
                     android:layout_alignBottom="@id/iv_head"
                     android:layout_toRightOf="@id/iv_head"
                     android:gravity="center"
-                    android:text="王富贵"
                     android:textColor="@color/common_colorWhite" />
 
 
@@ -173,7 +171,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="22dp"
                     android:gravity="center"
-                    android:text="100,000.00"
                     android:textColor="@color/common_colorWhite"
                     android:textSize="16sp" />
 

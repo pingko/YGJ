@@ -1,57 +1,143 @@
 package com.yzg.deal.deal;
 
-import com.yzg.base.model.BaseModel;
-import com.yzg.base.model.IModelListener;
-import com.yzg.base.viewmodel.MvmBaseViewModel;
-import com.yzg.common.contract.BaseCustomViewModel;
+import androidx.lifecycle.MutableLiveData;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.yzg.base.activity.IBaseView;
+import com.yzg.base.http.HttpService;
+import com.yzg.base.viewmodel.MvvmBaseViewModel;
 
 import java.util.TreeMap;
 
-public class DealMainViewModel extends MvmBaseViewModel<IDealMainView, DealMainModel>
-        implements IModelListener<BaseCustomViewModel> {
+public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
 
+    public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> takeResponse = new MutableLiveData<>();
+    public MutableLiveData<String> buyResponse = new MutableLiveData<>();
+    public MutableLiveData<Boolean> buySuccessResponse = new MutableLiveData<>();
 
-    public void setRequestParams(TreeMap map) {
-        model.setMap(map);
+    protected void paySuccess(String trade_no, String acctNo) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
+        map.put("acctNo", acctNo);
+        OkGo.<String>post(HttpService.EB_Pay_Success)
+                .params(map)
+//                .upJson(jsonObject.toJSONString())
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        if (jsonObject.containsKey("code")) {
+                            String code = jsonObject.getString("code");
+                            String msg;
+                            if ("0".equals(code)) {
+                                buySuccessResponse.setValue(true);
+                            } else {
+                                if (jsonObject.containsKey("msg")) {
+                                    msg = jsonObject.getString("msg");
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                    }
+                });
     }
 
 
-    @Override
-    public void onLoadFinish(BaseModel model, BaseCustomViewModel data) {
-        if (getPageView() != null) {
-            if (data != null) {
-                getPageView().onDataLoadFinish(data);
-            } else {
-                getPageView().showEmpty();
-            }
-        }
+    protected void take(String aipAmount) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("aipAmount", aipAmount);
+        OkGo.<String>post(HttpService.EB_Take)
+                .params(map)
+//                .upJson(jsonObject.toJSONString())
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        if (jsonObject.containsKey("code")) {
+                            String code = jsonObject.getString("code");
+                            String msg;
+                            if ("0".equals(code)) {
+                                takeResponse.setValue("提货成功");
+                            } else {
+                                if (jsonObject.containsKey("msg")) {
+                                    msg = jsonObject.getString("msg");
+                                    takeResponse.setValue(msg);
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                    }
+                });
     }
 
-    @Override
-    public void onLoadFail(BaseModel model, String prompt) {
-        if (getPageView() != null) {
-            getPageView().showFailure(prompt);
-        }
+    protected void buySirver(String weight, double money, String acctNo) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("aipAmount", weight);
+        map.put("acctNo", acctNo);
+        map.put("aipAmountFare", "0");
+        map.put("aipMoneyFare", "0");
+        map.put("aipMoney", String.valueOf(money));
+        map.put("bsFlag", "");
+        map.put("subAccountNo", "");
+        OkGo.<String>post(HttpService.EB_Pay)
+                .params(map)
+//                .upJson(jsonObject.toJSONString())
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        if (jsonObject.containsKey("code")) {
+                            String code = jsonObject.getString("code");
+                            String msg;
+                            if ("0".equals(code)) {
+                                String data = jsonObject.getString("data");
+                                JSONObject jsonObject1 = JSON.parseObject(data);
+                                String orderNo = jsonObject1.getString("orderNo");
+                                buyResponse.setValue(orderNo);
+                            } else {
+                                if (jsonObject.containsKey("msg")) {
+                                    msg = jsonObject.getString("msg");
+                                    buyResponse.setValue("error " + msg);
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                    }
+                });
     }
 
-    public void tryToRefresh() {
-        model.load();
-    }
-
-
-    @Override
-    public void initModel() {
-        model = new DealMainModel();
-        model.register(this);
-//        model.getCacheDataAndLoad();
-    }
 
     @Override
     public void detachUi() {
         super.detachUi();
-        if (model != null) {
-            model.unRegister(this);
-        }
-
+        OkGo.getInstance().cancelTag(this);
     }
+
 }

@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
                 android:layout_alignParentRight="true"
-                android:text="100,000.00"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
 
@@ -107,7 +107,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="6dp"
                 android:layout_below="@id/tv_cc_monney"
-                android:text="50,000.00"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
 
@@ -143,7 +142,7 @@
                     android:textColor="@color/white"
                     android:background="@drawable/white_r5_border_white" />
                 <TextView
-                    android:id="@+id/tv_product"
+                    android:id="@+id/tv_take"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="29dp"

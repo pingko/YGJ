@@ -60,6 +60,7 @@ public class RouterActivityPath
         
         /** 登录界面 */
         public static final String PAGER_LOGIN = USER + "/Login";
+        public static final String PAGER_Address = USER + "/Address";
         public static final String PAGER_REGISTER = USER + "/REGISTER";
 
         /** 关注页面 */

@@ -1,6 +1,5 @@
 package com.yzg.user.address;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,9 +9,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.contract.BaseCustomViewModel;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.user.R;
 import com.yzg.user.databinding.UserActivityAddressBinding;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -22,10 +25,16 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.http.Path;
+
+
+@Route(path = RouterActivityPath.User.PAGER_Address)
 public class UserAddressActivity extends MvvmBaseActivity<UserActivityAddressBinding, UserAddressViewModel> implements IAddressView {
 
     private CommonAdapter jlytAdapter;
     private List<AddressBean> addressList;
+    @Autowired(name = "type")
+    public int type;//选择提货地址
 
     @Override
     protected UserAddressViewModel getViewModel() {
@@ -35,6 +44,7 @@ public class UserAddressActivity extends MvvmBaseActivity<UserActivityAddressBin
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ARouter.getInstance().inject(this);
         initData();
     }
 
@@ -42,8 +52,8 @@ public class UserAddressActivity extends MvvmBaseActivity<UserActivityAddressBin
         addressList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             AddressBean bean = new AddressBean();
-            bean.setName("王富贵，1516000123"+i);
-            bean.setAddress("安徽省 合肥市 北京路 朝阳科技工业园西区15栋007"+i);
+            bean.setName("王富贵，1516000123" + i);
+            bean.setAddress("安徽省 合肥市 北京路 朝阳科技工业园西区15栋007" + i);
             addressList.add(bean);
         }
 
@@ -74,6 +84,9 @@ public class UserAddressActivity extends MvvmBaseActivity<UserActivityAddressBin
         jlytAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                if (type == 1) {
+                    finish();
+                }
             }
 
             @Override
