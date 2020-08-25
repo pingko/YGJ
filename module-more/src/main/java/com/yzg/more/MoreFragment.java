@@ -1,9 +1,16 @@
 package com.yzg.more;
 
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
 import java.util.ArrayList;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.tamsiree.rxkit.RxWebViewTool;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.viewmodel.IMvvmBaseViewModel;
 import com.yzg.common.router.RouterFragmentPath;
@@ -30,6 +37,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class MoreFragment
         extends MvvmLazyFragment<MoreFragmentMoreBinding, IMvvmBaseViewModel> {
 
+    public WebSettings webSettings;
     private MoreFragmentPageAdapter adapter;
 
     @Override
@@ -41,7 +49,8 @@ public class MoreFragment
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         initView();
-        initData();
+//        initData();
+
     }
 
     private void initView() {
@@ -71,6 +80,7 @@ public class MoreFragment
         adapter = new MoreFragmentPageAdapter(getChildFragmentManager(),
                 FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT);
         binding.vpHomeContent.setAdapter(adapter);
+        webShow();
     }
 
     private void initData() {
@@ -81,6 +91,29 @@ public class MoreFragment
 //        fragments.add(MessageFragment.newInstance());
         adapter.setData(fragments);
         binding.vpHomeContent.setCurrentItem(1);
+    }
+
+    private void webShow() {
+        webSettings = binding.webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        binding.webview.setWebViewClient(new MyWebViewClient());
+        binding.webview.loadUrl("http://www.jin10.com");
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+// return super.shouldOverrideUrlLoading(view, url);
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+        }
     }
 
     @Override
