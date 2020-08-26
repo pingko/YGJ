@@ -180,7 +180,7 @@
                 android:id="@+id/tv_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15.16"
+                android:text=""
                 android:layout_toRightOf="@id/tv_price_tip"
                 android:layout_marginLeft="12dp"
                 android:textColor="#FE8523"

@@ -37,6 +37,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
 
     private int type;//0 买入 1卖出 2提货
     private String acctNo;
+    private float sirverPrice = 0.3933f;
 
     @Override
     protected DealMainViewModel getViewModel() {
@@ -61,9 +62,11 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sirverPrice = getIntent().getFloatExtra("sirverPrice",0.3933f);
         binding.ivBack.setOnClickListener(this);
         binding.tvTest.setOnClickListener(this);
         binding.rlAddress.setOnClickListener(this);
+        binding.tvPrice.setText(sirverPrice + " 克/元");
         type = getIntent().getIntExtra("type", -1);
         acctNo = getIntent().getStringExtra("acctNo");
         if (type == 0) {
@@ -98,7 +101,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                         price = (float) (a * 500);
                     } else {
 
-                        price = (float) (a * 3.65);
+                        price = (float) (a * sirverPrice);
                     }
                     binding.tvMoney.setText(price + "元");
                 }
@@ -131,7 +134,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         viewModel.buyResponse.observe(this, s -> {
             Log.e("aa", s + "");
             if (!s.contains("error")) {
-                orderId =s;
+                orderId = s;
                 payV2(s);
             }
         });
@@ -177,9 +180,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     RxToast.showToast("20克起，1克递增");
                     return;
                 }
-                double price = Integer.parseInt(s) * 3.65;
+                double price = Integer.parseInt(s) * sirverPrice;
                 if (type == 0) {
-                    viewModel.buySirver(s, price, acctNo);
+                    viewModel.buySirver(sirverPrice,s, price, acctNo);
                 }
             }
 
@@ -234,7 +237,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     if (TextUtils.equals(resultStatus, "9000")) {
                         AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
                         String trade_no = resultBean.getAlipay_trade_app_pay_response().getTrade_no();
-                        viewModel.paySuccess(trade_no,acctNo,orderId);
+                        viewModel.paySuccess(trade_no, acctNo, orderId);
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
                         RxToast.showToast("支付成功");

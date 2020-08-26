@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -50,8 +51,10 @@ public class DealFragment
         binding.tvSale.setOnClickListener(this);
         binding.tvTake.setOnClickListener(this);
         String token = MmkvHelper.getInstance().getMmkv().decodeString("token");
-        if (!TextUtils.isEmpty(token))
+        if (!TextUtils.isEmpty(token)) {
             viewModel.loadData();
+        }
+        viewModel.loadTodayPrice();
         viewModel.successData.observe(this, userStoreBean -> {
             if (userStoreBean != null) {
                 binding.tvCcMonney.setText(userStoreBean.getCurrCanUse() + "");
@@ -69,6 +72,10 @@ public class DealFragment
                 .get("buySuccess", Integer.class)
                 .observe(this, s -> {
                     viewModel.loadData();
+                });
+        viewModel.lastPrice.observe(this
+                , aDouble -> {
+                    binding.tvPrice.setText(aDouble + "");
                 });
     }
 
@@ -100,12 +107,14 @@ public class DealFragment
             Intent intent = new Intent(getContext(), DealMainActivity.class);
             if (view.getId() == R.id.tv_buy) {
                 intent.putExtra("type", 0);
+                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_sale) {
                 RxToast.showToast("开发中，暂不支持");
                 intent.putExtra("type", 1);
                 return;
             } else if (view.getId() == R.id.tv_take) {
                 intent.putExtra("type", 2);
+                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             }
             intent.putExtra("acctNo", acctNo);
             startActivity(intent);

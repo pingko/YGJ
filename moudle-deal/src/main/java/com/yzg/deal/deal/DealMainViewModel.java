@@ -92,8 +92,17 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                 });
     }
 
-    protected void buySirver(String weight, double money, String acctNo) {
+
+    /**
+     *
+     * @param sirverPrice  近日实时银价
+     * @param weight  购买多少克
+     * @param money   总价多少钱
+     * @param acctNo  账号
+     */
+    protected void buySirver(double sirverPrice,String weight, double money, String acctNo) {
         TreeMap<String, String> map = new TreeMap<>();
+        map.put("aipPrice", sirverPrice+"");
         map.put("aipAmount", weight);
         map.put("acctNo", acctNo);
         map.put("aipAmountFare", "0");

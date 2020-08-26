@@ -50,7 +50,6 @@ public class MoreFragment
         super.onFragmentFirstVisible();
         initView();
 //        initData();
-
     }
 
     private void initView() {
@@ -63,8 +62,7 @@ public class MoreFragment
                 .addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
-                        binding.vpHomeContent
-                                .setCurrentItem(tab.getPosition());
+                        binding.vpHomeContent.setCurrentItem(tab.getPosition());
                     }
 
                     @Override

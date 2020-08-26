@@ -1,6 +1,7 @@
 package com.yzg.community.recommend;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,6 +21,9 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
+        binding.ivBack.setOnClickListener(view -> {
+            finish();
+        });
     }
 
     private void initData() {
@@ -27,7 +31,7 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
         viewModel.successData.observe(this, bean -> {
             if (bean != null) {
                 binding.tvTitle.setText(bean.getVarietynm());
-                binding.tvPrice.setText(bean.getOrderNo() + "");
+                binding.tvPrice.setText(bean.getLastPrice() + "");
                 binding.tvChangeNumber.setText(bean.getChangePrice() + "   " + bean.getChangeMargin());
                 binding.tvChangeNumber.setTextColor(bean.getChangePrice() > 0 ? getResources().getColor(R.color.community_red) : getResources().getColor(R.color.community_green));
                 binding.tvPrice.setTextColor(bean.getChangePrice() > 0 ? getResources().getColor(R.color.community_red) : getResources().getColor(R.color.community_green));
