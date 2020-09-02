@@ -3,9 +3,10 @@ package com.yzg.base.http;
 
 public class HttpService {
     public static final String TOKEN = "token";
+    //https://www.zitic.net/
 //    public static final String BASE_URL="http://120.78.206.203:8088/";
 //    public static final String BASE_URL="http://admin.zitic.net:8088/";
-    public static final String BASE_URL="http://admin.zitic.net/";
+    public static final String BASE_URL="https://admin.zitic.net/";
     public static final String REGISTER = BASE_URL+ "custAdd";//注册
     public static final String LOGIN = BASE_URL+ "login";//登录
     public static final String Gold_info_list = BASE_URL+ "system/aipGoldInfo/list";//产品列表

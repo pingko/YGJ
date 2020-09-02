@@ -32,6 +32,7 @@ public class DealFragment
         extends MvvmLazyFragment<DealFragmentMainBinding, DealViewModel> implements View.OnClickListener {
 
     String acctNo;
+    String token;
 
     @Override
     public int getLayoutId() {
@@ -50,10 +51,8 @@ public class DealFragment
         binding.tvBuy.setOnClickListener(this);
         binding.tvSale.setOnClickListener(this);
         binding.tvTake.setOnClickListener(this);
-        String token = MmkvHelper.getInstance().getMmkv().decodeString("token");
-        if (!TextUtils.isEmpty(token)) {
-            viewModel.loadData();
-        }
+        token = MmkvHelper.getInstance().getMmkv().decodeString("token");
+
         viewModel.loadTodayPrice();
         viewModel.successData.observe(this, userStoreBean -> {
             if (userStoreBean != null) {
@@ -85,6 +84,15 @@ public class DealFragment
     private void initView() {
     }
 
+
+    @Override
+    protected void onFragmentFirstVisible() {
+        super.onFragmentFirstVisible();
+        Log.e("ss","sss");
+        if (!TextUtils.isEmpty(token)) {
+            viewModel.loadData();
+        }
+    }
 
     @Override
     public int getBindingVariable() {
