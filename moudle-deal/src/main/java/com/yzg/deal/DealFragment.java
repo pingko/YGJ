@@ -103,7 +103,7 @@ public class DealFragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_sale || view.getId() == R.id.tv_take) {
+        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take) {
             Intent intent = new Intent(getContext(), DealMainActivity.class);
             if (view.getId() == R.id.tv_buy) {
                 intent.putExtra("type", 0);

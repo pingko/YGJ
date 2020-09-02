@@ -134,13 +134,20 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="29dp"
-                    android:text="卖出"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
-                    android:textColor="@color/white"
-                    android:background="@drawable/white_r5_border_white" />
+                     />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_sale"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_height="29dp"-->
+<!--                    android:text="卖出"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:textSfize="14sp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:layout_marginLeft="18dp"-->
+<!--                    android:layout_marginRight="18dp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:background="@drawable/white_r5_border_white" />-->
                 <TextView
                     android:id="@+id/tv_take"
                     android:layout_width="0dp"
