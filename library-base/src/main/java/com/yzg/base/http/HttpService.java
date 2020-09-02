@@ -13,9 +13,13 @@ public class HttpService {
     public static final String Gold_info_detail = BASE_URL+ "system/aipGoldInfo/getInfo";//产品详情
     public static final String Gold_custom_stock = BASE_URL+ "system/storage/getStorage";//查询客户库存
     public static final String EB_Quotation_price = BASE_URL+ "system/price/getPrice";//获取行情价格数据
+    public static final String EB_Quotation_priceList = BASE_URL+ "system/price/list";//行情多条数据
     public static final String EB_Pay_url = BASE_URL+ "notify_alipay.asp";//支付宝支付地址
     public static final String EB_Pay = BASE_URL+ "system/goldFlow/buyStorage";//支付
     public static final String EB_Pay_Success = BASE_URL+ "system/goldFlow/upStorage";//支付成功
     public static final String EB_BuyJLYT = BASE_URL+ "system/goldFlow/buyAg";//购买 积利银条
     public static final String EB_Take = BASE_URL+ "system/goldFlow/takeAg";//提货
+    public static final String EB_UPDATE = BASE_URL+ "app/versionUpdate";//更新
+    public static final String EB_LOGOUT = BASE_URL+ "app/token/logout";//退出
+
 }

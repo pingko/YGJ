@@ -27,6 +27,9 @@ import com.yzg.home.discover.adapter.GDDSItemAdapter;
 import com.yzg.home.discover.adapter.HomeMainJLYTAdapter;
 import com.yzg.home.discover.bean.SquareCard;
 import com.yzg.home.jlyt.HomeJlytActivity;
+import com.yzg.home.jlyt.JlytBean;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 
@@ -140,6 +143,23 @@ public class HomeMainFragment
         viewModel.initModel();
 
     }
+
+
+    private void getQuoList() {
+//        jlytBeanList = new ArrayList<>();
+//
+//        jlytAdapter = new CommonAdapter<JlytBean>(this, R.layout.home_jlyt_item, jlytBeanList) {
+//            @Override
+//            protected void convert(ViewHolder holder, JlytBean bean, int position) {
+//                holder.setText(R.id.tv_name, bean.getProductName());
+//                holder.setText(R.id.tv_rate, bean.getRate() + "%");
+//            }
+//        };
+//        binding.rvJlyt.setLayoutManager(new LinearLayoutManager(this));
+////        binding.rvJlyt.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.common_color_text_gray), ConvertUtils.dp2px(15),ConvertUtils.dp2px(15)));
+//        binding.rvJlyt.setAdapter(jlytAdapter);
+    }
+
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {

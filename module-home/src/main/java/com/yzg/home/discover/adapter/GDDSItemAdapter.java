@@ -2,15 +2,8 @@ package com.yzg.home.discover.adapter;
 
 import androidx.databinding.DataBindingUtil;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.gyf.immersionbar.ImmersionBar;
-import com.tamsiree.rxkit.RxImageTool;
-import com.yzg.home.R;
-import com.yzg.home.databinding.HomeItemCategoryItemSubjectCardViewBinding;
 import com.yzg.home.databinding.HomeItemCategoryItemSubjectGddsViewBinding;
 import com.yzg.home.discover.bean.SquareCard;
 

@@ -1,11 +1,20 @@
 package com.yzg.home.main;
 
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BaseModel;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.discover.bean.SubjectCardBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import io.reactivex.disposables.Disposable;
 
@@ -42,6 +51,7 @@ public class HomeMainModel<T> extends BaseModel<T> {
 //                  }
 //              });
         parseJson("");
+        loadriceList();
     }
 
     private void parseJson(String s) {
@@ -53,11 +63,33 @@ public class HomeMainModel<T> extends BaseModel<T> {
 
         loadSuccess((T) viewModels);
     }
+    public void loadriceList() {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("pageNum","1");
+        map.put("pageSize","10");
+        OkGo.<String>post(HttpService.EB_Quotation_priceList)
+                .params(map)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (!TextUtils.isEmpty(response.body())) {
+//                            JSONObject jsonObject = JSON.parseObject(response.body());
+//                            lastPrice.setValue(jsonObject.getFloatValue("lastPrice") / 1000);
+                        }
+                    }
 
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+//                        errorLiveData.setValue(response.body());
+                    }
+                });
+    }
 
     @Override
     public void cancel() {
         super.cancel();
-//        EasyHttp.cancelSubscription(disposable);
+        OkGo.getInstance().cancelTag(this);
     }
 }
