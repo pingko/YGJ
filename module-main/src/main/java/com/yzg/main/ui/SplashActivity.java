@@ -2,13 +2,18 @@ package com.yzg.main.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.adapter.ScreenAutoAdapter;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.main.R;
 
 /**
@@ -37,12 +42,16 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startToMain() {
-//        if (MmkvHelper.getInstance().getMmkv().decodeBool("first", true)) {
-//            startActivity(new Intent(this, GuideActivity.class));
-//        } else {
-//
-//        }
-        MainActivity.start(this);
+        String token = MmkvHelper.getInstance().getMmkv().decodeString("token", "");
+        Log.e("SplashActivity", "token:" + token);
+        if (TextUtils.isEmpty(token)) {
+            ARouter.getInstance()
+                    .build(RouterActivityPath.User.PAGER_LOGIN)
+                    .withInt("splashLogin",1)
+                    .navigation();
+        } else {
+            MainActivity.start(this);
+        }
 
     }
 
