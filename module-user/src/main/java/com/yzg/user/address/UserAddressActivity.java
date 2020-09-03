@@ -25,8 +25,6 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.http.Path;
-
 
 @Route(path = RouterActivityPath.User.PAGER_Address)
 public class UserAddressActivity extends MvvmBaseActivity<UserActivityAddressBinding, UserAddressViewModel> implements IAddressView {
