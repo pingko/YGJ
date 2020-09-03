@@ -2,31 +2,29 @@ package com.yzg.community;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.yzg.base.fragment.MvvmLazyFragment;
+import com.yzg.base.model.MarkettBean;
 import com.yzg.common.contract.BaseCustomViewModel;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.community.adapter.IQuotationContentView;
-import com.yzg.community.adapter.QuoContentAdapter;
 import com.yzg.community.adapter.QuotationContentViewModel;
 import com.yzg.community.databinding.CommunityFragmentThemesContentBinding;
 import com.yzg.community.recommend.QuotationActivity;
-import com.yzg.community.recommend.bean.QuotationBean;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,9 +44,7 @@ public class QuotationChildFragment extends
 
     private String typeName = "";
 
-//    private String apiUrl = "";
-
-    private List<QuotationBean> quotationBeans = new ArrayList<>();
+    private List<MarkettBean> quotationBeans = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -67,12 +63,8 @@ public class QuotationChildFragment extends
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         initView();
-        initAdapter();
     }
-    private CommonAdapter jlytAdapter;
-    private void initAdapter() {
-
-    }
+    private CommonAdapter marketAdapter;
 
     private void initView() {
         binding.rvThemeView.setHasFixedSize(true);
@@ -86,43 +78,43 @@ public class QuotationChildFragment extends
 //            viewModel.tryRefresh();
         });
         binding.refreshLayout.setEnableLoadMore(false);
-//        binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-//            viewModel.loadMore();
-//        });
-//        adapter = new QuoContentAdapter(R.layout.community_quo_item_view);
+        binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            viewModel.loadData("");
+            binding.refreshLayout.finishRefresh(true);
+        });
 
-        //zheli 要加上
-//        adapter.addHeaderView(getHeadView());
-
-        jlytAdapter = new CommonAdapter<QuotationBean>(getActivity(), R.layout.community_quo_item_view, quotationBeans) {
+        marketAdapter = new CommonAdapter<MarkettBean>(getActivity(), R.layout.community_quo_item_view, quotationBeans) {
             @Override
-            protected void convert(ViewHolder holder, QuotationBean bean, int position) {
-                TextView tv_title = holder.getView(R.id.tv_title);
-                TextView tv_subtitle = holder.getView(R.id.tv_subtitle);
-                TextView tv_range = holder.getView(R.id.tv_range);
-                TextView tv_price = holder.getView(R.id.tv_price);
+            protected void convert(ViewHolder holder, MarkettBean bean, int position) {
                 holder.setText(R.id.tv_title, bean.getVarietynm()+"");
                 holder.setText(R.id.tv_subtitle, bean.getVariety());
-                holder.setText(R.id.tv_range, bean.getChangePrice()+"");
-                holder.setText(R.id.tv_price, bean.getChangeMargin()+"");
+                holder.setText(R.id.tv_range, bean.getChangeMargin()+"");
+                holder.setText(R.id.tv_price, bean.getChangePrice()+"");
 
             }
         };
-        binding.rvThemeView.setAdapter(jlytAdapter);
-        setLoadSir(binding.refreshLayout);
-        showLoading();
+        binding.rvThemeView.setAdapter(marketAdapter);
         viewModel.loadData(typeName);
 
-        jlytAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        marketAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                startActivity(new Intent(getActivity(), QuotationActivity.class));
+                ARouter.getInstance()
+                        .build(RouterActivityPath.Quotation.Quotation_main)
+                        .withSerializable("MarkettBean",quotationBeans.get(i))
+                        .navigation();
             }
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                 return false;
             }
+        });
+
+        viewModel.successData.observe(this, markettBeans -> {
+            quotationBeans.clear();
+            quotationBeans.addAll(markettBeans);
+            marketAdapter.notifyDataSetChanged();
         });
 
     }
@@ -148,13 +140,6 @@ public class QuotationChildFragment extends
     @Override
     protected void onRetryBtnClick() {
 
-    }
-
-    private View getHeadView() {
-        return LayoutInflater.from(getContext())
-                .inflate(R.layout.quotation_item_footer_view,
-                        binding.rvThemeView,
-                        false);
     }
 
 

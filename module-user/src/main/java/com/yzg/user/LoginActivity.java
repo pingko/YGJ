@@ -99,6 +99,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
     public void onDataLoadFinish(BaseCustomViewModel viewModel) {
         TokenBean tokenBean = (TokenBean) viewModel;
         MmkvHelper.getInstance().getMmkv().encode("token", tokenBean.getToken());
+        MmkvHelper.getInstance().getMmkv().encode("acctNo",  binding.etPhone.getText().toString());
         RxToast.normal("登录成功");
         if (splashLogin == 1) {
             Log.e("ss", "sss");

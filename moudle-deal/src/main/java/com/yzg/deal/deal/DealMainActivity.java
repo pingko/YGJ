@@ -15,8 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
 import com.jeremyliao.liveeventbus.LiveEventBus;
@@ -31,13 +31,13 @@ import com.yzg.deal.R;
 import com.yzg.deal.databinding.DealActivityMainBinding;
 
 import java.util.Map;
-
+@Route(path = RouterActivityPath.Deal.PAGER_DEAL_BUY)
 public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements View.OnClickListener {
 
 
     private int type;//0 买入 1卖出 2提货
-    private String acctNo;
-    private float sirverPrice = 0.3933f;
+    private String acctNo="";
+    private float sirverPrice = 0f;
 
     @Override
     protected DealMainViewModel getViewModel() {
@@ -59,15 +59,34 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
 
     }
 
+
+
+   public void getLastPrice(){
+        viewModel.loadUserData();
+        viewModel.loadTodayPrice();
+       viewModel.userDuccessData.observe(this, userStoreBean -> {
+           if (userStoreBean != null) {
+               acctNo = userStoreBean.getAcctNo();
+           }
+           Log.e("DealMainA", "acctNo"+acctNo );
+       });
+       viewModel.lastPrice.observe(this
+               , aDouble -> {
+           Log.e("DealMainA","price:"+aDouble);
+                   binding.tvPrice.setText(aDouble+ " 克/元");
+               });
+   }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sirverPrice = getIntent().getFloatExtra("sirverPrice",0.3933f);
+        ARouter.getInstance().inject(this);
+        sirverPrice = getIntent().getFloatExtra("sirverPrice",0f);
         binding.ivBack.setOnClickListener(this);
         binding.tvTest.setOnClickListener(this);
         binding.rlAddress.setOnClickListener(this);
         binding.tvPrice.setText(sirverPrice + " 克/元");
-        type = getIntent().getIntExtra("type", -1);
+        type = getIntent().getIntExtra("type", 0);
         acctNo = getIntent().getStringExtra("acctNo");
         if (type == 0) {
             binding.tvMoneyTip.setText("购买金额:");
@@ -132,7 +151,6 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             }
         });
         viewModel.buyResponse.observe(this, s -> {
-            Log.e("aa", s + "");
             if (!s.contains("error")) {
                 orderId = s;
                 payV2(s);
@@ -150,6 +168,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                 }
             }
         });
+        getLastPrice();
     }
 
     float price;

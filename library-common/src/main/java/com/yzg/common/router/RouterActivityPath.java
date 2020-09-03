@@ -48,6 +48,7 @@ public class RouterActivityPath
 
         /** 登录界面 */
         public static final String PAGER_DEAL = DEAL + "/deal";
+        public static final String PAGER_DEAL_BUY = DEAL + "/Deal_BUY";
 
     }
 
