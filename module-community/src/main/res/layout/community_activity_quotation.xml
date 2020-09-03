@@ -196,13 +196,32 @@
         </RelativeLayout>
 
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/rl_top">
+
+            <com.guannan.chartmodule.chart.MarketFigureChart
+                android:id="@+id/chart_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
         <LinearLayout
             app:layout_constraintTop_toBottomOf="@id/rl_top"
             android:layout_marginTop="6dp"
             android:background="@color/white"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
         </LinearLayout>
 
 

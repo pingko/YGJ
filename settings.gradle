@@ -1,3 +1,3 @@
-include ':app', ':library-base', ':library-common', ':module-main', ':module-home', ':module-community',  ':module-more', ':module-user', ':deal'
+include ':app', ':library-base', ':library-common', ':module-main', ':module-home', ':module-community', ':module-more', ':module-user', ':deal', ':chartmodule', ':simulateddata'
 rootProject.name='MvvmComponent'
 project(':deal').projectDir = new File('moudle-deal')
