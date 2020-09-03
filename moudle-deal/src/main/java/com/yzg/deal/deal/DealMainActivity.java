@@ -73,6 +73,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
        viewModel.lastPrice.observe(this
                , aDouble -> {
            Log.e("DealMainA","price:"+aDouble);
+                   sirverPrice = aDouble;
                    binding.tvPrice.setText(aDouble+ " 克/元");
                });
    }
@@ -81,13 +82,13 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ARouter.getInstance().inject(this);
-        sirverPrice = getIntent().getFloatExtra("sirverPrice",0f);
+//        sirverPrice = getIntent().getFloatExtra("sirverPrice",0f);
         binding.ivBack.setOnClickListener(this);
         binding.tvTest.setOnClickListener(this);
         binding.rlAddress.setOnClickListener(this);
         binding.tvPrice.setText(sirverPrice + " 克/元");
         type = getIntent().getIntExtra("type", 0);
-        acctNo = getIntent().getStringExtra("acctNo");
+//        acctNo = getIntent().getStringExtra("acctNo");
         if (type == 0) {
             binding.tvMoneyTip.setText("购买金额:");
             binding.tvFeTip.setText("购买份额(克):");
