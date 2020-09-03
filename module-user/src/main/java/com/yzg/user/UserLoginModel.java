@@ -1,6 +1,7 @@
 package com.yzg.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -25,16 +26,17 @@ public class UserLoginModel<T> extends BaseModel<T> {
 
     @Override
     protected void load() {
-        JSONObject jsonObject = new JSONObject();
         OkGo.<String>post(HttpService.LOGIN)
                 .params(map)
-//                .upJson(jsonObject.toJSONString())
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-//                        HttpLog.e(response.body());
-                        parseJson(response.body());
+                        String s = response.body();
+                        Logger.e(s);
+
+                        TokenBean result = JSONObject.parseObject(JSONObject.parseObject(s).getString("data"), TokenBean.class);
+                        loadSuccess((T) result);
                     }
 
                     @Override
@@ -43,39 +45,8 @@ public class UserLoginModel<T> extends BaseModel<T> {
                     }
                 });
 
-//        disposable = EasyHttp.post(HttpService.LOGIN)
-//                .params(map)
-//                .cacheKey(getClass().getSimpleName())
-//                .execute(new SimpleCallBack<String>() {
-//
-//                    @Override
-//                    public void onError(ApiException e) {
-//                        loadFail(e.getMessage());
-//                    }
-//
-//
-//                    @Override
-//                    public void onSuccess(String s) {
-//                        parseJson(s);
-//                    }
-//
-//                });
     }
 
-    private void parseJson(String s) {
-        Logger.e(s);
-        TokenBean result = JSONObject.parseObject(JSONObject.parseObject(s).getString("data"), TokenBean.class);
-        loadSuccess((T) result);
-
-//        try {
-//            TokenBean bean = GsonUtils.fromLocalJson(String.valueOf(new JSONObject(s).getJSONObject("data")), TokenBean.class);
-//            loadSuccess((T) bean);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-
-    }
 
 
     @Override

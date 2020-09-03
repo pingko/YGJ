@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -59,14 +60,11 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
 
     private void initData() {
         binding.ivBack.setOnClickListener(view -> finish());
-//        setLoadSir(binding.tvLogin);
-        showLoading();
-        viewModel.initModel();
     }
 
     private void initView() {
-        binding.etPhone.setText("1861234567");
-        binding.etPwd.setText("123456");
+//        binding.etPhone.setText("1861234567");
+//        binding.etPwd.setText("123456");
         binding.tvLogin.setOnClickListener(view -> {
             if (TextUtils.isEmpty(binding.etPhone.getText().toString())) {
                 RxToast.info("请输入手机号");
@@ -76,12 +74,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
                 RxToast.info("请输入验证码");
                 return;
             }
-            TreeMap map = new TreeMap();
-            map.put("username", binding.etPhone.getText().toString());
-            map.put("password", binding.etPwd.getText().toString());
-            map.put("rememberMe", "1");
-            viewModel.setRequestParams(map);
-            viewModel.tryToRefresh();
+            viewModel.login(binding.etPhone.getText().toString(), binding.etPwd.getText().toString(),"1");
 
         });
 
@@ -92,24 +85,33 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
         });
 
 
+        viewModel.successData.observe(this, tokenBean -> {
+            MmkvHelper.getInstance().getMmkv().encode("token", tokenBean.getToken());
+            MmkvHelper.getInstance().getMmkv().encode("acctNo",  binding.etPhone.getText().toString());
+            RxToast.normal("登录成功");
+//            if (splashLogin == 1) {
+//                Log.e("ss", "sss");
+//                ARouter.getInstance()
+//                        .build(RouterActivityPath.Main.PAGER_MAIN)
+//                        .navigation();
+//            } else {
+//                setResult(RESULT_OK);
+//            }
+//            finish();
+
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Main.PAGER_MAIN)
+                    .navigation();
+        });
+
+        viewModel.errorLiveData.observe(this, s -> RxToast.normal(s));
+
     }
 
 
     @Override
     public void onDataLoadFinish(BaseCustomViewModel viewModel) {
-        TokenBean tokenBean = (TokenBean) viewModel;
-        MmkvHelper.getInstance().getMmkv().encode("token", tokenBean.getToken());
-        MmkvHelper.getInstance().getMmkv().encode("acctNo",  binding.etPhone.getText().toString());
-        RxToast.normal("登录成功");
-        if (splashLogin == 1) {
-            Log.e("ss", "sss");
-            ARouter.getInstance()
-                    .build(RouterActivityPath.Main.PAGER_MAIN)
-                    .navigation();
-        } else {
-            setResult(RESULT_OK);
-        }
-        finish();
+
     }
 
     @Override
