@@ -7,22 +7,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.anguomob.lib.dialog.DialogUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.jeremyliao.liveeventbus.LiveEventBus;
-import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.http.HttpLog;
@@ -117,7 +113,7 @@ public class UserFragment
         });
 
         binding.rlHelp.setOnClickListener(view -> {
-            showTip();
+            RxToast.normal("开发中");
         });
         binding.rlSetting.setOnClickListener(view -> {
 
@@ -139,22 +135,6 @@ public class UserFragment
         binding.tvProduct.setOnClickListener(this);
 
 
-    }
-
-    private void showTip() {
-        String user_agreement = "用户协议";
-        String user_agreement_des = "用户协议\n用户协议用户协议用户协议用户协议用户协议用户协议用户协议用户协议用户协议\n用户协议用户协议用户协议用户协议用户协议用户协议用户协议用户协议用户协议\n用户协议用户协议用户协议用户协议用户协议用户协议用户协议用户协议用户协议";
-        String privacy_policy = "隐私政策";
-        String privacy_policy_des = "隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策\n隐私政策";
-        String email = "\n15346411@qq.com";
-        //响应魅族审核要求
-        String privacy_policy_des_supplement = "\n\n公司名称：哈奥多钱公司\\n注册地址：菏泽市曹县普连集\\n常用办公地址：菏泽市曹县普连集\\n信息保护负责人联系电话：1652211321\\n\\n隐私权限使用说明：\\n\\n显示悬浮窗和后台弹出界面和读取联系人和拨打电话：来电显示功能使用：\\n系统设置:修改壁纸使用\\n读写手机存储：应用缓存使用\\n相机：视频相机壁纸功能使用\\n读取应用列表和定位：广告插件使用\\n读取手机信息：日志收集使用";
-        String read_private = "为了获得更好的用户体验，请阅读并同意以下条款";
-        String readok = "我同意";
-        String later = "稍后再看";
-        int toobar_bg_color_id = R.color.common_color_d5d5d5;
-        DialogUtils.initFirstPrivate(getActivity(), user_agreement, user_agreement_des, privacy_policy, privacy_policy_des, email, privacy_policy_des_supplement, read_private, readok, later,toobar_bg_color_id);
-        DialogUtils.openShowTextPage(getActivity(),user_agreement,user_agreement_des,toobar_bg_color_id);
     }
 
 
