@@ -10,8 +10,7 @@ import java.util.ArrayList;
 public class HomeGDDSListViewModel
         extends MvmBaseViewModel<IHomeGDDSListView, HomeGDDSListModel>
         implements IModelListener<ArrayList<BaseCustomViewModel>> {
-    public ArrayList<String> banners;
-
+    public ArrayList<Integer> banners;
     @Override
     public void onLoadFinish(BaseModel model,
                              ArrayList<BaseCustomViewModel> data) {

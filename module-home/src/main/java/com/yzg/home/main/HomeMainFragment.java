@@ -16,6 +16,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
+import com.yzg.base.model.MarkettBean;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.recyclerview.RecyclerItemDecoration;
 import com.yzg.common.router.RouterActivityPath;
@@ -29,9 +30,11 @@ import com.yzg.home.discover.bean.SquareCard;
 import com.yzg.home.jlyt.HomeJlytActivity;
 import com.yzg.home.jlyt.JlytBean;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 应用模块:
@@ -81,15 +84,12 @@ public class HomeMainFragment
             intent.setClass(getContext(), HomeGddsDetailActivity.class);
             getActivity().startActivity(intent);
         });
-//        adapter.setNewData(dataList);
-
         binding.rvCategoryView.setAdapter(adapter);
-
-
         binding.refreshLayout
                 .setRefreshHeader(new ClassicsHeader(getContext()));
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
-            viewModel.tryToRefresh();
+            loadFinish();
+            binding.refreshLayout.finishRefresh(true);
         });
 
 
@@ -99,10 +99,6 @@ public class HomeMainFragment
         binding.rvGdds.setLayoutManager(layoutManager);
         binding.rvGdds.addItemDecoration(new RecyclerItemDecoration(0,
                 0, DensityUtils.dip2px(getContext(), 16), 0));
-
-        binding.llQuotation.setOnClickListener(view -> ARouter.getInstance()
-                .build(RouterActivityPath.Quotation.Quotation_main)
-                .navigation());
         gddsAdapter = new GDDSItemAdapter(
                 R.layout.home_item_category_item_subject_gdds_view);
         gddsAdapter.setOnItemClickListener((adapter1, view, position) -> {
@@ -128,7 +124,10 @@ public class HomeMainFragment
             getActivity().startActivity(intent);
         });
         binding.llFerg.setOnClickListener(view -> {
-            RxToast.normal("开发中");
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Deal.PAGER_DEAL_BUY)
+                    .navigation();
+
         });
         binding.llJlyt.setOnClickListener(view -> {
             startActivity(new Intent(getContext(), HomeJlytActivity.class));
@@ -138,26 +137,53 @@ public class HomeMainFragment
                     .get("index")
                     .post(3);
         });
-        setLoadSir(binding.refreshLayout);
-        showLoading();
-        viewModel.initModel();
+//        setLoadSir(binding.refreshLayout);
+//        showLoading();
+
+        getQuoList();
+        viewModel.loadMarkets();//加载行情列表
+        loadFinish();
 
     }
 
+    private CommonAdapter marketAdapter;
+    private List<MarkettBean> quotationBeans = new ArrayList<>();
 
     private void getQuoList() {
-//        jlytBeanList = new ArrayList<>();
-//
-//        jlytAdapter = new CommonAdapter<JlytBean>(this, R.layout.home_jlyt_item, jlytBeanList) {
-//            @Override
-//            protected void convert(ViewHolder holder, JlytBean bean, int position) {
-//                holder.setText(R.id.tv_name, bean.getProductName());
-//                holder.setText(R.id.tv_rate, bean.getRate() + "%");
-//            }
-//        };
-//        binding.rvJlyt.setLayoutManager(new LinearLayoutManager(this));
-////        binding.rvJlyt.addItemDecoration(new DefaultItemDecoration(ContextCompat.getColor(this, R.color.common_color_text_gray), ConvertUtils.dp2px(15),ConvertUtils.dp2px(15)));
-//        binding.rvJlyt.setAdapter(jlytAdapter);
+        binding.rvMarket.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        binding.rvMarket.setLayoutManager(layoutManager);
+//        binding.rvMarket.addItemDecoration(new RecyclerItemDecoration(0,
+//                0, DensityUtils.dip2px(getContext(), 16), 0));
+        marketAdapter = new CommonAdapter<MarkettBean>(getActivity(), R.layout.home_martket_item_view, quotationBeans) {
+            @Override
+            protected void convert(ViewHolder holder, MarkettBean bean, int position) {
+                holder.setText(R.id.tv_name, bean.getVarietynm() + "");
+                holder.setText(R.id.tv_td_price, bean.getLastPrice() + "");
+                holder.setText(R.id.tv_td_change, bean.getChangePrice() + "  " + bean.getChangeMargin() + "");
+            }
+        };
+        marketAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                ARouter.getInstance()
+                        .build(RouterActivityPath.Quotation.Quotation_main)
+                        .withSerializable("MarkettBean",quotationBeans.get(i))
+                        .navigation();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
+        });
+        binding.rvMarket.setAdapter(marketAdapter);
+        viewModel.successData.observe(this, markettBeans -> {
+            quotationBeans.clear();
+            quotationBeans.addAll(markettBeans);
+            marketAdapter.notifyDataSetChanged();
+        });
     }
 
 
@@ -224,5 +250,18 @@ public class HomeMainFragment
         adapter.setNewData(dataList);
         gddsAdapter.setNewData(dataList);
         showContent();
+    }
+
+
+    /**
+     * 模拟假数据  激励银条  跟单大师
+     */
+    public void loadFinish() {
+        dataList.clear();
+        for (int i = 0; i < 4; i++) {
+            dataList.add(new SquareCard());
+        }
+        adapter.setNewData(dataList);
+        gddsAdapter.setNewData(dataList);
     }
 }

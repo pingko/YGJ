@@ -53,7 +53,6 @@ public class DealFragment
         binding.tvTake.setOnClickListener(this);
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
 
-        viewModel.loadTodayPrice();
         viewModel.successData.observe(this, userStoreBean -> {
             if (userStoreBean != null) {
                 binding.tvCcMonney.setText(userStoreBean.getCurrCanUse() + "");
@@ -88,9 +87,10 @@ public class DealFragment
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
-        Log.e("ss","sss");
+        Log.e("DealFragment","first");
         if (!TextUtils.isEmpty(token)) {
             viewModel.loadData();
+            viewModel.loadTodayPrice();
         }
     }
 
@@ -108,7 +108,6 @@ public class DealFragment
     protected void onRetryBtnClick() {
 
     }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take) {

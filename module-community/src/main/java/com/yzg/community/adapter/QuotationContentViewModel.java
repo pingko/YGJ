@@ -10,16 +10,11 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.yzg.base.activity.IBaseView;
-import com.yzg.base.http.HttpLog;
 import com.yzg.base.http.HttpService;
-import com.yzg.base.model.BasePagingModel;
-import com.yzg.base.model.IPagingModelListener;
-import com.yzg.base.viewmodel.MvmBaseViewModel;
+import com.yzg.base.model.MarkettBean;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
-import com.yzg.common.contract.BaseCustomViewModel;
-import com.yzg.community.recommend.bean.QuotationBean;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 
@@ -32,71 +27,11 @@ import java.util.TreeMap;
  * @author darryrzhoong
  * @since 2020-02-23
  */
-//public class QuotationContentViewModel
-//        extends MvmBaseViewModel<IQuotationContentView, QuotationContentModel>
-//        implements IPagingModelListener<ArrayList<BaseCustomViewModel>> {
 public class QuotationContentViewModel
         extends MvvmBaseViewModel<IBaseView> {
-//    @Override
-//    protected void initModel() {
-//
-//    }
-//
-//    public void initModel(String typeName) {
-//        model = new QuotationContentModel(typeName);
-//        model.register(this);
-////        model.getCacheDataAndLoad();
-//    }
-//
-//    @Override
-//    public void onLoadFinish(BasePagingModel model,
-//                             ArrayList<BaseCustomViewModel> data, boolean isEmpty,
-//                             boolean isFirstPage) {
-//        if (getPageView() != null) {
-//            if (isEmpty) {
-//                if (isFirstPage) {
-//                    getPageView().showEmpty();
-//                } else {
-//                    getPageView().onLoadMoreEmpty();
-//                }
-//            } else {
-//                getPageView().onDataLoaded(data,isFirstPage);
-//            }
-//
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onLoadFail(BasePagingModel model, String prompt,
-//                           boolean isFirstPage) {
-//        if (getPageView() != null) {
-//            if (isFirstPage) {
-//                getPageView().showFailure(prompt);
-//            } else {
-//                getPageView().onLoadMoreFailure(prompt);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void detachUi() {
-//        super.detachUi();
-//        if (model != null) {
-//            model.unRegister(this);
-//        }
-//    }
-//
-//    public void tryRefresh() {
-//        model.refresh();
-//    }
-//
-//    public void loadMore() {
-//        model.loadMore();
-//    }
 
 
-    public MutableLiveData<QuotationBean> successData = new MutableLiveData<>();
+    public MutableLiveData< List<MarkettBean>> successData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
     public MutableLiveData<String> buyResponse = new MutableLiveData<>();
 
@@ -111,8 +46,13 @@ public class QuotationContentViewModel
                     @Override
                     public void onSuccess(Response<String> response) {
                         if (!TextUtils.isEmpty(response.body())) {
-//                            JSONObject jsonObject = JSON.parseObject(response.body());
-//                            lastPrice.setValue(jsonObject.getFloatValue("lastPrice") / 1000);
+                            JSONObject jsonObject = JSON.parseObject(response.body());
+                            if (jsonObject!=null && jsonObject.containsKey("rows")){
+                                List<MarkettBean> beans = JSONObject.parseArray(jsonObject.getString("rows"),MarkettBean.class);
+                                successData.setValue(beans);
+                            }else {
+                                errorLiveData.setValue(response.message());
+                            }
                         }
                     }
 

@@ -15,6 +15,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -78,8 +79,8 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
     }
 
     private void initView() {
-        binding.etPhone.setText("1861234567");
-        binding.etPwd.setText("123456");
+//        binding.etPhone.setText("1861234567");
+//        binding.etPwd.setText("123456");
         binding.tvLogin.setOnClickListener(view -> {
             if (TextUtils.isEmpty(binding.etPhone.getText().toString())) {
                 RxToast.normal("请输入手机号");

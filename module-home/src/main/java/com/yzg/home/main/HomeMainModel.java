@@ -2,6 +2,8 @@ package com.yzg.home.main;
 
 import android.text.TextUtils;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lzy.okgo.OkGo;
@@ -9,6 +11,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BaseModel;
+import com.yzg.base.model.MarkettBean;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.discover.bean.SubjectCardBean;
 
@@ -34,58 +37,53 @@ public class HomeMainModel<T> extends BaseModel<T> {
 
     @Override
     protected void load() {
-//        disposable = EasyHttp.get(DEFAULT_URL)
-//              .cacheKey(getClass().getSimpleName())
-//              .execute(new SimpleCallBack<String>()
-//              {
-//                  @Override
-//                  public void onError(ApiException e)
-//                  {
-//                      loadFail(e.getMessage());
-//                  }
+//        parseJson("");
+//        loadriceList();
+    }
+
+//    private void parseJson(String s) {
+//        List<BaseCustomViewModel> viewModels = new ArrayList<>();
+//        for (int i = 0; i < 1; i++) {
+//            SubjectCardBean subjectCardBean = new SubjectCardBean();
+//            viewModels.add(subjectCardBean);
+//        }
 //
-//                  @Override
-//                  public void onSuccess(String s)
-//                  {
-//                      parseJson(s);
-//                  }
-//              });
-        parseJson("");
-        loadriceList();
-    }
-
-    private void parseJson(String s) {
-        List<BaseCustomViewModel> viewModels = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            SubjectCardBean subjectCardBean = new SubjectCardBean();
-            viewModels.add(subjectCardBean);
-        }
-
-        loadSuccess((T) viewModels);
-    }
-    public void loadriceList() {
-        TreeMap<String, String> map = new TreeMap<>();
-        map.put("pageNum","1");
-        map.put("pageSize","10");
-        OkGo.<String>post(HttpService.EB_Quotation_priceList)
-                .params(map)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        if (!TextUtils.isEmpty(response.body())) {
+//        loadSuccess((T) viewModels);
+//    }
+//
+//    public MutableLiveData< List<MarkettBean>> successData = new MutableLiveData<>();
+//    public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+//    public MutableLiveData<String> buyResponse = new MutableLiveData<>();
+//
+//    public void loadriceList() {
+//        TreeMap<String, String> map = new TreeMap<>();
+//        map.put("pageNum","1");
+//        map.put("pageSize","10");
+//        OkGo.<String>post(HttpService.EB_Quotation_priceList)
+//                .params(map)
+//                .tag(this)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//                        if (!TextUtils.isEmpty(response.body())) {
 //                            JSONObject jsonObject = JSON.parseObject(response.body());
-//                            lastPrice.setValue(jsonObject.getFloatValue("lastPrice") / 1000);
-                        }
-                    }
+//                            if (jsonObject!=null && jsonObject.containsKey("rows")){
+//                                List<MarkettBean> beans = JSONObject.parseArray(jsonObject.getString("rows"),MarkettBean.class);
+//                                successData.setValue(beans);
+//                            }else {
+//                                errorLiveData.setValue(response.message());
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        super.onError(response);
+////                        errorLiveData.setValue(response.body());
+//                    }
+//                });
+//    }
 
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-//                        errorLiveData.setValue(response.body());
-                    }
-                });
-    }
 
     @Override
     public void cancel() {

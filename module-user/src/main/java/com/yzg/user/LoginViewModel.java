@@ -1,60 +1,71 @@
 package com.yzg.user;
 
-import androidx.databinding.ObservableBoolean;
+import android.text.TextUtils;
 
+import androidx.databinding.ObservableBoolean;
+import androidx.lifecycle.MutableLiveData;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
+import com.yzg.base.activity.IBaseView;
+import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.model.IModelListener;
+import com.yzg.base.model.MarkettBean;
 import com.yzg.base.viewmodel.MvmBaseViewModel;
+import com.yzg.base.viewmodel.MvvmBaseViewModel;
 import com.yzg.common.contract.BaseCustomViewModel;
+import com.yzg.user.bean.TokenBean;
 
+import java.util.List;
 import java.util.TreeMap;
 
-public class LoginViewModel extends MvmBaseViewModel<IUserLoginView, UserLoginModel>
-        implements IModelListener<BaseCustomViewModel> {
+public class LoginViewModel extends MvvmBaseViewModel<IBaseView> {
 
-//    public MutableLiveData<Boolean> isLoginLivedata = new MutableLiveData<>();
-    public ObservableBoolean isLoginLivedata=new ObservableBoolean(false);
+    public MutableLiveData<TokenBean> successData = new MutableLiveData<>();
+    public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+
+    public void login(String username,String password,String rememberMe) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("username", username);
+        map.put("password", password);
+        map.put("rememberMe", rememberMe);
+        OkGo.<String>post(HttpService.LOGIN)
+                .params(map)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+
+                        if (jsonObject!=null&& jsonObject.getIntValue("code")==0){
+                            TokenBean result = JSONObject.parseObject(jsonObject.getString("data"), TokenBean.class);
+                            successData.setValue(result);
+                        }else {
+                            errorLiveData.setValue(jsonObject.getString("msg"));
+                        }
 
 
-    public void setRequestParams(TreeMap map) {
-        model.setMap(map);
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.message());
+                    }
+                });
     }
-    @Override
-    public void onLoadFinish(BaseModel model, BaseCustomViewModel data) {
-        if (getPageView() != null) {
-            if (data != null) {
-                getPageView().onDataLoadFinish(data);
-            } else {
-                getPageView().showEmpty();
-            }
-        }
-    }
 
-
-    @Override
-    public void onLoadFail(BaseModel model, String prompt) {
-        if (getPageView() != null) {
-            getPageView().showFailure(prompt);
-        }
-    }
-
-    public void tryToRefresh() {
-        model.load();
-    }
-
-    @Override
-    public void initModel() {
-        model = new UserLoginModel();
-        model.register(this);
-//        model.getCacheDataAndLoad();
-    }
 
     @Override
     public void detachUi() {
         super.detachUi();
-        if (model != null) {
-            model.unRegister(this);
-        }
+        OkGo.getInstance().cancelTag(this);
 
     }
 }

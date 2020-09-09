@@ -57,13 +57,22 @@
 
 
 
+<!--                    <com.zhpan.bannerview.BannerViewPager-->
+<!--                        android:id="@+id/bv_top"-->
+<!--                        initBannerView="@{HomeVM.banners}"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="112dp"-->
+<!--                        android:layout_margin="15dp"-->
+<!--                        android:background="@color/common_colorWhite"-->
+<!--                        app:bvp_indicator_checked_color="@android:color/holo_red_dark"-->
+<!--                        app:bvp_indicator_normal_color="@android:color/darker_gray"-->
+<!--                        app:bvp_page_margin="10dp" />-->
+
                     <com.zhpan.bannerview.BannerViewPager
                         android:id="@+id/bv_top"
-                        initBannerView="@{HomeVM.banners}"
+                        initBannerView1="@{HomeVM.banners}"
                         android:layout_width="match_parent"
-                        android:layout_height="112dp"
-                        android:layout_margin="15dp"
-                        android:background="@color/common_colorWhite"
+                        android:layout_height="130dp"
                         app:bvp_indicator_checked_color="@android:color/holo_red_dark"
                         app:bvp_indicator_normal_color="@android:color/darker_gray"
                         app:bvp_page_margin="10dp" />

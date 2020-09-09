@@ -65,6 +65,7 @@ public class RouterFragmentPath {
     public static class Deal {
         private static final String DEAL = "/deal";
         public static final String PAGER_DEAL = DEAL + "/Deal";
+
     }
 
 }

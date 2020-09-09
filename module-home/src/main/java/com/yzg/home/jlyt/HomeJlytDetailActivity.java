@@ -15,15 +15,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.alipay.sdk.app.PayTask;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
-import com.yzg.base.http.HttpLog;
 import com.yzg.common.alipay.AuthResult;
 import com.yzg.common.alipay.OrderInfoUtil2_0;
 import com.yzg.common.alipay.PayResult;
-import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeActivityJlytDetailBinding;
 
 import java.util.Map;
+
+
 
 public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> {
 

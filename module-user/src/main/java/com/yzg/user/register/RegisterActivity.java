@@ -64,10 +64,10 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
     }
 
     private void initView() {
-        binding.etPhone.setText("1861234567");
-        binding.etPwd.setText("123456");
-        binding.etPwd2.setText("123456");
-        binding.etName.setText("大富翁");
+//        binding.etPhone.setText("1861234567");
+//        binding.etPwd.setText("123456");
+//        binding.etPwd2.setText("123456");
+//        binding.etName.setText("大富翁");
         binding.tvRegis.setOnClickListener(view -> {
             if (TextUtils.isEmpty(binding.etName.getText().toString())) {
                 RxToast.normal("请输入昵称");
