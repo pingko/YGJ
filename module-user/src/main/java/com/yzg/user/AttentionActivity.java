@@ -66,11 +66,11 @@ public class AttentionActivity extends AppCompatActivity {
 //        }
 
         if (1 == type) {
-            web_view.loadUrl("file:///android_asset/service.html");
+            web_view.loadUrl("file:///android_asset/user_service.html");
             rl_title.setText("用户协议");
 
         } else {
-            web_view.loadUrl("file:///android_asset/privacy_policy.html");
+            web_view.loadUrl("file:///android_asset/privacy.html");
             rl_title.setText("隐私政策");
         }
 
