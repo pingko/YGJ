@@ -6,4 +6,5 @@
     <color name="user_color_login_bg">#ff9f9c96</color>
     <color name="user_color_login_bg2">#4d9e7b</color>
     <color name="user_color_login_bg3">#d4d3d0</color>
+    <color name="user_color_main">#D79A55</color>
 </resources>

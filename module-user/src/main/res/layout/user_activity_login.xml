@@ -127,7 +127,25 @@
             android:layout_height="wrap_content"/>
 
 
+        <ImageView
+            android:id="@+id/iv_choose"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/user_ic_match_normal"
+            app:layout_constraintTop_toTopOf="@id/tv_register"
+            app:layout_constraintBottom_toBottomOf="@id/tv_register"
+            app:layout_constraintStart_toStartOf="@id/tv_login"/>
 
+        <TextView
+            android:id="@+id/tv_pri"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@id/tv_register"
+            app:layout_constraintBottom_toBottomOf="@id/tv_register"
+            app:layout_constraintLeft_toRightOf="@id/iv_choose"
+            android:layout_marginLeft="2dp"
+            android:text="已阅读《用户协议》和《隐私政策》"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
