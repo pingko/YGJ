@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 import com.yzg.base.storage.MmkvHelper;
+import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.adapter.ScreenAutoAdapter;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.main.R;
@@ -39,6 +40,11 @@ public class SplashActivity extends AppCompatActivity {
                 .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
                 .init();
         mHandler.postDelayed(this::startToMain, 1000);
+        if (!GsonUtils.isShowTrue()){
+            findViewById(R.id.rl_top).setBackgroundResource(R.drawable.nono);
+        }else {
+            findViewById(R.id.rl_top).setBackgroundResource(R.drawable.splash_bg);
+        }
     }
 
     private void startToMain() {

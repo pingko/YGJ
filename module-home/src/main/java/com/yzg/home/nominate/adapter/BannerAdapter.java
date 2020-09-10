@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import androidx.databinding.BindingAdapter;
 
+import com.yzg.base.utils.GsonUtils;
 import com.yzg.home.R;
 import com.yzg.home.nominate.adapter.provider.LocalBannerProvider;
 import com.yzg.home.nominate.adapter.provider.NetBannerProvider;
@@ -41,11 +42,15 @@ public class BannerAdapter {
     public static void initBannerView1(BannerViewPager bannerViewPager,
                                       ArrayList<Integer> list) {
         ArrayList<Integer> list1 = new ArrayList<>();
-        list1.add(R.drawable.banner_01);
-        list1.add(R.drawable.banner_02);
-        list1.add(R.drawable.banner_03);
-        list1.add(R.drawable.banner_04);
-
+       if (GsonUtils.isShowTrue()) {
+           list1.add(R.drawable.banner_01);
+           list1.add(R.drawable.banner_02);
+           list1.add(R.drawable.banner_03);
+           list1.add(R.drawable.banner_04);
+       }else {
+           list1.add(R.drawable.banner_01);
+           list1.add(R.drawable.banner_01);
+       }
         bannerViewPager.setHolderCreator(LocalBannerProvider::new)
                 .setPageStyle(PageStyle.MULTI_PAGE)
                 .create(list1);

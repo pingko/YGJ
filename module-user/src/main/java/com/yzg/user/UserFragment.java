@@ -23,6 +23,7 @@ import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.http.HttpLog;
 import com.yzg.base.storage.MmkvHelper;
+import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.user.bean.UserStoreBean;
 import com.yzg.user.databinding.UserFragmentLayoutBinding;
@@ -64,7 +65,15 @@ public class UserFragment
             binding.rlLogin.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
             binding.rlSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
             binding.viewSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
+
+            if (!GsonUtils.isShowTrue()){
+//                binding.rlNo.setVisibility(View.VISIBLE);
+//                binding.rlLogin.setVisibility(View.GONE);
+                binding.llOption.setVisibility(View.INVISIBLE);
+                binding.tvCs.setVisibility(View.GONE);
+            }
         });
+
     }
 
 

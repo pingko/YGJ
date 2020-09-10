@@ -22,6 +22,8 @@ public class SquareCard implements Serializable {
     public SquareCard() {
     }
 
+
+
     /**
      * dataType : SquareCard
      * id : 14

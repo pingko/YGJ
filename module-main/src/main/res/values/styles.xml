@@ -1,7 +1,7 @@
 <resources>
     <!--StartActivity Style 冷启动效果-->
     <style name="AppTheme.Start" >
-        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <item name="android:windowBackground">@drawable/nono</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>

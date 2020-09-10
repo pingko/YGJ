@@ -17,6 +17,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.model.MarkettBean;
+import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.recyclerview.RecyclerItemDecoration;
 import com.yzg.common.router.RouterActivityPath;
@@ -144,6 +145,13 @@ public class HomeMainFragment
         viewModel.loadMarkets();//加载行情列表
         loadFinish();
 
+        if (!GsonUtils.isShowTrue()){
+            binding.llFerg.setVisibility(View.GONE);
+            binding.llJlyt.setVisibility(View.GONE);
+            binding.tvGdds.setText("经验大师");
+            binding.tvJlyts.setText("积利经验");
+        }
+
     }
 
     private CommonAdapter marketAdapter;
@@ -159,9 +167,13 @@ public class HomeMainFragment
         marketAdapter = new CommonAdapter<MarkettBean>(getActivity(), R.layout.home_martket_item_view, quotationBeans) {
             @Override
             protected void convert(ViewHolder holder, MarkettBean bean, int position) {
+
                 holder.setText(R.id.tv_name, bean.getVarietynm() + "");
                 holder.setText(R.id.tv_td_price, bean.getLastPrice() + "");
                 holder.setText(R.id.tv_td_change, bean.getChangePrice() + "  " + bean.getChangeMargin() + "");
+                if (!GsonUtils.isShowTrue()){
+                    holder.setText(R.id.tv_name,  "青铜"+position+"大师");
+                }
             }
         };
         marketAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -205,7 +217,7 @@ public class HomeMainFragment
             handler.removeCallbacksAndMessages(null);
     }
 
-    private String[] strings = {"135*****001  刘先生 产品名称  25克 300元", "135*****001  刘先生 产品名称  25克 300元"};
+    private String[] strings = {"135****0001  刘先生 产品名称  25克 300元", "135****0001  刘先生 产品名称  25克 300元"};
     public int number = 0;
 
 //    private View getFooterView() {
@@ -258,9 +270,16 @@ public class HomeMainFragment
      */
     public void loadFinish() {
         dataList.clear();
-        for (int i = 0; i < 4; i++) {
-            dataList.add(new SquareCard());
+        if (GsonUtils.isShowTrue()){
+            for (int i = 0; i < 4; i++) {
+                dataList.add(new SquareCard("1个月,100克起","","拆借利率"));
+            }
+        }else {
+            for (int i = 0; i < 4; i++) {
+                dataList.add(new SquareCard("1个月,100豆起","","成长经验"));
+            }
         }
+
         adapter.setNewData(dataList);
         gddsAdapter.setNewData(dataList);
     }

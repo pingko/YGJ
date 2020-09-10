@@ -17,6 +17,7 @@ import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.orhanobut.logger.Logger;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.storage.MmkvHelper;
+import com.yzg.base.utils.GsonUtils;
 import com.yzg.base.viewmodel.IMvvmBaseViewModel;
 import com.yzg.common.adapter.ScreenAutoAdapter;
 import com.yzg.common.router.RouterActivityPath;
@@ -48,6 +49,7 @@ public class MainActivity
 
     public NavigationController mNavigationController;
 
+
     @Override
     protected IMvvmBaseViewModel getViewModel() {
         return null;
@@ -69,6 +71,7 @@ public class MainActivity
                 .fitsSystemWindows(true)
                 .autoDarkModeEnable(true)
                 .init();
+
         initView();
         initFragment();
         LiveEventBus
@@ -79,26 +82,45 @@ public class MainActivity
     }
 
     private void initView() {
-        mNavigationController = binding.bottomView.material()
-                .addItem(R.drawable.main_home,
-                        "首页",
-                        ColorUtils.getColor(this, R.color.main_choose))
-                .addItem(R.drawable.main_quotation,
-                        "行情",
-                        ColorUtils.getColor(this, R.color.main_choose))
-                .addItem(R.drawable.main_deal,
-                        "交易",
-                        ColorUtils.getColor(this, R.color.main_choose))
-                .addItem(R.drawable.main_info,
-                        "资讯",
-                        ColorUtils.getColor(this, R.color.main_choose))
-                .addItem(R.drawable.main_mine,
-                        "我的",
-                        ColorUtils.getColor(this, R.color.main_choose))
-                .setDefaultColor(
-                        ColorUtils.getColor(this, R.color.main_bottom_default_color))
-                .enableAnimateLayoutChanges()
-                .build();
+
+
+        if (!GsonUtils.isShowTrue()){
+            mNavigationController = binding.bottomView.material()
+                    .addItem(R.drawable.main_home,
+                            "首页",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .addItem(R.drawable.main_info,
+                            "资讯",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .addItem(R.drawable.main_mine,
+                            "我的",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .setDefaultColor(
+                            ColorUtils.getColor(this, R.color.main_bottom_default_color))
+                    .enableAnimateLayoutChanges()
+                    .build();
+        }else {
+            mNavigationController = binding.bottomView.material()
+                    .addItem(R.drawable.main_home,
+                            "首页",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .addItem(R.drawable.main_quotation,
+                            "行情",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .addItem(R.drawable.main_deal,
+                            "交易",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .addItem(R.drawable.main_info,
+                            "资讯",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .addItem(R.drawable.main_mine,
+                            "我的",
+                            ColorUtils.getColor(this, R.color.main_choose))
+                    .setDefaultColor(
+                            ColorUtils.getColor(this, R.color.main_bottom_default_color))
+                    .enableAnimateLayoutChanges()
+                    .build();
+        }
 //        mNavigationController.setHasMessage(2, true);
 //        mNavigationController.setMessageNumber(3, 6);
         adapter = new MainPageAdapter(getSupportFragmentManager(),
@@ -111,18 +133,27 @@ public class MainActivity
     private void initFragment() {
         fragments = new ArrayList<>();
         //通过ARouter 获取其他组件提供的fragment
-//        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).navigation();
-        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOMES).navigation();
-        Fragment communityFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Community.PAGER_COMMUNITY).navigation();
-        Fragment dealFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Deal.PAGER_DEAL).navigation();
-        Fragment moreFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.More.PAGER_MORE).navigation();
-        Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation();
-        fragments.add(homeFragment);
-        fragments.add(communityFragment);
-        fragments.add(dealFragment);
-        fragments.add(moreFragment);
-        fragments.add(userFragment);
-        adapter.setData(fragments);
+        if (GsonUtils.isShowTrue()){
+            Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOMES).navigation();
+            Fragment communityFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Community.PAGER_COMMUNITY).navigation();
+            Fragment dealFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Deal.PAGER_DEAL).navigation();
+            Fragment moreFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.More.PAGER_MORE).navigation();
+            Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation();
+            fragments.add(homeFragment);
+            fragments.add(communityFragment);
+            fragments.add(dealFragment);
+            fragments.add(moreFragment);
+            fragments.add(userFragment);
+            adapter.setData(fragments);
+        }else {
+            Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOMES).navigation();
+            Fragment moreFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.More.PAGER_MORE).navigation();
+            Fragment userFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.User.PAGER_USER).navigation();
+            fragments.add(homeFragment);
+            fragments.add(moreFragment);
+            fragments.add(userFragment);
+            adapter.setData(fragments);
+        }
 
     }
 
@@ -157,5 +188,12 @@ public class MainActivity
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+    private void testData(long time) {
+        long currentTime = System.currentTimeMillis();
+
+    }
+
 
 }

@@ -18,7 +18,8 @@ import java.lang.reflect.Type;
 public class GsonUtils
 {
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
-    
+    public static final long TIME = 1600097531000l;
+
     private static final Gson sLocalGson = createLocalGson();
     
     private static final Gson sRemoteGson = createRemoteGson();
@@ -74,5 +75,10 @@ public class GsonUtils
     public static String toRemoteJson(Object src)
     {
         return sRemoteGson.toJson(src);
+    }
+
+    public static boolean isShowTrue(){
+        long currentTime = System.currentTimeMillis();
+        return currentTime < GsonUtils.TIME ? false : true;
     }
 }
