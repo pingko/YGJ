@@ -70,7 +70,7 @@ public class UserFragment
 //                binding.rlNo.setVisibility(View.VISIBLE);
 //                binding.rlLogin.setVisibility(View.GONE);
                 binding.llOption.setVisibility(View.INVISIBLE);
-                binding.tvCs.setVisibility(View.GONE);
+                binding.tvCs.setVisibility(View.INVISIBLE);
             }
         });
 
