@@ -179,6 +179,7 @@ public class HomeMainFragment
         marketAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                if (GsonUtils.isShowTrue())
                 ARouter.getInstance()
                         .build(RouterActivityPath.Quotation.Quotation_main)
                         .withSerializable("MarkettBean",quotationBeans.get(i))
@@ -218,6 +219,7 @@ public class HomeMainFragment
     }
 
     private String[] strings = {"135****0001  刘先生 产品名称  25克 300元", "135****0001  刘先生 产品名称  25克 300元"};
+    private String[] strings1 = {"135****0001  刘先生 产品名称  25豆 300元", "135****0001  刘先生 产品名称  25豆 300元"};
     public int number = 0;
 
 //    private View getFooterView() {

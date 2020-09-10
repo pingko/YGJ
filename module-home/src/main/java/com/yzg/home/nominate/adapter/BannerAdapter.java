@@ -48,8 +48,8 @@ public class BannerAdapter {
            list1.add(R.drawable.banner_03);
            list1.add(R.drawable.banner_04);
        }else {
-           list1.add(R.drawable.banner_01);
-           list1.add(R.drawable.banner_01);
+           list1.add(R.drawable.banner00);
+           list1.add(R.drawable.banner00);
        }
         bannerViewPager.setHolderCreator(LocalBannerProvider::new)
                 .setPageStyle(PageStyle.MULTI_PAGE)
