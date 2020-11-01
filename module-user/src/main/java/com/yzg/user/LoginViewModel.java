@@ -29,11 +29,14 @@ public class LoginViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<TokenBean> successData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
-    public void login(String username,String password,String rememberMe) {
+    public void login(String username, String password, String recommenderName, String rememberMe) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("username", username);
         map.put("password", password);
         map.put("rememberMe", rememberMe);
+        if (!TextUtils.isEmpty(recommenderName)) {
+            map.put("recommenderName", recommenderName);
+        }
         OkGo.<String>post(HttpService.LOGIN)
                 .params(map)
                 .tag(this)
@@ -43,10 +46,10 @@ public class LoginViewModel extends MvvmBaseViewModel<IBaseView> {
 
                         JSONObject jsonObject = JSON.parseObject(response.body());
 
-                        if (jsonObject!=null&& jsonObject.getIntValue("code")==0){
+                        if (jsonObject != null && jsonObject.getIntValue("code") == 0) {
                             TokenBean result = JSONObject.parseObject(jsonObject.getString("data"), TokenBean.class);
                             successData.setValue(result);
-                        }else {
+                        } else {
                             errorLiveData.setValue(jsonObject.getString("msg"));
                         }
 

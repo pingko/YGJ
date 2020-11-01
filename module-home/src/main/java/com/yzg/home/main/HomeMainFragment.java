@@ -3,8 +3,10 @@ package com.yzg.home.main;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.guannan.chartmodule.utils.LogUtils;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.orhanobut.logger.Logger;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
@@ -29,6 +33,7 @@ import com.yzg.home.discover.adapter.GDDSItemAdapter;
 import com.yzg.home.discover.adapter.HomeMainJLYTAdapter;
 import com.yzg.home.discover.bean.SquareCard;
 import com.yzg.home.jlyt.HomeJlytActivity;
+import com.yzg.home.jlyt.HomeJlytDetailActivity;
 import com.yzg.home.jlyt.JlytBean;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -50,11 +55,12 @@ import java.util.List;
 public class HomeMainFragment
         extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel>
         implements IHomeMainView {
-    private HomeMainJLYTAdapter adapter;
-    //    private ProviderGDDSAdapter gddsAdapter;
+    //    private HomeMainJLYTAdapter adapter;
     GDDSItemAdapter gddsAdapter;
     AutoVerticalScrollTextView textView;
     ArrayList<SquareCard> dataList = new ArrayList<>();
+    List<JlytBean> jlytBeans = new ArrayList<>();
+    CommonAdapter jlytAdapter;
 
     public static HomeMainFragment newInstance() {
         HomeMainFragment fragment = new HomeMainFragment();
@@ -70,22 +76,37 @@ public class HomeMainFragment
     private void initView() {
         ARouter.getInstance().inject(this);
         // 确定Item的改变不会影响RecyclerView的宽高
-
         binding.rvCategoryView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager =
                 new GridLayoutManager(getContext(), 2);
         binding.rvCategoryView.setLayoutManager(gridLayoutManager);
         binding.rvCategoryView.addItemDecoration(new RecyclerItemDecoration(0,
                 0, DensityUtils.dip2px(getContext(), 13), DensityUtils.dip2px(getContext(), 12)));
+        jlytAdapter = new CommonAdapter<JlytBean>(getActivity(), R.layout.home_main_jlyt_item, jlytBeans) {
+            @Override
+            protected void convert(ViewHolder holder, JlytBean bean, int position) {
+                holder.setText(R.id.tv_title, bean.getProductName());
+                holder.setText(R.id.tv_zf, bean.getRate() + "%");
+            }
+        };
 
-        adapter = new HomeMainJLYTAdapter(R.layout.home_item_category_item_subject_card_view);
+        binding.rvCategoryView.setAdapter(jlytAdapter);
+        jlytAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                Log.e("sssss", i + "");
+                Intent intent = new Intent(getContext(), HomeJlytDetailActivity.class);
+                intent.putExtra("productId", jlytBeans.get(i).getProductId());
+                startActivity(intent);
+            }
 
-        adapter.setOnItemClickListener((adapter1, view, position) -> {
-            Intent intent = new Intent();
-            intent.setClass(getContext(), HomeGddsDetailActivity.class);
-            getActivity().startActivity(intent);
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
         });
-        binding.rvCategoryView.setAdapter(adapter);
+
+
         binding.refreshLayout
                 .setRefreshHeader(new ClassicsHeader(getContext()));
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
@@ -143,9 +164,9 @@ public class HomeMainFragment
 
         getQuoList();
         viewModel.loadMarkets();//加载行情列表
+        viewModel.loadJlyt();//加载最近积利银条成交
         loadFinish();
-
-        if (!GsonUtils.isShowTrue()){
+        if (!GsonUtils.isShowTrue()) {
             binding.llFerg.setVisibility(View.GONE);
             binding.llJlyt.setVisibility(View.GONE);
             binding.tvGdds.setText("经验大师");
@@ -171,8 +192,8 @@ public class HomeMainFragment
                 holder.setText(R.id.tv_name, bean.getVarietynm() + "");
                 holder.setText(R.id.tv_td_price, bean.getLastPrice() + "");
                 holder.setText(R.id.tv_td_change, bean.getChangePrice() + "  " + bean.getChangeMargin() + "");
-                if (!GsonUtils.isShowTrue()){
-                    holder.setText(R.id.tv_name,  "青铜"+position+"大师");
+                if (!GsonUtils.isShowTrue()) {
+                    holder.setText(R.id.tv_name, "青铜" + position + "大师");
                 }
             }
         };
@@ -180,10 +201,10 @@ public class HomeMainFragment
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                 if (GsonUtils.isShowTrue())
-                ARouter.getInstance()
-                        .build(RouterActivityPath.Quotation.Quotation_main)
-                        .withSerializable("MarkettBean",quotationBeans.get(i))
-                        .navigation();
+                    ARouter.getInstance()
+                            .build(RouterActivityPath.Quotation.Quotation_main)
+                            .withSerializable("MarkettBean", quotationBeans.get(i))
+                            .navigation();
             }
 
             @Override
@@ -196,6 +217,22 @@ public class HomeMainFragment
             quotationBeans.clear();
             quotationBeans.addAll(markettBeans);
             marketAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.jlytBeansData.observe(this, jlytBeans1 -> {
+            Logger.e("积利银条");
+            jlytBeans.clear();
+            if (jlytBeans1.size() <= 4) {
+
+                jlytBeans.addAll(jlytBeans1);
+            } else {
+                for (int i = 0; i < jlytBeans1.size(); i++) {
+                    if (i == 4)
+                        break;
+                    jlytBeans.add(jlytBeans1.get(i));
+                }
+            }
+            jlytAdapter.notifyDataSetChanged();
         });
     }
 
@@ -261,7 +298,15 @@ public class HomeMainFragment
         for (int i = 0; i < 4; i++) {
             dataList.add(new SquareCard());
         }
-        adapter.setNewData(dataList);
+        jlytBeans.clear();
+        for (int i = 0; i < 4; i++) {
+            JlytBean bean = new JlytBean();
+            bean.setProductName("1个月,100克起");
+            bean.setRate(4);
+            jlytBeans.add(bean);
+        }
+
+        jlytAdapter.notifyDataSetChanged();
         gddsAdapter.setNewData(dataList);
         showContent();
     }
@@ -272,17 +317,21 @@ public class HomeMainFragment
      */
     public void loadFinish() {
         dataList.clear();
-        if (GsonUtils.isShowTrue()){
+        jlytBeans.clear();
+        if (GsonUtils.isShowTrue()) {
             for (int i = 0; i < 4; i++) {
-                dataList.add(new SquareCard("1个月,100克起","","拆借利率"));
+                JlytBean bean = new JlytBean();
+                bean.setProductName("1个月,100克起");
+                bean.setRate(4);
+                jlytBeans.add(bean);
             }
-        }else {
+        } else {
             for (int i = 0; i < 4; i++) {
-                dataList.add(new SquareCard("1个月,100豆起","","成长经验"));
+                dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
             }
         }
 
-        adapter.setNewData(dataList);
+        jlytAdapter.notifyDataSetChanged();
         gddsAdapter.setNewData(dataList);
     }
 }

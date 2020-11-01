@@ -24,7 +24,6 @@ import com.yzg.home.databinding.HomeActivityJlytDetailBinding;
 import java.util.Map;
 
 
-
 public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> {
 
 
@@ -64,6 +63,11 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
         viewModel.successData.observe(this, bean -> {
             if (bean != null) {
                 binding.tvDate.setText(bean.getLength() + "个月");
+                binding.tvTitle.setText(bean.getProductName());
+                binding.tvRate.setText(bean.getRate() + "%");
+//                binding.buyRule1.setText("1克起购，10克递增，用户持有上限20000克");
+                binding.tvStart.setText(bean.getPoint() + "克起购");
+                binding.buyRule1.setText(bean.getPoint() + "克起购," + bean.getLength() + "克递增，用户持有上限" + bean.getProductLimit() + "克");
             }
         });
 
@@ -199,7 +203,7 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2,"");
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, "");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;

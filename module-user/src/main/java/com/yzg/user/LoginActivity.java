@@ -93,7 +93,8 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
                 RxToast.normal("请勾选协议");
                 return;
             }
-            viewModel.login(binding.etPhone.getText().toString(), binding.etPwd.getText().toString(),"1");
+
+            viewModel.login(binding.etPhone.getText().toString(), binding.etPwd.getText().toString(),binding.etRecommenderName.getText().toString(),"1");
 
         });
 

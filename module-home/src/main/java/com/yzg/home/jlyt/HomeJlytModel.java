@@ -69,7 +69,6 @@ public class HomeJlytModel<T> extends BasePagingModel<T> {
             loadSuccess((T) viewModels, total == 0, isRefresh);
         }
 
-
     }
 
 

@@ -20,6 +20,7 @@ import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.deal.databinding.DealFragmentMainBinding;
 import com.yzg.deal.deal.DealMainActivity;
+import com.zhpan.idea.utils.LogUtils;
 
 /**
  * 应用模块:
@@ -69,6 +70,7 @@ public class DealFragment
         LiveEventBus
                 .get("buySuccess", Integer.class)
                 .observe(this, s -> {
+                    LogUtils.e("接收到购买成功，刷新持仓");
                     viewModel.loadData();
                 });
         viewModel.lastPrice.observe(this

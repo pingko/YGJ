@@ -155,7 +155,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:includeFontPadding="false"
-                        android:text="@{DetailVm.successData.getRate()+@string/home_rate}"
                         android:textColor="@color/common_color_main"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -227,6 +226,7 @@
                     android:text="中低风险"
                     android:textColor="@color/common_color_main"/>
                 <TextView
+                    android:id="@+id/tv_start"
                     android:layout_width="62dp"
                     android:layout_height="20dp"
                     android:layout_marginRight="12dp"

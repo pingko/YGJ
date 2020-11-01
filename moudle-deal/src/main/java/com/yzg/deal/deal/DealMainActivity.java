@@ -29,7 +29,9 @@ import com.yzg.common.alipay.PayResult;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.deal.R;
 import com.yzg.deal.databinding.DealActivityMainBinding;
+import com.zhpan.idea.utils.LogUtils;
 
+import java.text.NumberFormat;
 import java.util.Map;
 @Route(path = RouterActivityPath.Deal.PAGER_DEAL_BUY)
 public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements View.OnClickListener {
@@ -38,7 +40,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     private int type;//0 买入 1卖出 2提货
     private String acctNo="";
     private float sirverPrice = 0f;
-
+    NumberFormat ddf;
     @Override
     protected DealMainViewModel getViewModel() {
         return ViewModelProviders.of(this).get(DealMainViewModel.class);
@@ -81,6 +83,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+         ddf=NumberFormat.getNumberInstance() ;
+        ddf.setMaximumFractionDigits(2);
         ARouter.getInstance().inject(this);
 //        sirverPrice = getIntent().getFloatExtra("sirverPrice",0f);
         binding.ivBack.setOnClickListener(this);
@@ -113,7 +118,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s)) {
                     price = 0;
-                    binding.tvMoney.setText(price + "元");
+                    binding.tvMoney.setText(ddf.format(price) + "元");
                     return;
                 } else {
                     int a = Integer.parseInt(s.toString());
@@ -123,7 +128,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
 
                         price = (float) (a * sirverPrice);
                     }
-                    binding.tvMoney.setText(price + "元");
+                    binding.tvMoney.setText(ddf.format(price) + "元");
                 }
 
             }
@@ -162,6 +167,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
+                    LogUtils.e("购买成功");
                     LiveEventBus
                             .get("buySuccess")
                             .post(0);
