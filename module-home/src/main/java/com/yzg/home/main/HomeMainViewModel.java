@@ -34,9 +34,6 @@ import java.util.TreeMap;
  * @author darryrzhoong
  * @since 2020-02-15
  */
-//public class HomeMainViewModel
-//        extends MvmBaseViewModel<IHomeMainView, HomeMainModel>
-//        implements IModelListener<ArrayList<BaseCustomViewModel>> {
 public class HomeMainViewModel
         extends MvvmBaseViewModel<IBaseView> {
     public ArrayList<Integer> banners;

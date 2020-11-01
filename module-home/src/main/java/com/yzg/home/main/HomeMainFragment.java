@@ -54,8 +54,7 @@ import java.util.List;
 @Route(path = RouterFragmentPath.Home.PAGER_HOMES)
 public class HomeMainFragment
         extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel>
-        implements IHomeMainView {
-    //    private HomeMainJLYTAdapter adapter;
+         {
     GDDSItemAdapter gddsAdapter;
     AutoVerticalScrollTextView textView;
     ArrayList<SquareCard> dataList = new ArrayList<>();
@@ -286,52 +285,17 @@ public class HomeMainFragment
 
     }
 
-    @Override
-    public void onDataLoadFinish(ArrayList<BaseCustomViewModel> viewModels,
-                                 boolean isEmpty) {
-        if (isEmpty) {
-            binding.refreshLayout.finishRefresh(false);
-        } else {
-            binding.refreshLayout.finishRefresh(true);
-        }
-        dataList.clear();
-        for (int i = 0; i < 4; i++) {
-            dataList.add(new SquareCard());
-        }
-        jlytBeans.clear();
-        for (int i = 0; i < 4; i++) {
-            JlytBean bean = new JlytBean();
-            bean.setProductName("1个月,100克起");
-            bean.setRate(4);
-            jlytBeans.add(bean);
-        }
-
-        jlytAdapter.notifyDataSetChanged();
-        gddsAdapter.setNewData(dataList);
-        showContent();
-    }
-
-
     /**
      * 模拟假数据  激励银条  跟单大师
      */
     public void loadFinish() {
-        dataList.clear();
-        jlytBeans.clear();
         if (GsonUtils.isShowTrue()) {
-            for (int i = 0; i < 4; i++) {
-                JlytBean bean = new JlytBean();
-                bean.setProductName("1个月,100克起");
-                bean.setRate(4);
-                jlytBeans.add(bean);
-            }
-        } else {
+            dataList.clear();
             for (int i = 0; i < 4; i++) {
                 dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
             }
+            gddsAdapter.setNewData(dataList);
+            showContent();
         }
-
-        jlytAdapter.notifyDataSetChanged();
-        gddsAdapter.setNewData(dataList);
     }
 }
