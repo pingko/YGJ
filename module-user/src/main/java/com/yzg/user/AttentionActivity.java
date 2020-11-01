@@ -12,7 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.yzg.common.router.RouterActivityPath;
 
 /**
@@ -32,12 +34,15 @@ public class AttentionActivity extends AppCompatActivity {
     private TextView rl_title;
     private ImageView ivBack;
     private int type;
+    @Autowired(name = "serviceType")
+    public int serviceType;
 
     private final String LANGUAGE_CN = "zh-CN";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ARouter.getInstance().inject(this);
         setContentView(R.layout.user_activity_attention);
         initView();
     }
@@ -72,6 +77,11 @@ public class AttentionActivity extends AppCompatActivity {
         } else {
             web_view.loadUrl("file:///android_asset/privacy.html");
             rl_title.setText("隐私政策");
+        }
+
+        if (serviceType==3){
+            web_view.loadUrl("file:///android_asset/yzgService.html");
+            rl_title.setText("银掌柜服务协议");
         }
 
         ivBack.setOnClickListener(view -> finish());

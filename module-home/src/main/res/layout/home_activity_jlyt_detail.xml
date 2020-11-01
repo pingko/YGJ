@@ -553,8 +553,10 @@
 
 
         <LinearLayout
+            android:id="@+id/ll_service"
             app:layout_constraintTop_toBottomOf="@id/rl_rule"
-            android:paddingTop="19dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:paddingLeft="19dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -575,7 +577,8 @@
                 android:textSize="12sp"
                 android:textColor="#5589C7"
                 android:layout_gravity="center_vertical"
-                android:text="《银掌柜平台服务协议》《银掌柜产品协议》"/>
+                android:text="《银掌柜平台服务协议》"/>
+<!--            《银掌柜产品协议》-->
         </LinearLayout>
 
           </LinearLayout>

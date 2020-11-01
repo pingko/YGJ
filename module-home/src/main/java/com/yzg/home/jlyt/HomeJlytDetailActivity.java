@@ -1,6 +1,7 @@
 package com.yzg.home.jlyt;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.alipay.sdk.app.PayTask;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.alipay.AuthResult;
 import com.yzg.common.alipay.OrderInfoUtil2_0;
 import com.yzg.common.alipay.PayResult;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeActivityJlytDetailBinding;
 
@@ -86,6 +89,18 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
             }
         });
 
+
+        binding.llService.setOnClickListener(view -> {
+
+                        ARouter.getInstance().build(RouterActivityPath.User.PAGER_ATTENTION)
+                                .withInt("serviceType",3)
+                                .navigation();
+
+//            Intent intent = new Intent();
+//            intent.setClass(HomeJlytDetailActivity.this, AttentionActivity.class);
+//            intent.putExtra("type",1);
+//            startActivity(intent);
+        });
 
     }
 
