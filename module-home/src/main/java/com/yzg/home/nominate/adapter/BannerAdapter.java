@@ -45,7 +45,11 @@ public class BannerAdapter {
        if (GsonUtils.isShowTrue()) {
            list1.add(R.drawable.banner01);
            list1.add(R.drawable.banner02);
-           list1.add(R.drawable.banner03);
+           list1.add(R.drawable.banner_04);
+           list1.add(R.drawable.banner_05);
+           list1.add(R.drawable.banner_07);
+           list1.add(R.drawable.banner_08);
+//           list1.add(R.drawable.banner03);
        }else {
            list1.add(R.drawable.home_ic_deal);
            list1.add(R.drawable.home_ic_deal);

@@ -53,8 +53,7 @@ import java.util.List;
  */
 @Route(path = RouterFragmentPath.Home.PAGER_HOMES)
 public class HomeMainFragment
-        extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel>
-         {
+        extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel> {
     GDDSItemAdapter gddsAdapter;
     AutoVerticalScrollTextView textView;
     ArrayList<SquareCard> dataList = new ArrayList<>();
@@ -84,7 +83,7 @@ public class HomeMainFragment
         jlytAdapter = new CommonAdapter<JlytBean>(getActivity(), R.layout.home_main_jlyt_item, jlytBeans) {
             @Override
             protected void convert(ViewHolder holder, JlytBean bean, int position) {
-                holder.setText(R.id.tv_title, bean.getProductName());
+                holder.setText(R.id.tv_title, showJlytTitle(bean.getProductType(), bean.getPoint()));
                 holder.setText(R.id.tv_zf, bean.getRate() + "%");
             }
         };
@@ -93,7 +92,6 @@ public class HomeMainFragment
         jlytAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                Log.e("sssss", i + "");
                 Intent intent = new Intent(getContext(), HomeJlytDetailActivity.class);
                 intent.putExtra("productId", jlytBeans.get(i).getProductId());
                 startActivity(intent);
@@ -110,6 +108,8 @@ public class HomeMainFragment
                 .setRefreshHeader(new ClassicsHeader(getContext()));
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
             loadFinish();
+            viewModel.loadMarkets();//加载行情列表
+            viewModel.loadJlyt();//加载最近积利银条成交
             binding.refreshLayout.finishRefresh(true);
         });
 
@@ -174,6 +174,19 @@ public class HomeMainFragment
 
     }
 
+    public String showJlytTitle(String type, int point) {
+        if ("1".equals(type)) {
+            type = "1";
+        } else if ("2".equals(type)) {
+            type = "3";
+        } else if ("3".equals(type)) {
+            type = "6";
+        } else if ("4".equals(type)) {
+            type = "12";
+        }
+        return type + "个月," + point + "克起";
+    }
+
     private CommonAdapter marketAdapter;
     private List<MarkettBean> quotationBeans = new ArrayList<>();
 
@@ -222,7 +235,6 @@ public class HomeMainFragment
             Logger.e("积利银条");
             jlytBeans.clear();
             if (jlytBeans1.size() <= 4) {
-
                 jlytBeans.addAll(jlytBeans1);
             } else {
                 for (int i = 0; i < jlytBeans1.size(); i++) {

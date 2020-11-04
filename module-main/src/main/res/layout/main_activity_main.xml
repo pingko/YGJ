@@ -29,6 +29,7 @@
 
                 <ImageView
                     android:id="@+id/iv_net_candle"
+                    android:visibility="gone"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:scaleType="fitCenter"
@@ -50,6 +51,7 @@
 
                 <ImageView
                     android:id="@+id/iv_net_search"
+                    android:visibility="gone"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:scaleType="fitCenter"

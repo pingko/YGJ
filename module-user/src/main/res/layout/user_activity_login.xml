@@ -96,7 +96,7 @@
                 android:layout_marginLeft="55dp"
                 android:background="@color/white"
                 android:hint="输入密码"
-                android:inputType="number"
+                android:inputType="numberPassword"
                 android:maxLength="11"
                 android:textColor="#111111"
                 android:textSize="14sp" />
@@ -124,7 +124,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="55dp"
                 android:background="@color/white"
-                android:hint="请输入推荐人"
+                android:hint="请输入推荐人(选填)"
                 android:singleLine="true"
                 android:textColor="#111111"
                 android:textSize="14sp" />

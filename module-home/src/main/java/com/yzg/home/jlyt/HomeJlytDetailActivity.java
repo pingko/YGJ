@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.alipay.sdk.app.PayTask;
+import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.alipay.AuthResult;
@@ -30,7 +33,7 @@ import java.util.Map;
 public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDetailBinding, HomeJlytDetailViewModel> {
 
 
-    private JlytBean bean;
+    private JlytDetailBean jlytDetailBean;
     private String productId;
 
     @Override
@@ -41,7 +44,7 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bean = (JlytBean) getIntent().getSerializableExtra("JlytBean");
+//        bean = (JlytBean) getIntent().getSerializableExtra("JlytBean");
         productId = getIntent().getStringExtra("productId");
 
         initData();
@@ -49,8 +52,6 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
 
     private void initData() {
         binding.ivBack.setOnClickListener(view -> finish());
-        if (bean != null)
-            binding.tvTitle.setText(bean.getProductName());
 
         binding.progressBar.setProgress(33);
 
@@ -59,49 +60,100 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
                 RxToast.normal("请输入数量");
                 return;
             }
+
+            try {
+                int num  = Integer.parseInt(binding.etNum.getText().toString());
+                if (num>jlytDetailBean.getProductLimit()){
+                    RxToast.normal("超过限制，请重新输入");
+                    return;
+                }if (num<jlytDetailBean.getLength()){
+                    RxToast.normal("不能少于"+jlytDetailBean.getLength());
+                    return;
+                }
+                if (num%10!=0){
+                    RxToast.normal("必须是"+jlytDetailBean.getLength()+"递增");
+                    return;
+                }
+
+            }catch (Exception e){
+                Logger.e(e.getMessage());
+            }
+
             viewModel.buyjLYT(productId, binding.etNum.getText().toString());
+        });
+
+        binding.etNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try {
+                    int num  = Integer.parseInt(binding.etNum.getText().toString());
+                    if (num>jlytDetailBean.getProductLimit()){
+                        RxToast.normal("超过限制，请重新输入");
+                        return;
+                    }if (num<jlytDetailBean.getLength()){
+                        RxToast.normal("不能少于"+jlytDetailBean.getLength());
+                        return;
+                    }
+                    if (num%10!=0){
+                        RxToast.normal("必须是"+jlytDetailBean.getLength()+"递增");
+                        return;
+                    }
+
+                }catch (Exception e){
+                    Logger.e(e.getMessage());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
 
         viewModel.loadData(productId);
         viewModel.successData.observe(this, bean -> {
             if (bean != null) {
-                binding.tvDate.setText(bean.getLength() + "个月");
-                binding.tvTitle.setText(bean.getProductName());
+                jlytDetailBean = bean;
+                binding.tvTitle.setText(bean.getProductName()+"("+showJlytTitle(bean.getProductType())+")");
+                binding.tvDate.setText(showJlytTitle(bean.getProductType()));
                 binding.tvRate.setText(bean.getRate() + "%");
-//                binding.buyRule1.setText("1克起购，10克递增，用户持有上限20000克");
                 binding.tvStart.setText(bean.getPoint() + "克起购");
                 binding.buyRule1.setText(bean.getPoint() + "克起购," + bean.getLength() + "克递增，用户持有上限" + bean.getProductLimit() + "克");
             }
         });
 
-        viewModel.errorLiveData.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                RxToast.showToast(s);
-            }
-        });
-        viewModel.buyResponse.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                RxToast.showToast(s);
-                if (s.equals("购买成功"))
-                    finish();
-            }
+        viewModel.errorLiveData.observe(this, s -> RxToast.showToast(s));
+        viewModel.buyResponse.observe(this, s -> {
+            RxToast.showToast(s);
+            if (s.equals("购买成功"))
+                finish();
         });
 
 
         binding.llService.setOnClickListener(view -> {
-
                         ARouter.getInstance().build(RouterActivityPath.User.PAGER_ATTENTION)
                                 .withInt("serviceType",3)
                                 .navigation();
-
-//            Intent intent = new Intent();
-//            intent.setClass(HomeJlytDetailActivity.this, AttentionActivity.class);
-//            intent.putExtra("type",1);
-//            startActivity(intent);
         });
 
+    }
+
+    public String showJlytTitle(String type) {
+        if ("1".equals(type)) {
+            type = "1";
+        } else if ("2".equals(type)) {
+            type = "3";
+        } else if ("3".equals(type)) {
+            type = "6";
+        } else if ("4".equals(type)) {
+            type = "12";
+        }
+        return type + "个月" ;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class JlytDetailBean implements Serializable{
     private String productState;
     private String productType;
     private int productSize;
-    private int rate;
+    private String rate;
     private String productStart;
     private String productEnd;
     private String raiseStart;
@@ -150,11 +150,11 @@ public class JlytDetailBean implements Serializable{
         this.productSize = productSize;
     }
 
-    public int getRate() {
+    public String getRate() {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(String rate) {
         this.rate = rate;
     }
 
