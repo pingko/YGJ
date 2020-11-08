@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -85,6 +86,7 @@ public class HomeMainFragment
             protected void convert(ViewHolder holder, JlytBean bean, int position) {
                 holder.setText(R.id.tv_title, showJlytTitle(bean.getProductType(), bean.getPoint()));
                 holder.setText(R.id.tv_zf, bean.getRate() + "%");
+                holder.setVisible(R.id.iv_hot, position <= 3 ? true : false);
             }
         };
 
@@ -108,8 +110,8 @@ public class HomeMainFragment
                 .setRefreshHeader(new ClassicsHeader(getContext()));
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
             loadFinish();
-            viewModel.loadMarkets();//加载行情列表
-            viewModel.loadJlyt();//加载最近积利银条成交
+            viewModel.loadMarkets(1,10,"");//加载行情列表
+//            viewModel.loadJlyt();//加载最近积利银条成交
             binding.refreshLayout.finishRefresh(true);
         });
 
@@ -123,9 +125,10 @@ public class HomeMainFragment
         gddsAdapter = new GDDSItemAdapter(
                 R.layout.home_item_category_item_subject_gdds_view);
         gddsAdapter.setOnItemClickListener((adapter1, view, position) -> {
-            Intent intent = new Intent();
-            intent.setClass(getContext(), HomeGddsDetailActivity.class);
-            getContext().startActivity(intent);
+            RxToast.showToast("功能正在开发中，敬请期待!");
+//            Intent intent = new Intent();
+//            intent.setClass(getContext(), HomeGddsDetailActivity.class);
+//            getContext().startActivity(intent);
         });
         binding.rvGdds.setAdapter(gddsAdapter);
 
@@ -140,15 +143,19 @@ public class HomeMainFragment
         });
 
         binding.tvGdds.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setClass(getContext(), HomeGddsListctivity.class);
-            getActivity().startActivity(intent);
+            RxToast.showToast("功能正在开发中，敬请期待!");
+//            Intent intent = new Intent();
+//            intent.setClass(getContext(), HomeGddsListctivity.class);
+//            getActivity().startActivity(intent);
         });
         binding.llFerg.setOnClickListener(view -> {
             ARouter.getInstance()
                     .build(RouterActivityPath.Deal.PAGER_DEAL_BUY)
                     .navigation();
 
+        });
+        binding.tvJlyts.setOnClickListener(view -> {
+            startActivity(new Intent(getContext(), HomeJlytActivity.class));
         });
         binding.llJlyt.setOnClickListener(view -> {
             startActivity(new Intent(getContext(), HomeJlytActivity.class));
@@ -162,7 +169,7 @@ public class HomeMainFragment
 //        showLoading();
 
         getQuoList();
-        viewModel.loadMarkets();//加载行情列表
+        viewModel.loadMarkets(1,10,"");//加载行情列表
         viewModel.loadJlyt();//加载最近积利银条成交
         loadFinish();
         if (!GsonUtils.isShowTrue()) {

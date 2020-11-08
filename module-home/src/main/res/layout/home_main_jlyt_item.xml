@@ -46,33 +46,12 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_category_bg"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/iv_hot"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/common_tools_iv_bg" />
-
-        <com.yzg.common.views.CommonCustomTextView
-            android:id="@+id/tv_label"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/transparent"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="2"
-            android:textColor="@android:color/white"
-            android:textSize="13sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/iv_category_bg"
-            app:layout_constraintEnd_toEndOf="@+id/iv_category_bg"
-            app:layout_constraintStart_toStartOf="@id/iv_category_bg"
-            app:layout_constraintTop_toTopOf="@+id/iv_category_bg"
-            tools:text="异地恋也可以很甜" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/hot" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

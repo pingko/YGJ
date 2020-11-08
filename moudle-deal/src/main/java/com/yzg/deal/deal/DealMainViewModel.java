@@ -103,14 +103,14 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
      * @param money   总价多少钱
      * @param acctNo  账号
      */
-    protected void buySirver(double sirverPrice,String weight, double money, String acctNo) {
+    protected void buySirver(double sirverPrice,String weight, String money, String acctNo) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("aipPrice", sirverPrice+"");
         map.put("aipAmount", weight);
         map.put("acctNo", acctNo);
         map.put("aipAmountFare", "0");
         map.put("aipMoneyFare", "0");
-        map.put("aipMoney", String.valueOf(money));
+        map.put("aipMoney", money);
         map.put("bsFlag", "");
         map.put("subAccountNo", "");
         OkGo.<String>post(HttpService.EB_Pay)

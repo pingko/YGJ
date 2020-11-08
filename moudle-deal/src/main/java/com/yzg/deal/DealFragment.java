@@ -44,7 +44,6 @@ public class DealFragment
     public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView();
         initData();
     }
 
@@ -77,24 +76,32 @@ public class DealFragment
                 , aDouble -> {
                     binding.tvPrice.setText(aDouble + "");
                 });
+
+        if (!TextUtils.isEmpty(token)) {
+            viewModel.loadData();
+            viewModel.loadTodayPrice();
+        }
     }
 
-    private void start(Context context) {
-    }
-
-    private void initView() {
-    }
 
 
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
         Log.e("DealFragment","first");
-        if (!TextUtils.isEmpty(token)) {
-            viewModel.loadData();
-            viewModel.loadTodayPrice();
-        }
+
     }
+
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        Log.e("DealFragment",hidden+"");
+//        if (!hidden){
+//            viewModel.loadData();
+//            viewModel.loadTodayPrice();
+//        }
+//    }
+
 
     @Override
     public int getBindingVariable() {

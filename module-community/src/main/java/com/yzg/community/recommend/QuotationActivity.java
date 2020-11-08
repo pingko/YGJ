@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.guannan.chartmodule.chart.KMasterChartView;
 import com.guannan.chartmodule.chart.KSubChartView;
 import com.guannan.chartmodule.chart.MarketFigureChart;
@@ -24,6 +27,7 @@ import com.guannan.chartmodule.helper.TechParamType;
 import com.guannan.chartmodule.inter.IChartDataCountListener;
 import com.guannan.chartmodule.inter.IPressChangeListener;
 import com.guannan.simulateddata.LocalUtils;
+import com.guannan.simulateddata.entity.KLineItem;
 import com.guannan.simulateddata.parser.KLineParser;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.model.MarkettBean;
@@ -31,9 +35,13 @@ import com.yzg.common.router.RouterActivityPath;
 import com.yzg.community.R;
 import com.yzg.community.databinding.CommunityActivityQuotationBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * 行情图页面
+ */
 @Route(path = RouterActivityPath.Quotation.Quotation_main)
 public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotationBinding, QuotationViewModel> implements IChartDataCountListener<List<KLineToDrawItem>>, IPressChangeListener {
 
@@ -44,8 +52,8 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ARouter.getInstance().inject(this);
-        Log.e("QuotationActivity","MarkettBean: "+((bean==null)?true:false));
-        if (bean!=null){
+        Log.e("QuotationActivity", "MarkettBean: " + ((bean == null) ? true : false));
+        if (bean != null) {
             binding.tvTitle.setText(bean.getVarietynm());
             binding.tvPrice.setText(bean.getLastPrice() + "");
             binding.tvChangeNumber.setText(bean.getChangePrice() + "   " + bean.getChangeMargin());
@@ -58,7 +66,7 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
             binding.tvJk.setText(bean.getOpenPrice() + "");
             binding.tvZs.setText(bean.getLastPrice() + "");
             binding.tvZg.setText(bean.getHighPrice() + "");
-        }else {
+        } else {
             initData();
         }
         binding.ivBack.setOnClickListener(view -> {
@@ -139,29 +147,55 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
 
         // 容器的手势监听
         mMarketFigureChart.setPressChangeListener(this);
-        initialData("pingan.json");
+//        initialData("pingan.json");
 
-    }
 
-    private void initialData(String s) {
-        mProgressBar.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
+        viewModel.laodMoreData(1, 2000, bean.getVariety());
+
+        viewModel.marketBeans.observe(this, new Observer<List<MarkettBean>>() {
             @Override
-            public void run() {
-                initData(s);
+            public void onChanged(List<MarkettBean> markettBeans) {
+                initialData(markettBeans);
             }
-        }, 500);
+        });
+
     }
 
+    private void initialData(List<MarkettBean> markettBeans) {
+        String s = null;
+        mProgressBar.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(() -> initData(markettBeans, s), 500);
+    }
 
 
     /**
      * 解析行情图数据
      */
-    public void initData(String json) {
+    public void initData(List<MarkettBean> markettBeans, String json) {
         // 士兰微k线数据
-        String kJson = LocalUtils.getFromAssets(this, json);
+//        String kJson = LocalUtils.getFromAssets(this, json);
 
+        String kJson = "";
+        List<KLineItem> lineItems = new ArrayList<>();
+//        for (MarkettBean markettBean:markettBeans){
+
+        for (int i = markettBeans.size() - 1; i >= 0; i--) {
+            MarkettBean markettBean = markettBeans.get(i);
+            if (i > 0 && markettBeans.get(i - 1).getUptime().equals(markettBean.getUptime())) {
+                continue;
+            }
+            KLineItem lineItem = new KLineItem();
+            lineItem.preClose = markettBean.getYesyPrice();
+            lineItem.day = markettBean.getUptime();
+            lineItem.high = (float) markettBean.getHighPrice();
+            lineItem.low = (float) markettBean.getLowPrice();
+            lineItem.open = markettBean.getOpenPrice();
+            lineItem.volume = markettBean.getVolume();
+            lineItem.close = (float) markettBean.getLastPrice();
+            lineItems.add(lineItem);
+        }
+        kJson = JSON.toJSONString(lineItems);
+        Log.e("ssssss", kJson);
         KLineParser parser = new KLineParser(kJson);
         parser.parseKlineData();
 
@@ -178,9 +212,9 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
     @Override
     public void onReady(List<KLineToDrawItem> data, ExtremeValue extremeValue,
                         SubChartData subChartData) {
-        mKLineChartView.initData(data, extremeValue,subChartData);
-        mVolumeView.initData(data, extremeValue, TechParamType.VOLUME,subChartData);
-        mMacdView.initData(data, extremeValue, TechParamType.MACD,subChartData);
+        mKLineChartView.initData(data, extremeValue, subChartData);
+        mVolumeView.initData(data, extremeValue, TechParamType.VOLUME, subChartData);
+        mMacdView.initData(data, extremeValue, TechParamType.MACD, subChartData);
     }
 
     /**

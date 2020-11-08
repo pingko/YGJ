@@ -2,6 +2,8 @@ package com.guannan.chartmodule.helper;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
+
 import com.guannan.chartmodule.chart.KMasterChartView;
 import com.guannan.chartmodule.chart.KSubChartView;
 import com.guannan.chartmodule.data.ExtremeValue;
@@ -203,12 +205,14 @@ public class ChartDataSourceHelper {
 
       // 计算每一个月的第一个交易日
       if (i - 1 >= 0 && i + 1 < endIndex) {
-        int currentMonth = DateUtils.getMonth(kLineItem.day);
-        KLineItem preItem = mKList.get(i - 1);
-        int preMonth = DateUtils.getMonth(preItem.day);
-        if (currentMonth != preMonth) {
-          drawItem.date = kLineItem.day.substring(0, 10);
-        }
+//        int currentMonth = DateUtils.getMonth(kLineItem.day);
+//        KLineItem preItem = mKList.get(i - 1);
+//        int preMonth = DateUtils.getMonth(preItem.day);
+//        if (currentMonth != preMonth) {
+////          drawItem.date = kLineItem.day.substring(0, 10);
+//        }
+        drawItem.date = kLineItem.day;
+        Log.e("aaaa",kLineItem.day);
       }
 
       // 计算成交量

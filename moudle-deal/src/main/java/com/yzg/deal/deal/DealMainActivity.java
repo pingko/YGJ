@@ -33,14 +33,16 @@ import com.zhpan.idea.utils.LogUtils;
 
 import java.text.NumberFormat;
 import java.util.Map;
+
 @Route(path = RouterActivityPath.Deal.PAGER_DEAL_BUY)
 public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements View.OnClickListener {
 
 
     private int type;//0 买入 1卖出 2提货
-    private String acctNo="";
+    private String acctNo = "";
     private float sirverPrice = 0f;
     NumberFormat ddf;
+
     @Override
     protected DealMainViewModel getViewModel() {
         return ViewModelProviders.of(this).get(DealMainViewModel.class);
@@ -62,29 +64,28 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     }
 
 
-
-   public void getLastPrice(){
+    public void getLastPrice() {
         viewModel.loadUserData();
         viewModel.loadTodayPrice();
-       viewModel.userDuccessData.observe(this, userStoreBean -> {
-           if (userStoreBean != null) {
-               acctNo = userStoreBean.getAcctNo();
-           }
-           Log.e("DealMainA", "acctNo"+acctNo );
-       });
-       viewModel.lastPrice.observe(this
-               , aDouble -> {
-           Log.e("DealMainA","price:"+aDouble);
-                   sirverPrice = aDouble;
-                   binding.tvPrice.setText(aDouble+ " 克/元");
-               });
-   }
+        viewModel.userDuccessData.observe(this, userStoreBean -> {
+            if (userStoreBean != null) {
+                acctNo = userStoreBean.getAcctNo();
+            }
+            Log.e("DealMainA", "acctNo" + acctNo);
+        });
+        viewModel.lastPrice.observe(this
+                , aDouble -> {
+                    Log.e("DealMainA", "price:" + aDouble);
+                    sirverPrice = aDouble;
+                    binding.tvPrice.setText(aDouble + " 克/元");
+                });
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-         ddf=NumberFormat.getNumberInstance() ;
+        ddf = NumberFormat.getNumberInstance();
         ddf.setMaximumFractionDigits(2);
         ARouter.getInstance().inject(this);
 //        sirverPrice = getIntent().getFloatExtra("sirverPrice",0f);
@@ -206,9 +207,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     RxToast.showToast("20克起，1克递增");
                     return;
                 }
-                double price = Integer.parseInt(s) * sirverPrice;
+                totalPrice = Integer.parseInt(s) * sirverPrice;
                 if (type == 0) {
-                    viewModel.buySirver(sirverPrice,s, price, acctNo);
+                    viewModel.buySirver(sirverPrice, s, ddf.format(totalPrice) , acctNo);
                 }
             }
 
@@ -220,6 +221,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         }
 
     }
+
+    double totalPrice;
 
     /**
      * 用于支付宝支付业务的入参 app_id。
@@ -302,7 +305,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     /**
      * 支付宝支付业务示例
      */
-    public void payV2(String orderId) {
+    public void payV2(String s) {
         if (TextUtils.isEmpty(APPID) || (TextUtils.isEmpty(RSA2_PRIVATE) && TextUtils.isEmpty(RSA_PRIVATE))) {
             RxToast.normal(getString(R.string.error_missing_appid_rsa_private));
             return;
@@ -316,26 +319,22 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, orderId);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, orderId,ddf.format(totalPrice),"订单金额");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
         final String orderInfo = orderParam + "&" + sign;
 
-        final Runnable payRunnable = new Runnable() {
+        final Runnable payRunnable = () -> {
+            PayTask alipay = new PayTask(DealMainActivity.this);
+            Map<String, String> result = alipay.payV2(orderInfo, true);
+            Log.e("msp", result.toString());
 
-            @Override
-            public void run() {
-                PayTask alipay = new PayTask(DealMainActivity.this);
-                Map<String, String> result = alipay.payV2(orderInfo, true);
-                Log.i("msp", result.toString());
-
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
+            Message msg = new Message();
+            msg.what = SDK_PAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
         };
 
 

@@ -90,11 +90,16 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
                 return;
             }
 
+            String recommenderName= binding.etRecommenderName.getText().toString();
             TreeMap map = new TreeMap();
             map.put("loginName",binding.etPhone.getText().toString());
             map.put("phonenumber",binding.etPhone.getText().toString());
             map.put("userName",binding.etName.getText().toString());
             map.put("password",binding.etPwd.getText().toString());
+//            map.put("avatar",binding.etPwd.getText().toString());
+            if (!TextUtils.isEmpty(recommenderName)) {
+                map.put("avatar", recommenderName);
+            }
             viewModel.loadData(map);
 //            setResult(RESULT_OK);
 //            finish();

@@ -35,10 +35,11 @@ public class QuotationContentViewModel
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
     public MutableLiveData<String> buyResponse = new MutableLiveData<>();
 
-    public void loadData(String productId) {
+    public void loadData(int num,int size,String variety) {
         TreeMap<String, String> map = new TreeMap<>();
-        map.put("pageNum","1");
-        map.put("pageSize","10");
+        map.put("pageNum", String.valueOf(num));
+        map.put("pageSize", String.valueOf(size));
+        map.put("variety",variety);
         OkGo.<String>post(HttpService.EB_Quotation_priceList)
                 .params(map)
                 .tag(this)

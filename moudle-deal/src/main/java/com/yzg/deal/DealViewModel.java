@@ -29,7 +29,6 @@ public class DealViewModel extends MvvmBaseViewModel<IBaseView> {
         TreeMap<String, String> map = new TreeMap<>();
         OkGo.<String>post(HttpService.Gold_custom_stock)
                 .params(map)
-//                .upJson(jsonObject.toJSONString())
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

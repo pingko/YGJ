@@ -3,6 +3,9 @@ package com.yzg.common.alipay;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -72,13 +75,20 @@ public class OrderInfoUtil2_0 {
     /**
      * 构造支付订单参数列表
      */
-    public static Map<String, String> buildOrderParamMap(String app_id, boolean rsa2, String orderNo) {
+    public static Map<String, String> buildOrderParamMap(String app_id, boolean rsa2, String orderNo, String price, String title) {
         Map<String, String> keyValues = new HashMap<String, String>();
 
         keyValues.put("app_id", app_id);
 
-        keyValues.put("biz_content", "{\"timeout_express\":\"30m\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"total_amount\":\"0.01\",\"subject\":\"1\",\"body\":\"我是测试数据\",\"out_trade_no\":\"" + (TextUtils.isEmpty(orderNo)
-                ? getOutTradeNo() : orderNo) + "\"}");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("total_amount",price);
+        jsonObject.put("subject",  title);
+        jsonObject.put("body", "我是测试数据");
+        jsonObject.put("timeout_express", "30m");
+        jsonObject.put("product_code", "QUICK_MSECURITY_PAY");
+        jsonObject.put("out_trade_no", (TextUtils.isEmpty(orderNo) ? getOutTradeNo() : orderNo));
+
+        keyValues.put("biz_content", jsonObject.toJSONString());
 
         keyValues.put("charset", "utf-8");
 
@@ -86,11 +96,19 @@ public class OrderInfoUtil2_0 {
 
         keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
-        keyValues.put("timestamp", "2016-07-29 16:55:53");
+
+        keyValues.put("timestamp", getStringDate());
 
         keyValues.put("version", "1.0");
 
         return keyValues;
+    }
+
+    public static String getStringDate() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        return dateString;
     }
 
     /**

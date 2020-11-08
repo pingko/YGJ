@@ -1,6 +1,8 @@
 package com.guannan.simulateddata.parser;
 
 import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
 import com.guannan.simulateddata.entity.KLineItem;
 import java.util.ArrayList;
 import net.minidev.json.JSONArray;
@@ -32,45 +34,69 @@ public class KLineParser {
    * 解析K线数据
    */
   public void parseKlineData() {
-    Object obj = JSONValue.parse(mKlineJson);
-    if (obj instanceof JSONArray) {
-      JSONArray jsonArray = (JSONArray) obj;
-      if (jsonArray != null && jsonArray.size() > 0) {
-        for (int i = 0; i < jsonArray.size(); i++) {
-          JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-          KLineItem kLineItem = getKLineItem(jsonObject);
+//    Object obj = JSONValue.parse(mKlineJson);
+
+
+
+//    if (obj instanceof JSONArray) {
+//      JSONArray jsonArray = (JSONArray) obj;
+    com.alibaba.fastjson.JSONArray array = JSON.parseArray(mKlineJson);
+      if (array != null && array.size() > 0) {
+        for (int i = 0; i < array.size(); i++) {
+//          JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+          KLineItem kLineItem = getKLineItem(array.getJSONObject(i));
           klineList.add(kLineItem);
         }
       }
-    }
+//    }
   }
+
+//  /**
+//   * 解析K线数据
+//   */
+//  public void parseKlineData() {
+//    Object obj = JSONValue.parse(mKlineJson);
+//
+//    if (obj instanceof JSONArray) {
+//      JSONArray jsonArray = (JSONArray) obj;
+//      if (jsonArray != null && jsonArray.size() > 0) {
+//        for (int i = 0; i < jsonArray.size(); i++) {
+//          JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+//          KLineItem kLineItem = getKLineItem(jsonObject);
+//          klineList.add(kLineItem);
+//        }
+//      }
+//    }
+//  }
 
   /**
    * 获取每一个交易日数据
    */
-  public KLineItem getKLineItem(JSONObject obj) {
+  public KLineItem getKLineItem(com.alibaba.fastjson.JSONObject obj) {
     KLineItem kLineItem = new KLineItem();
-    kLineItem.day = obj.getAsString("day");
-    String open = obj.getAsString("open");
+    kLineItem.day = obj.getString("day");
+    String open = obj.getString("open");
     if (!TextUtils.isEmpty(open)) {
       kLineItem.open = Float.parseFloat(open);
     }
-    String high = obj.getAsString("high");
+    String high = obj.getString("high");
     if (!TextUtils.isEmpty(high)) {
       kLineItem.high = Float.parseFloat(high);
     }
-    String low = obj.getAsString("low");
+    String low = obj.getString("low");
     if (!TextUtils.isEmpty(low)) {
       kLineItem.low = Float.parseFloat(low);
     }
-    String close = obj.getAsString("close");
+    String close = obj.getString("close");
     if (!TextUtils.isEmpty(close)) {
       kLineItem.close = Float.parseFloat(close);
     }
-    String volume = obj.getAsString("volume");
+    String volume = obj.getString("volume");
     if (!TextUtils.isEmpty(volume)) {
       kLineItem.volume = Long.parseLong(volume);
     }
     return kLineItem;
   }
+
+
 }

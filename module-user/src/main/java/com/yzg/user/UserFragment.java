@@ -185,7 +185,6 @@ public class UserFragment
 
     @Override
     public void onDataLoadFinish(UserStoreBean bean) {
-        HttpLog.e(bean.getAcctNo());
         binding.tvName.setText(bean.getAcctNo());
         binding.tvMoney.setText(bean.getCurrCanUse()+"");
     }
