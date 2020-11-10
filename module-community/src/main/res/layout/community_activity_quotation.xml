@@ -203,6 +203,7 @@
             <com.guannan.chartmodule.chart.MarketFigureChart
                 android:id="@+id/chart_container"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content" />
 
             <ProgressBar
@@ -211,6 +212,11 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:layout_gravity="center"/>
+
+            <com.vinsonguo.klinelib.chart.KLineView
+                android:id="@+id/kline"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
         </FrameLayout>
 

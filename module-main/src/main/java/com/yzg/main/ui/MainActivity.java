@@ -79,6 +79,15 @@ public class MainActivity
                 .observe(this, s -> {
                     mNavigationController.setSelect(s);
                 });
+        LiveEventBus
+                .get("reLogin", Integer.class)
+                .observe(this, s -> {
+                    MmkvHelper.getInstance().getMmkv().clearAll();
+                    ARouter.getInstance()
+                            .build(RouterActivityPath.User.PAGER_LOGIN)
+                            .navigation();
+                  finish();
+                });
     }
 
     private void initView() {

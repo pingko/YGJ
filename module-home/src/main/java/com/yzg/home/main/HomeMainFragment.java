@@ -22,6 +22,7 @@ import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.model.MarkettBean;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.base.utils.GsonUtils;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.recyclerview.RecyclerItemDecoration;
@@ -178,6 +179,16 @@ public class HomeMainFragment
             binding.tvGdds.setText("经验大师");
             binding.tvJlyts.setText("积利经验");
         }
+
+//        viewModel.reLogin.observe(this, s -> {
+//            MmkvHelper.getInstance().getMmkv().clearAll();
+//
+//            ARouter.getInstance()
+//                    .build(RouterActivityPath.User.PAGER_LOGIN)
+//                    .navigation();
+//
+//            getActivity().finish();
+//        });
 
     }
 

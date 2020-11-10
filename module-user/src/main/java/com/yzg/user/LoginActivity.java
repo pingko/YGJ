@@ -72,7 +72,6 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
 
     private void initData() {
         binding.ivBack.setOnClickListener(view -> finish());
-//        setLoadSir(binding.tvLogin);
         showLoading();
         showTip();
     }
