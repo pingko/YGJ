@@ -166,9 +166,6 @@ public class HomeMainFragment
                     .get("index")
                     .post(3);
         });
-//        setLoadSir(binding.refreshLayout);
-//        showLoading();
-
         getQuoList();
         viewModel.loadMarkets(1,10,"");//加载行情列表
         viewModel.loadJlyt();//加载最近积利银条成交

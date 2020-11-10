@@ -26,7 +26,6 @@ public class HomeJlytDetailViewModel extends MvvmBaseViewModel<IBaseView> {
         map.put("productId", productId);
         OkGo.<String>post(HttpService.Gold_info_detail)
                 .params(map)
-//                .upJson(jsonObject.toJSONString())
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

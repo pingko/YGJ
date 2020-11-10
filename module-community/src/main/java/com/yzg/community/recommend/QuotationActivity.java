@@ -1,12 +1,7 @@
 package com.yzg.community.recommend;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
@@ -15,22 +10,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.guannan.chartmodule.chart.KMasterChartView;
-import com.guannan.chartmodule.chart.KSubChartView;
-import com.guannan.chartmodule.chart.MarketFigureChart;
-import com.guannan.chartmodule.data.ExtremeValue;
-import com.guannan.chartmodule.data.KLineToDrawItem;
-import com.guannan.chartmodule.data.SubChartData;
-import com.guannan.chartmodule.helper.ChartDataSourceHelper;
-import com.guannan.chartmodule.helper.TechParamType;
-import com.guannan.chartmodule.inter.IChartDataCountListener;
-import com.guannan.chartmodule.inter.IPressChangeListener;
-import com.guannan.simulateddata.LocalUtils;
-import com.guannan.simulateddata.entity.KLineItem;
-import com.guannan.simulateddata.parser.KLineParser;
-import com.vinsonguo.klinelib.chart.KLineView;
 import com.vinsonguo.klinelib.chart.TimeLineView;
 import com.vinsonguo.klinelib.model.HisData;
 import com.yzg.base.activity.MvvmBaseActivity;
@@ -40,7 +19,6 @@ import com.yzg.community.R;
 import com.yzg.community.databinding.CommunityActivityQuotationBinding;
 import com.yzg.community.klineview.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +26,8 @@ import java.util.List;
  * 行情图页面
  */
 @Route(path = RouterActivityPath.Quotation.Quotation_main)
-public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotationBinding, QuotationViewModel> implements IChartDataCountListener<List<KLineToDrawItem>>, IPressChangeListener {
+public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotationBinding, QuotationViewModel> {
+//public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotationBinding, QuotationViewModel> implements IChartDataCountListener<List<KLineToDrawItem>>, IPressChangeListener {
 
     @Autowired(name = "MarkettBean")
     public MarkettBean bean;//
@@ -77,8 +56,18 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
         binding.ivBack.setOnClickListener(view -> {
             finish();
         });
-        initK();
+
+        viewModel.laodMoreData(1, 2000, bean.getVariety());
+
+        viewModel.marketBeans.observe(this, new Observer<List<MarkettBean>>() {
+            @Override
+            public void onChanged(List<MarkettBean> markettBeans) {
+//                initialData(markettBeans);
+            }
+        });
+        initView();
     }
+
 
 
     private void initData() {
@@ -122,137 +111,130 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
 
     }
 
-    private ChartDataSourceHelper mHelper;
-    private KMasterChartView mKLineChartView;
-    private KSubChartView mVolumeView;
-    private MarketFigureChart mMarketFigureChart;
-    private ProgressBar mProgressBar;
+//    private ChartDataSourceHelper mHelper;
+//    private KMasterChartView mKLineChartView;
+//    private KSubChartView mVolumeView;
+//    private MarketFigureChart mMarketFigureChart;
+//    private ProgressBar mProgressBar;
+//
+//    private int MAX_COLUMNS = 160;
+//    private int MIN_COLUMNS = 20;
+//    private KSubChartView mMacdView;
 
-    private int MAX_COLUMNS = 160;
-    private int MIN_COLUMNS = 20;
-    private KSubChartView mMacdView;
+//    private void initK() {
+//        mProgressBar = findViewById(R.id.progress_circular);
+//
+//        // 行情图容器
+//        mMarketFigureChart = findViewById(R.id.chart_container);
+//
+//        // 行情图主图（蜡烛线）
+//        mKLineChartView = new KMasterChartView(this);
+//        mMarketFigureChart.addChildChart(mKLineChartView, 200);
+//
+//        // 行情图附图（成交量）
+//        mVolumeView = new KSubChartView(this);
+//        mMarketFigureChart.addChildChart(mVolumeView, 100);
+//
+//        // MACD
+//        mMacdView = new KSubChartView(this);
+//        mMarketFigureChart.addChildChart(mMacdView, 100);
+//
+//        // 容器的手势监听
+//        mMarketFigureChart.setPressChangeListener(this);
+////        initialData("pingan.json");
+//
+//
+//
+//    }
 
-    private void initK() {
-        mProgressBar = findViewById(R.id.progress_circular);
-
-        // 行情图容器
-        mMarketFigureChart = findViewById(R.id.chart_container);
-
-        // 行情图主图（蜡烛线）
-        mKLineChartView = new KMasterChartView(this);
-        mMarketFigureChart.addChildChart(mKLineChartView, 200);
-
-        // 行情图附图（成交量）
-        mVolumeView = new KSubChartView(this);
-        mMarketFigureChart.addChildChart(mVolumeView, 100);
-
-        // MACD
-        mMacdView = new KSubChartView(this);
-        mMarketFigureChart.addChildChart(mMacdView, 100);
-
-        // 容器的手势监听
-        mMarketFigureChart.setPressChangeListener(this);
-//        initialData("pingan.json");
-
-
-        viewModel.laodMoreData(1, 2000, bean.getVariety());
-
-        viewModel.marketBeans.observe(this, new Observer<List<MarkettBean>>() {
-            @Override
-            public void onChanged(List<MarkettBean> markettBeans) {
-//                initialData(markettBeans);
-            }
-        });
-
-        initData1();
-
-    }
-
-    private void initialData(List<MarkettBean> markettBeans) {
-        String s = null;
-        mProgressBar.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(() -> initData(markettBeans, s), 500);
-    }
+//    private void initialData(List<MarkettBean> markettBeans) {
+//        String s = null;
+//        mProgressBar.setVisibility(View.VISIBLE);
+//        new Handler().postDelayed(() -> initData(markettBeans, s), 500);
+//    }
 
 
-    /**
-     * 解析行情图数据
-     */
-    public void initData(List<MarkettBean> markettBeans, String json) {
-        // 士兰微k线数据
-//        String kJson = LocalUtils.getFromAssets(this, json);
+//    /**
+//     * 解析行情图数据
+//     */
+//    public void initData(List<MarkettBean> markettBeans, String json) {
+//        // 士兰微k线数据
+////        String kJson = LocalUtils.getFromAssets(this, json);
+//
+//        String kJson = "";
+//        List<KLineItem> lineItems = new ArrayList<>();
+////        for (MarkettBean markettBean:markettBeans){
+//
+////        for (int i = markettBeans.size() - 1; i >= 0; i--) {
+//        for (int i = 0; i <markettBeans.size() - 1; i++) {
+//            MarkettBean markettBean = markettBeans.get(i);
+//            if (i > 0 && markettBeans.get(i - 1).getUptime().equals(markettBean.getUptime())) {
+//                continue;
+//            }
+//            KLineItem lineItem = new KLineItem();
+//            lineItem.preClose = markettBean.getYesyPrice();
+//            lineItem.day = markettBean.getUptime();
+//            lineItem.high = (float) markettBean.getHighPrice();
+//            lineItem.low = (float) markettBean.getLowPrice();
+//            lineItem.open = markettBean.getOpenPrice();
+//            lineItem.volume = markettBean.getVolume();
+//            lineItem.close = (float) markettBean.getLastPrice();
+//            lineItems.add(lineItem);
+//        }
+//        kJson = JSON.toJSONString(lineItems);
+//        Log.e("ssssss", kJson);
+//        KLineParser parser = new KLineParser(kJson);
+//        parser.parseKlineData();
+//
+//        if (mHelper == null) {
+//            mHelper = new ChartDataSourceHelper(this);
+//        }
+//        mProgressBar.setVisibility(View.GONE);
+//        mHelper.initKDrawData(parser.klineList, mKLineChartView, mVolumeView, mMacdView);
+//    }
+//
+//    /**
+//     * 对主图和附图进行数据填充
+//     */
+//    @Override
+//    public void onReady(List<KLineToDrawItem> data, ExtremeValue extremeValue,
+//                        SubChartData subChartData) {
+//        mKLineChartView.initData(data, extremeValue, subChartData);
+//        mVolumeView.initData(data, extremeValue, TechParamType.VOLUME, subChartData);
+//        mMacdView.initData(data, extremeValue, TechParamType.MACD, subChartData);
+//    }
+//
+//    /**
+//     * 主图的横向滑动
+//     */
+//    @Override
+//    public void onChartTranslate(MotionEvent me, float dX) {
+//        if (mHelper != null) {
+//            mHelper.initKMoveDrawData(dX, ChartDataSourceHelper.SourceType.MOVE);
+//        }
+//    }
+//
+//    /**
+//     * 主图的手势fling
+//     */
+//    @Override
+//    public void onChartFling(float distanceX) {
+//        if (mHelper != null) {
+//            mHelper.initKMoveDrawData(distanceX, ChartDataSourceHelper.SourceType.FLING);
+//        }
+//    }
+//
+//    @Override
+//    public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+//        ChartDataSourceHelper.K_D_COLUMNS = (int) (ChartDataSourceHelper.K_D_COLUMNS / scaleX);
+//        ChartDataSourceHelper.K_D_COLUMNS =
+//                Math.max(MIN_COLUMNS, Math.min(MAX_COLUMNS, ChartDataSourceHelper.K_D_COLUMNS));
+//        if (mHelper != null) {
+//            mHelper.initKMoveDrawData(0, ChartDataSourceHelper.SourceType.SCALE);
+//        }
+//    }
 
-        String kJson = "";
-        List<KLineItem> lineItems = new ArrayList<>();
-//        for (MarkettBean markettBean:markettBeans){
 
-        for (int i = markettBeans.size() - 1; i >= 0; i--) {
-            MarkettBean markettBean = markettBeans.get(i);
-            if (i > 0 && markettBeans.get(i - 1).getUptime().equals(markettBean.getUptime())) {
-                continue;
-            }
-            KLineItem lineItem = new KLineItem();
-            lineItem.preClose = markettBean.getYesyPrice();
-            lineItem.day = markettBean.getUptime();
-            lineItem.high = (float) markettBean.getHighPrice();
-            lineItem.low = (float) markettBean.getLowPrice();
-            lineItem.open = markettBean.getOpenPrice();
-            lineItem.volume = markettBean.getVolume();
-            lineItem.close = (float) markettBean.getLastPrice();
-            lineItems.add(lineItem);
-        }
-        kJson = JSON.toJSONString(lineItems);
-        Log.e("ssssss", kJson);
-        KLineParser parser = new KLineParser(kJson);
-        parser.parseKlineData();
-
-        if (mHelper == null) {
-            mHelper = new ChartDataSourceHelper(this);
-        }
-        mProgressBar.setVisibility(View.GONE);
-        mHelper.initKDrawData(parser.klineList, mKLineChartView, mVolumeView, mMacdView);
-    }
-
-    /**
-     * 对主图和附图进行数据填充
-     */
-    @Override
-    public void onReady(List<KLineToDrawItem> data, ExtremeValue extremeValue,
-                        SubChartData subChartData) {
-        mKLineChartView.initData(data, extremeValue, subChartData);
-        mVolumeView.initData(data, extremeValue, TechParamType.VOLUME, subChartData);
-        mMacdView.initData(data, extremeValue, TechParamType.MACD, subChartData);
-    }
-
-    /**
-     * 主图的横向滑动
-     */
-    @Override
-    public void onChartTranslate(MotionEvent me, float dX) {
-        if (mHelper != null) {
-            mHelper.initKMoveDrawData(dX, ChartDataSourceHelper.SourceType.MOVE);
-        }
-    }
-
-    /**
-     * 主图的手势fling
-     */
-    @Override
-    public void onChartFling(float distanceX) {
-        if (mHelper != null) {
-            mHelper.initKMoveDrawData(distanceX, ChartDataSourceHelper.SourceType.FLING);
-        }
-    }
-
-    @Override
-    public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
-        ChartDataSourceHelper.K_D_COLUMNS = (int) (ChartDataSourceHelper.K_D_COLUMNS / scaleX);
-        ChartDataSourceHelper.K_D_COLUMNS =
-                Math.max(MIN_COLUMNS, Math.min(MAX_COLUMNS, ChartDataSourceHelper.K_D_COLUMNS));
-        if (mHelper != null) {
-            mHelper.initKMoveDrawData(0, ChartDataSourceHelper.SourceType.SCALE);
-        }
-    }
 //    KLineView  K线图控件
 //    public void showKdj() 显示kdj指标
 //    public void showMacd() 显示macd指标
@@ -274,12 +256,11 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
 //    public void setDateFormat(String format) 设置x轴时间的格式
 //    public void setLastClose(douhle lastClose) 设置昨收价格，用于计算涨跌幅
 
-    TimeLineView mTimeLineView;
-    public void initView(){
+
+    public void initView() {
 //        mKLineView = v.findViewById(R.id.kline);
 ////        RadioGroup rgIndex = v.findViewById(R.id.rg_index);
 //        mKLineView.setDateFormat("yyyy-MM-dd");
-
 
 
 //        mTimeLineView = new TimeLineView(this);  //初始化分时图
@@ -287,7 +268,16 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
 //        List<HisData> hisData =  ...  // 初始化数据，一般通过网络获取数据
 //        mTimeLineView.setLastClose(hisData.get(0).getClose());  // 设置昨收价
 //        mTimeLineView.initData(hisData);  // 初始化图表数据
+        viewModel.laodMoreData(1, 2000, bean.getVariety());
 
+        viewModel.marketBeans.observe(this, new Observer<List<MarkettBean>>() {
+            @Override
+            public void onChanged(List<MarkettBean> markettBeans) {
+//                initialData(markettBeans);
+            }
+        });
+
+        initLineData();
 
     }
 
@@ -298,10 +288,10 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
     }
 //    public HisData(double open, double close, double high, double low,  long vol, long date)
 
-    protected void initData1() {
+    protected void initLineData() {
 //        binding.kline.setDateFormat("yyyy-MM-dd HH:mm:ss");
         binding.kline.setDateFormat("yyyy-MM-dd");
-         List<HisData> hisData = Util.getK(this, 1);
+        List<HisData> hisData = Util.getK(this, 1);
         binding.kline.initData(hisData);
         binding.kline.setLimitLine();
         showVolume();
