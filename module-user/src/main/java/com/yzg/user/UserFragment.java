@@ -43,7 +43,7 @@ public class UserFragment
         extends MvvmLazyFragment<UserFragmentLayoutBinding, UserViewModel> implements IUserMainView, View.OnClickListener {
 
     String token;
-
+    private UserStoreBean userStoreBean = new UserStoreBean();
     @Override
     public int getLayoutId() {
         return R.layout.user_fragment_layout;
@@ -66,12 +66,12 @@ public class UserFragment
             binding.rlSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
             binding.viewSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
 
-            if (!GsonUtils.isShowTrue()){
-//                binding.rlNo.setVisibility(View.VISIBLE);
-//                binding.rlLogin.setVisibility(View.GONE);
-                binding.llOption.setVisibility(View.INVISIBLE);
-                binding.tvCs.setVisibility(View.INVISIBLE);
-            }
+//            if (!GsonUtils.isShowTrue()){
+////                binding.rlNo.setVisibility(View.VISIBLE);
+////                binding.rlLogin.setVisibility(View.GONE);
+//                binding.llOption.setVisibility(View.INVISIBLE);
+//                binding.tvCs.setVisibility(View.INVISIBLE);
+//            }
         });
 
     }
@@ -113,7 +113,7 @@ public class UserFragment
             if (binding.ivShow.getTag().equals("cancle")) {
                 binding.ivShow.setTag("sure");
                 binding.ivShow.setImageResource(R.drawable.user_money_show);
-                binding.tvMoney.setText("100000.00");
+                binding.tvMoney.setText(userStoreBean.getCurrCanUse()+"");
             } else {
                 binding.ivShow.setTag("cancle");
                 binding.ivShow.setImageResource(R.drawable.user_money_hide);
@@ -142,6 +142,8 @@ public class UserFragment
         binding.tvBuy.setOnClickListener(this);
         binding.tvSale.setOnClickListener(this);
         binding.tvProduct.setOnClickListener(this);
+
+        binding.rlDeal.setOnClickListener(this::onClick);
 
 
     }
@@ -180,12 +182,17 @@ public class UserFragment
             LiveEventBus
                     .get("index")
                     .post(2);
+        }else if (view.getId()==R.id.rl_deal){
+            startActivity(new Intent(getActivity(),UserDealAccountActivity.class));
         }
     }
 
     @Override
     public void onDataLoadFinish(UserStoreBean bean) {
+        userStoreBean = bean;
         binding.tvName.setText(bean.getAcctNo());
         binding.tvMoney.setText(bean.getCurrCanUse()+"");
     }
+
+
 }

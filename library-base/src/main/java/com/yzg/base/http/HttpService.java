@@ -19,6 +19,7 @@ public class HttpService {
     public static final String EB_Pay_Success = BASE_URL+ "system/goldFlow/upStorage";//支付成功
     public static final String EB_BuyJLYT = BASE_URL+ "system/goldFlow/buyAg";//购买 积利银条
     public static final String EB_Take = BASE_URL+ "system/goldFlow/takeAg";//提货
+    public static final String EB_DealList = BASE_URL+ "system/goldFlow/list";//交易流水
     public static final String EB_UPDATE = BASE_URL+ "app/versionUpdate";//更新
     public static final String EB_LOGOUT = BASE_URL+ "app/token/logout";//退出
 

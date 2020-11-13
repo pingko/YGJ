@@ -19,7 +19,6 @@ import io.reactivex.disposables.Disposable;
 
 public class HomeJlytModel<T> extends BasePagingModel<T> {
 
-    private Disposable disposable;
 
     public TreeMap map = new TreeMap();
 

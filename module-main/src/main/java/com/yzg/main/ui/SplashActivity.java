@@ -40,11 +40,11 @@ public class SplashActivity extends AppCompatActivity {
                 .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
                 .init();
         mHandler.postDelayed(this::startToMain, 1000);
-        if (!GsonUtils.isShowTrue()){
-            findViewById(R.id.rl_top).setBackgroundResource(R.drawable.nono);
-        }else {
-            findViewById(R.id.rl_top).setBackgroundResource(R.drawable.splash_bg);
-        }
+//        if (!GsonUtils.isShowTrue()){
+//            findViewById(R.id.rl_top).setBackgroundResource(R.drawable.nono);
+//        }else {
+//        }
+        findViewById(R.id.rl_top).setBackgroundResource(R.drawable.splash_bg);
     }
 
     private void startToMain() {

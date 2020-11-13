@@ -39,6 +39,7 @@ public class RouterActivityPath
         private static final String Quotation = "/quotation";
 
         public static final String Quotation_main = Quotation + "/main";
+        public static final String Quotation_main_chart = Quotation + "/mainchart";
 
     }
 

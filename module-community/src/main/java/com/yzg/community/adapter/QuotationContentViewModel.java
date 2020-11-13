@@ -10,6 +10,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.yzg.base.activity.IBaseView;
+import com.yzg.base.http.HttpLog;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.model.MarkettBean;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
@@ -46,6 +47,7 @@ public class QuotationContentViewModel
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
+                        HttpLog.e("行情列表");
                         if (!TextUtils.isEmpty(response.body())) {
                             JSONObject jsonObject = JSON.parseObject(response.body());
                             if (jsonObject!=null && jsonObject.containsKey("rows")){

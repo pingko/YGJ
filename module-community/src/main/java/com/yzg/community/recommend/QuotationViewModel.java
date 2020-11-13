@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -23,6 +24,7 @@ public class QuotationViewModel extends MvvmBaseViewModel<IBaseView> {
 
     public MutableLiveData<QuotationBean> successData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+    public MutableLiveData<JSONArray> chartDatas = new MutableLiveData<>();
 
     protected void loadData() {
         TreeMap<String, String> map = new TreeMap<>();
@@ -62,9 +64,11 @@ public class QuotationViewModel extends MvvmBaseViewModel<IBaseView> {
                         if (!TextUtils.isEmpty(response.body())) {
                             JSONObject jsonObject = JSON.parseObject(response.body());
                             if (jsonObject != null && jsonObject.containsKey("rows")) {
-//                                String arrayString = jsonObject.getString("rows");
-                                List<MarkettBean> beans = JSONObject.parseArray(jsonObject.getString("rows"), MarkettBean.class);
-                                marketBeans.setValue(beans);
+                                String arrayString = jsonObject.getString("rows");
+                               JSONArray array= jsonObject.getJSONArray("rows");
+                                chartDatas.setValue(array);
+//                                List<MarkettBean> beans = JSONObject.parseArray(jsonObject.getString("rows"), MarkettBean.class);
+//                                marketBeans.setValue(beans);
 //                                marketBeans.setValue(arrayString);
                             } else {
                                 errorLiveDatas.setValue(response.message());

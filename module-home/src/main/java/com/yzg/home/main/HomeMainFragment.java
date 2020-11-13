@@ -58,7 +58,7 @@ public class HomeMainFragment
         extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel> {
     GDDSItemAdapter gddsAdapter;
     AutoVerticalScrollTextView textView;
-    ArrayList<SquareCard> dataList = new ArrayList<>();
+//    ArrayList<SquareCard> dataList = new ArrayList<>();
     List<JlytBean> jlytBeans = new ArrayList<>();
     CommonAdapter jlytAdapter;
 
@@ -112,7 +112,7 @@ public class HomeMainFragment
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
             loadFinish();
             viewModel.loadMarkets(1,10,"");//加载行情列表
-//            viewModel.loadJlyt();//加载最近积利银条成交
+            viewModel.loadJlyt();//加载最近积利银条成交
             binding.refreshLayout.finishRefresh(true);
         });
 
@@ -170,12 +170,12 @@ public class HomeMainFragment
         viewModel.loadMarkets(1,10,"");//加载行情列表
         viewModel.loadJlyt();//加载最近积利银条成交
         loadFinish();
-        if (!GsonUtils.isShowTrue()) {
-            binding.llFerg.setVisibility(View.GONE);
-            binding.llJlyt.setVisibility(View.GONE);
-            binding.tvGdds.setText("经验大师");
-            binding.tvJlyts.setText("积利经验");
-        }
+//        if (!GsonUtils.isShowTrue()) {
+//            binding.llFerg.setVisibility(View.GONE);
+//            binding.llJlyt.setVisibility(View.GONE);
+//            binding.tvGdds.setText("经验大师");
+//            binding.tvJlyts.setText("积利经验");
+//        }
 
 //        viewModel.reLogin.observe(this, s -> {
 //            MmkvHelper.getInstance().getMmkv().clearAll();
@@ -219,17 +219,17 @@ public class HomeMainFragment
                 holder.setText(R.id.tv_name, bean.getVarietynm() + "");
                 holder.setText(R.id.tv_td_price, bean.getLastPrice() + "");
                 holder.setText(R.id.tv_td_change, bean.getChangePrice() + "  " + bean.getChangeMargin() + "");
-                if (!GsonUtils.isShowTrue()) {
-                    holder.setText(R.id.tv_name, "青铜" + position + "大师");
-                }
+//                if (!GsonUtils.isShowTrue()) {
+//                    holder.setText(R.id.tv_name, "青铜" + position + "大师");
+//                }
             }
         };
         marketAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
-                if (GsonUtils.isShowTrue())
+//                if (GsonUtils.isShowTrue())
                     ARouter.getInstance()
-                            .build(RouterActivityPath.Quotation.Quotation_main)
+                            .build(RouterActivityPath.Quotation.Quotation_main_chart)
                             .withSerializable("MarkettBean", quotationBeans.get(i))
                             .navigation();
             }
@@ -285,12 +285,6 @@ public class HomeMainFragment
     private String[] strings1 = {"135****0001  刘先生 产品名称  25豆 300元", "135****0001  刘先生 产品名称  25豆 300元"};
     public int number = 0;
 
-//    private View getFooterView() {
-//        return LayoutInflater.from(getContext())
-//                .inflate(R.layout.home_item_foote_view,
-//                        binding.rvDiscoverView,
-//                        false);
-//    }
 
     @Override
     public int getLayoutId() {
@@ -316,13 +310,13 @@ public class HomeMainFragment
      * 模拟假数据  激励银条  跟单大师
      */
     public void loadFinish() {
-        if (GsonUtils.isShowTrue()) {
-            dataList.clear();
-            for (int i = 0; i < 4; i++) {
-                dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
-            }
-            gddsAdapter.setNewData(dataList);
-            showContent();
-        }
+////        if (GsonUtils.isShowTrue()) {
+//            dataList.clear();
+//            for (int i = 0; i < 4; i++) {
+//                dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
+//            }
+//            gddsAdapter.setNewData(dataList);
+//            showContent();
+//        }
     }
 }

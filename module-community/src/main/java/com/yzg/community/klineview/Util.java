@@ -176,7 +176,7 @@ public class Util {
 //        }.getType());
 
         List<KModel> list = JSONArray.parseArray(json,KModel.class);
-        List<HisData> hisData = new ArrayList<>(100);
+        List<HisData> hisData = new ArrayList<>(1000);
         for (int i = 0; i < list.size(); i++) {
             KModel m = list.get(i);
             HisData data = new HisData();
