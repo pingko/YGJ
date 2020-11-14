@@ -58,7 +58,7 @@ public class HomeMainFragment
         extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel> {
     GDDSItemAdapter gddsAdapter;
     AutoVerticalScrollTextView textView;
-//    ArrayList<SquareCard> dataList = new ArrayList<>();
+    ArrayList<SquareCard> dataList = new ArrayList<>();
     List<JlytBean> jlytBeans = new ArrayList<>();
     CommonAdapter jlytAdapter;
 
@@ -311,11 +311,11 @@ public class HomeMainFragment
      */
     public void loadFinish() {
 ////        if (GsonUtils.isShowTrue()) {
-//            dataList.clear();
-//            for (int i = 0; i < 4; i++) {
-//                dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
-//            }
-//            gddsAdapter.setNewData(dataList);
+            dataList.clear();
+            for (int i = 0; i < 4; i++) {
+                dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
+            }
+            gddsAdapter.setNewData(dataList);
 //            showContent();
 //        }
     }
