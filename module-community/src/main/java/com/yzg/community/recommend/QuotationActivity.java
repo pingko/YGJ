@@ -162,7 +162,6 @@ public class QuotationActivity extends MvvmBaseActivity<CommunityActivityQuotati
 
     protected void initLineData(JSONArray array) {
 //        binding.kline.setDateFormat("yyyy-MM-dd HH:mm:ss");
-//        binding.kline.setDateFormat("yyyy-MM-dd");
         binding.kline.setDateFormat("MM-dd HH:mm");
 
 
