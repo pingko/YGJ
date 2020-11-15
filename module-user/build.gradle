@@ -18,4 +18,6 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     api project(':library-common')
+    implementation 'liji.library.dev:citypickerview:5.2.2'
+
 }

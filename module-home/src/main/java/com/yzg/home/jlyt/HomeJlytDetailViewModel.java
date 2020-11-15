@@ -87,6 +87,5 @@ public class HomeJlytDetailViewModel extends MvvmBaseViewModel<IBaseView> {
     public void detachUi() {
         super.detachUi();
         OkGo.getInstance().cancelTag(this);
-
     }
 }

@@ -1,7 +1,6 @@
 package com.yzg.deal.deal;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,21 +16,26 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.http.HttpLog;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.alipay.AuthResult;
 import com.yzg.common.alipay.OrderInfoUtil2_0;
 import com.yzg.common.alipay.PayResult;
+import com.yzg.common.contract.AddressBean;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.deal.R;
 import com.yzg.deal.databinding.DealActivityMainBinding;
 import com.zhpan.idea.utils.LogUtils;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Route(path = RouterActivityPath.Deal.PAGER_DEAL_BUY)
@@ -177,6 +181,48 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             }
         });
         getLastPrice();
+
+        initAddress(0);
+        LiveEventBus
+                .get("addressIndex", Integer.class)
+                .observe(this, s -> {
+                    initAddress(s);
+                });
+    }
+
+    private List<AddressBean> addressList;
+    AddressBean addressBean;
+
+    private void initAddress(int index) {
+        addressList = new ArrayList<>();
+        String addressArray = MmkvHelper.getInstance().getMmkv().decodeString("address");
+        Log.e("aa", addressArray);
+        if (!TextUtils.isEmpty(addressArray) && addressArray.length() > 2) {
+            addressList.clear();
+            List<AddressBean> addressList1 = JSONArray.parseArray(addressArray, AddressBean.class);
+            addressList.addAll(addressList1);
+            addressBean = addressList.get(index);
+            binding.tvTel.setText(addressBean.getPhone());
+            binding.tvName.setText(addressBean.getName());
+            binding.tvAddress.setText(addressBean.getArea() + addressBean.getAddress());
+        } else {
+            addressBean = null;
+        }
+        if (addressBean == null) {
+            binding.ivLocal.setVisibility(View.GONE);
+            binding.tvTel.setVisibility(View.GONE);
+            binding.tvAddress.setVisibility(View.GONE);
+            binding.ivChoose.setVisibility(View.GONE);
+            binding.tvName.setVisibility(View.GONE);
+            binding.tvAdd.setVisibility(View.VISIBLE);
+        } else {
+            binding.tvAdd.setVisibility(View.GONE);
+            binding.ivLocal.setVisibility(View.VISIBLE);
+            binding.tvTel.setVisibility(View.VISIBLE);
+            binding.tvAddress.setVisibility(View.VISIBLE);
+            binding.tvName.setVisibility(View.VISIBLE);
+            binding.ivChoose.setVisibility(View.VISIBLE);
+        }
     }
 
     float price;
@@ -200,6 +246,10 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     RxToast.showToast("请输入提货重量");
                     return;
                 }
+                if (addressBean==null){
+                    RxToast.showToast("请添加提货地址");
+                    return;
+                }
                 int price = Integer.parseInt(s) * 500;
                 viewModel.take(price + "");
             } else if (type == 0 || type == 1) {
@@ -209,7 +259,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                 }
                 totalPrice = Integer.parseInt(s) * sirverPrice;
                 if (type == 0) {
-                    viewModel.buySirver(sirverPrice, s, ddf.format(totalPrice) , acctNo);
+                    viewModel.buySirver(sirverPrice, s, ddf.format(totalPrice), acctNo);
                 }
             }
 
@@ -319,7 +369,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, orderId,ddf.format(totalPrice),"订单金额");
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, orderId, ddf.format(totalPrice), "订单金额");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;

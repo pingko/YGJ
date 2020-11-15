@@ -31,7 +31,6 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="姓名，15160001234"
                 android:textSize="14sp"
                 android:textColor="@color/common_color_111111"/>
             <TextView
@@ -42,7 +41,6 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="8dp"
                 android:maxLines="2"
-                android:text="安徽省 合肥市 北京路  朝阳科技工业园西区15栋 007号"
                 android:textSize="14sp"
                 android:textColor="@color/common_color_111111"/>
 
@@ -51,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="#f2f2f4"
+                android:visibility="gone"
                 android:layout_below="@id/tv_address" />
 
             <TextView
@@ -60,6 +59,7 @@
                 android:layout_below="@id/view_line"
                 android:layout_marginTop="15dp"
                 android:text="当前默认地址"
+                android:visibility="gone"
                 android:textSize="12sp"
                 android:textColor="@color/common_color_main"/>
 
@@ -85,6 +85,7 @@
                 android:layout_alignTop="@id/tv_select"
                 android:layout_alignBottom="@id/tv_select"
                 android:text="编辑"
+                android:visibility="gone"
                 android:textSize="12sp"
                 android:textColor="@color/common_color_main"/>
 

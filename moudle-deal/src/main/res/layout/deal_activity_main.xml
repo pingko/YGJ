@@ -41,7 +41,6 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/rl_address"
                 app:layout_constraintTop_toBottomOf="@id/rl_title"
                 android:layout_width="match_parent"
@@ -52,6 +51,7 @@
                 android:paddingTop="2dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="10dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
@@ -68,7 +68,6 @@
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="王富贵"
                     android:textSize="14sp"
                     android:textColor="@color/common_color_111111"/>
 
@@ -76,7 +75,6 @@
                     android:id="@+id/tv_tel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15160001230"
                     android:textSize="12sp"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/tv_name"
@@ -92,17 +90,26 @@
                     android:layout_below="@id/tv_name"
                     android:layout_marginTop="10dp"
                     android:maxLines="2"
-                    android:text="安徽省 合肥市 北京路  朝阳科技工业园西区15栋 007号"
                     android:textSize="12sp"
                     android:textColor="@color/common_color_111111"/>
 
 
                 <ImageView
+                    android:id="@+id/iv_choose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/common_arrow_right"/>
+
+                <TextView
+                    android:id="@+id/tv_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="新增地址"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_centerInParent="true"/>
 
             </RelativeLayout>
 

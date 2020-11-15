@@ -10,6 +10,7 @@
         <activity android:name=".register.RegisterActivity"/>
         <activity android:name=".setting.UserSettingActivity"/>
         <activity android:name=".address.UserAddressActivity"/>
+        <activity android:name=".address.UserAddressAddActivity"/>
         <activity android:name=".UserDealAccountActivity"/>
     </application>
 
