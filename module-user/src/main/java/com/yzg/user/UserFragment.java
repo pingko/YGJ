@@ -56,15 +56,15 @@ public class UserFragment
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
         Log.e("UserFragment", token + "");
         initView();
-        viewModel.isLoginLivedata.setValue(TextUtils.isEmpty(token) ? false : true);
-        viewModel.isLoginLivedata.observe(this, aBoolean -> {
-            if (aBoolean) {
-                viewModel.loadData();
-            }
-            binding.rlNo.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
-            binding.rlLogin.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
-            binding.rlSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
-            binding.viewSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
+//        viewModel.isLoginLivedata.setValue(TextUtils.isEmpty(token) ? false : true);
+//        viewModel.isLoginLivedata.observe(this, aBoolean -> {
+//            if (aBoolean) {
+//                viewModel.loadData();
+//            }
+//            binding.rlNo.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
+//            binding.rlLogin.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
+//            binding.rlSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
+//            binding.viewSubscrible.setVisibility(!aBoolean ? View.GONE : View.VISIBLE);
 
 //            if (!GsonUtils.isShowTrue()){
 ////                binding.rlNo.setVisibility(View.VISIBLE);
@@ -72,10 +72,15 @@ public class UserFragment
 //                binding.llOption.setVisibility(View.INVISIBLE);
 //                binding.tvCs.setVisibility(View.INVISIBLE);
 //            }
-        });
+//        });
 
     }
 
+    @Override
+    protected void onFragmentResume() {
+        super.onFragmentResume();
+        viewModel.loadData();
+    }
 
     private void start(Context context) {
         startActivityForResult(new Intent(context, LoginActivity.class), 1001);
@@ -87,13 +92,14 @@ public class UserFragment
         Log.e("UserFragment", requestCode + "," + resultCode);
         switch (requestCode) {
             case 1001:
-                viewModel.isLoginLivedata.setValue(true);
+//                viewModel.isLoginLivedata.setValue(true);
 //                break;
             case 1002:
 //                viewModel.isLoginLivedata.setValue(false);
                 break;
         }
     }
+
 
 
     private void initView() {
@@ -113,7 +119,7 @@ public class UserFragment
             if (binding.ivShow.getTag().equals("cancle")) {
                 binding.ivShow.setTag("sure");
                 binding.ivShow.setImageResource(R.drawable.user_money_show);
-                binding.tvMoney.setText(userStoreBean.getCurrCanUse()+"");
+                binding.tvMoney.setText(userStoreBean.getCurrAmt()+"");
             } else {
                 binding.ivShow.setTag("cancle");
                 binding.ivShow.setImageResource(R.drawable.user_money_hide);
@@ -191,7 +197,7 @@ public class UserFragment
     public void onDataLoadFinish(UserStoreBean bean) {
         userStoreBean = bean;
         binding.tvName.setText(bean.getAcctNo());
-        binding.tvMoney.setText(bean.getCurrCanUse()+"");
+        binding.tvMoney.setText(bean.getCurrAmt()+"");
     }
 
 

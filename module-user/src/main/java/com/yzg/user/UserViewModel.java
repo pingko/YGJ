@@ -17,7 +17,7 @@ import java.util.TreeMap;
 public class UserViewModel extends MvvmBaseViewModel<IUserMainView> {
 
 
-    public MutableLiveData<Boolean> isLoginLivedata = new MutableLiveData<>(false);
+//    public MutableLiveData<Boolean> isLoginLivedata = new MutableLiveData<>(false);
     public MutableLiveData<UserStoreBean> userBean = new MutableLiveData<>();
 
     protected void loadData() {

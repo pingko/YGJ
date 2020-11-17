@@ -77,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="152dp"
                 android:layout_margin="14dp"
+                android:visibility="gone"
                 android:background="@drawable/user_select_bg"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -115,7 +116,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="152dp"
                 android:layout_margin="14dp"
-                android:visibility="@{userVm.isLoginLivedata?View.VISIBLE:View.GONE , default = gone}"
                 android:background="@drawable/user_select_bg"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -264,9 +264,9 @@
                 android:id="@+id/view_dedl"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:visibility="@{userVm.isLoginLivedata?View.VISIBLE:View.GONE, default=gone}"
                 android:layout_marginLeft="45dp"
                 android:background="#f2f2f4" />
+<!--            android:visibility="@{userVm.isLoginLivedata?View.VISIBLE:View.GONE, default=gone}"-->
 
             <LinearLayout
                 android:id="@+id/rl_subscrible"
@@ -275,7 +275,6 @@
                 android:background="@color/common_colorWhite"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="@{userVm.isLoginLivedata?View.VISIBLE:View.GONE, default=gone}"
 
                 android:paddingLeft="12dp"
                 android:paddingRight="16dp">
@@ -305,7 +304,6 @@
                 android:id="@+id/view_subscrible"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:visibility="@{userVm.isLoginLivedata?View.VISIBLE:View.GONE, default=gone}"
                 android:layout_marginLeft="45dp"
                 android:background="#f2f2f4" />
 
