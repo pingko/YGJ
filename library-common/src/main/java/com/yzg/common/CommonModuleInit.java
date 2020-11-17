@@ -6,13 +6,11 @@ import android.annotation.SuppressLint;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.tamsiree.rxkit.RxImageTool;
-import com.tamsiree.rxkit.RxTool;
-import com.tamsiree.rxkit.crash.RxCrashTool;
-import com.yzg.base.base.BaseApplication;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.tamsiree.rxkit.RxTool;
 import com.tencent.mmkv.MMKV;
+import com.yzg.base.base.BaseApplication;
 
 /**
  * 应用模块:
@@ -46,7 +44,6 @@ public class CommonModuleInit implements IModuleInit
         ARouter.init(application);
         MMKV.initialize(application);
         RxTool.init(application);
-        RxCrashTool.getConfig().setEnabled(false);
         Logger.i("基础层初始化完毕 -- onInitAhead");
 
         return false;

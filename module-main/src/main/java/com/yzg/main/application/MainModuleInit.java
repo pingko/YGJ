@@ -1,5 +1,7 @@
 package com.yzg.main.application;
 
+import android.annotation.SuppressLint;
+
 import com.blankj.utilcode.util.Utils;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
@@ -7,6 +9,7 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
+import com.tamsiree.rxkit.crash.RxCrashTool;
 import com.yzg.base.base.BaseApplication;
 import com.yzg.base.loadsir.EmptyCallback;
 import com.yzg.base.loadsir.ErrorCallback;
@@ -16,6 +19,7 @@ import com.yzg.common.IModuleInit;
 import com.yzg.common.adapter.ScreenAutoAdapter;
 import com.kingja.loadsir.core.LoadSir;
 import com.orhanobut.logger.Logger;
+import com.yzg.main.ui.MainActivity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -44,6 +48,7 @@ public class MainModuleInit implements IModuleInit {
 
     public static final String BASE_URL = "http://120.78.206.203:8088/";
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onInitAhead(BaseApplication application) {
         ScreenAutoAdapter.setup(application);
@@ -72,6 +77,9 @@ public class MainModuleInit implements IModuleInit {
 //        HeConfig.init("HE1812191428311732", "1fb80996cb4f45e0b460bbf48f93e845");
         closeAndroidPDialog();
         Logger.i("main组件初始化完成 -- onInitAhead");
+
+        RxCrashTool.getConfig().setEnabled(false);
+        RxCrashTool.getConfig().setRestartActivityClass(MainActivity.class);
         return false;
     }
 
