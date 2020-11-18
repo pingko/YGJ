@@ -46,6 +46,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "银掌柜AG_${defaultConfig.versionName}_${releaseTime()}.apk"
+                }
+            }
         }
     }
     sourceSets {
@@ -85,6 +90,10 @@ android {
     }
 }
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd_HH-mm",TimeZone.getTimeZone("Asia/Shanghai"))
+}
+
 dependencies {
     testImplementation rootProject.ext.androidx["junit"]
     androidTestImplementation rootProject.ext.androidx["androidx.test.ext-junit"]
@@ -97,19 +106,11 @@ dependencies {
         //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
         implementation project(':library-base')
     } else {
-        //主业务模块
         implementation project(':module-main')
-        //首页模块
         implementation project(':module-home')
-        //社区模块
         implementation project(':module-community')
-        //更多模块
         implementation project(':module-more')
-        //视频播放模块
-//        implementation project(':module-player')
-        //用户模块
         implementation project(':module-user')
-        //教你一模块
         implementation project(':deal')
     }
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
