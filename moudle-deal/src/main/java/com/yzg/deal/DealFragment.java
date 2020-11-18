@@ -56,7 +56,7 @@ public class DealFragment
         viewModel.successData.observe(this, userStoreBean -> {
             if (userStoreBean != null) {
                 binding.tvCcMonney.setText(userStoreBean.getCurrAmt() + "");
-                binding.tvFe.setText(userStoreBean.getCurrAmt() + "");
+                binding.tvFe.setText(userStoreBean.getCurrCanUse() + "");
 //                binding.tvFe.setText(userStoreBean.getTakeFrozAmt() + "");
                 acctNo = userStoreBean.getAcctNo();
             }

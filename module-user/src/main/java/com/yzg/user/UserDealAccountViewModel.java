@@ -11,6 +11,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.yzg.base.activity.IBaseView;
 import com.yzg.base.http.HttpService;
+import com.yzg.base.storage.MmkvHelper;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
 import com.yzg.user.bean.UserDealBean;
 
@@ -36,6 +37,8 @@ public class UserDealAccountViewModel
 
     public void loadData() {
         TreeMap<String, String> map = new TreeMap<>();
+        String acctNo = MmkvHelper.getInstance().getMmkv().decodeString("acctNo");
+        map.put("acctNo",acctNo);
         OkGo.<String>post(HttpService.EB_DealList)
                 .params(map)
                 .tag(this)

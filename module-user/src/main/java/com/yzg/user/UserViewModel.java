@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.yzg.base.activity.IBaseView;
 import com.yzg.base.http.HttpLog;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
@@ -14,10 +15,9 @@ import com.yzg.user.bean.UserStoreBean;
 
 import java.util.TreeMap;
 
-public class UserViewModel extends MvvmBaseViewModel<IUserMainView> {
+public class UserViewModel extends MvvmBaseViewModel<IBaseView> {
 
 
-//    public MutableLiveData<Boolean> isLoginLivedata = new MutableLiveData<>(false);
     public MutableLiveData<UserStoreBean> userBean = new MutableLiveData<>();
 
     protected void loadData() {
@@ -37,21 +37,11 @@ public class UserViewModel extends MvvmBaseViewModel<IUserMainView> {
                         } else {
                             HttpLog.e("没有登录");
                         }
-                        if (getPageView() != null) {
-                            if (bean != null) {
-                                getPageView().onDataLoadFinish(bean);
-                            } else {
-                                getPageView().showEmpty();
-                            }
-                        }
                     }
 
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        if (getPageView() != null) {
-                            getPageView().showFailure(response.body());
-                        }
                     }
                 });
 
