@@ -153,7 +153,9 @@ public class UserFragment
         binding.rlDeal.setOnClickListener(this::onClick);
 
         viewModel.userBean.observe(this, userStoreBean -> {
-            totalFE = userStoreBean.getCurrAmt();
+            if (userStoreBean != null) {
+                totalFE = userStoreBean.getCurrAmt();
+            }
             if (binding.ivShow.getTag().equals("sure")) {
                 binding.tvMoney.setText(totalFE + "");
             }
