@@ -1,6 +1,5 @@
 package com.yzg.deal;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,13 +8,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
+import com.yzg.base.http.HttpLog;
 import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.deal.databinding.DealFragmentMainBinding;
@@ -57,14 +56,24 @@ public class DealFragment
             if (userStoreBean != null) {
                 binding.tvCcMonney.setText(userStoreBean.getCurrAmt() + "");
                 binding.tvFe.setText(userStoreBean.getCurrCanUse() + "");
-//                binding.tvFe.setText(userStoreBean.getTakeFrozAmt() + "");
-                acctNo = userStoreBean.getAcctNo();
+//                acctNo = userStoreBean.getAcctNo();
+            } else {
+                binding.tvCcMonney.setText("0");
+                binding.tvFe.setText( "0");
             }
+
             Log.e("DealFragment", acctNo + "");
         });
         LiveEventBus
                 .get("takeSuccess", Integer.class)
                 .observe(this, s -> {
+                    HttpLog.e("检测到买出成功");
+                    viewModel.loadData();
+                });
+        LiveEventBus
+                .get("saleSuccess", Integer.class)
+                .observe(this, s -> {
+                    HttpLog.e("检测到卖出成功");
                     viewModel.loadData();
                 });
         LiveEventBus
@@ -85,23 +94,12 @@ public class DealFragment
     }
 
 
-
     @Override
     protected void onFragmentFirstVisible() {
         super.onFragmentFirstVisible();
-        Log.e("DealFragment","first");
+        Log.e("DealFragment", "first");
 
     }
-
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        Log.e("DealFragment",hidden+"");
-//        if (!hidden){
-//            viewModel.loadData();
-//            viewModel.loadTodayPrice();
-//        }
-//    }
 
 
     @Override
@@ -118,21 +116,22 @@ public class DealFragment
     protected void onRetryBtnClick() {
 
     }
+
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take) {
+        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take|| view.getId() == R.id.tv_sale) {
             Intent intent = new Intent(getContext(), DealMainActivity.class);
             if (view.getId() == R.id.tv_buy) {
                 intent.putExtra("type", 0);
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_sale) {
-                RxToast.showToast("开发中，暂不支持");
                 intent.putExtra("type", 1);
-                return;
+                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_take) {
                 intent.putExtra("type", 2);
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             }
+            acctNo = MmkvHelper.getInstance().getMmkv().decodeString("accno");
             intent.putExtra("acctNo", acctNo);
             startActivity(intent);
         }

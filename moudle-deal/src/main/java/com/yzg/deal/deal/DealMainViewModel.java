@@ -20,8 +20,9 @@ import java.util.TreeMap;
 public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
 
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> saleResponse = new MutableLiveData<>();
     public MutableLiveData<String> takeResponse = new MutableLiveData<>();
-    public MutableLiveData<String> buyResponse = new MutableLiveData<>();
+    public MutableLiveData<String> buyResponse = new MutableLiveData<>();//买入操作
     public MutableLiveData<Boolean> buySuccessResponse = new MutableLiveData<>();
 
     protected void paySuccess(String trade_no, String acctNo,String orderNo) {
@@ -32,7 +33,6 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
         map.put("orderNo", orderNo);
         OkGo.<String>post(HttpService.EB_Pay_Success)
                 .params(map)
-//                .upJson(jsonObject.toJSONString())
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -94,7 +94,38 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                     }
                 });
     }
+    protected void sale(String aipAmount) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("aipAmount", aipAmount);
+        OkGo.<String>post(HttpService.EB_Sale)
+                .params(map)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        if (jsonObject.containsKey("code")) {
+                            String code = jsonObject.getString("code");
+                            String msg;
+                            if ("0".equals(code)) {
+                                saleResponse.setValue("卖出成功");
+                            } else {
+                                if (jsonObject.containsKey("msg")) {
+                                    msg = jsonObject.getString("msg");
+                                    saleResponse.setValue(msg);
+                                }
+                            }
+                        }
 
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                    }
+                });
+    }
 
     /**
      *
@@ -132,7 +163,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                             } else {
                                 if (jsonObject.containsKey("msg")) {
                                     msg = jsonObject.getString("msg");
-                                    buyResponse.setValue("error " + msg);
+                                    buyResponse.setValue(msg);
                                 }
                             }
                         }

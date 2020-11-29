@@ -20,6 +20,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.sdk.app.PayTask;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.tamsiree.rxkit.RxKeyboardTool;
+import com.tamsiree.rxkit.RxTool;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.http.HttpLog;
@@ -90,6 +92,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         super.onCreate(savedInstanceState);
 
         ddf = NumberFormat.getNumberInstance();
+        ddf.setGroupingUsed(false);//设置不分组
         ddf.setMaximumFractionDigits(2);
         ARouter.getInstance().inject(this);
 //        sirverPrice = getIntent().getFloatExtra("sirverPrice",0f);
@@ -131,7 +134,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                         price = (float) (a * 500);
                     } else {
 
-                        price = (float) (a * sirverPrice);
+                        price = a * sirverPrice;
                     }
                     binding.tvMoney.setText(ddf.format(price) + "元");
                 }
@@ -153,10 +156,19 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         });
 
         viewModel.takeResponse.observe(this, s -> {
-            RxToast.showToast(s);
+            RxToast.showToastLong(s);
             if (s.equals("提货成功")) {
                 LiveEventBus
                         .get("takeSuccess")
+                        .post(0);
+                finish();
+            }
+        });
+        viewModel.saleResponse.observe(this, s -> {
+            RxToast.showToastLong(s);
+            if (s.equals("卖出成功")) {
+                LiveEventBus
+                        .get("saleSuccess")
                         .post(0);
                 finish();
             }
@@ -165,19 +177,18 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             if (!s.contains("error")) {
                 orderId = s;
                 payV2(s);
+            }else {
+                RxToast.showToastLong(s);
             }
         });
 
-        viewModel.buySuccessResponse.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    LogUtils.e("购买成功");
-                    LiveEventBus
-                            .get("buySuccess")
-                            .post(0);
-                    finish();
-                }
+        viewModel.buySuccessResponse.observe(this, aBoolean -> {
+            if (aBoolean) {
+                LogUtils.e("购买成功");
+                LiveEventBus
+                        .get("buySuccess")
+                        .post(0);
+                finish();
             }
         });
         getLastPrice();
@@ -239,7 +250,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         if (v.getId() == R.id.iv_back) {
             finish();
         } else if (v.getId() == R.id.tv_test) {
-//            payV2(v);
+
+            RxKeyboardTool.hideSoftInput(binding.etWeight);
             String s = binding.etWeight.getText().toString();
             if (type == 2) {
                 if (TextUtils.isEmpty(s)) {
@@ -260,6 +272,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                 totalPrice = Integer.parseInt(s) * sirverPrice;
                 if (type == 0) {
                     viewModel.buySirver(sirverPrice, s, ddf.format(totalPrice), acctNo);
+                }else {
+                    viewModel.sale(totalPrice + "");
+
                 }
             }
 

@@ -5,40 +5,36 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.storage.MmkvHelper;
-import com.yzg.common.contract.BaseCustomViewModel;
-import com.yzg.common.contract.TestApi;
-import com.yzg.common.router.RouterActivityPath;
-import com.yzg.user.IUserLoginView;
+import com.yzg.user.BindAliPayActivity;
 import com.yzg.user.LoginActivity;
 import com.yzg.user.R;
 import com.yzg.user.address.UserAddressActivity;
+import com.yzg.user.bean.UserInfoBean;
 import com.yzg.user.databinding.UserActivitySettingBinding;
 
 /**
  * @author darryrzhoong
  */
-public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBinding, UserSettingViewModel> implements IUserLoginView {
+public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBinding, UserSettingModel> {
 
     public static String token;
-
+    UserInfoBean userInfoBean;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ARouter.getInstance().inject(this);
         initView();
         initData();
     }
 
     @Override
-    protected UserSettingViewModel getViewModel() {
-        return ViewModelProviders.of(this).get(UserSettingViewModel.class);
+    protected UserSettingModel getViewModel() {
+        return ViewModelProviders.of(this).get(UserSettingModel.class);
     }
 
     @Override
@@ -60,38 +56,49 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
     private void initData() {
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
         binding.tvQuit.setVisibility(!TextUtils.isEmpty(token) ? View.VISIBLE : View.GONE);
-        showLoading();
-        viewModel.initModel();
         binding.ivBack.setOnClickListener(view -> finish());
-        binding.tvAddress.setOnClickListener(view -> startActivity(new Intent(UserSettingActivity.this, UserAddressActivity.class)));
-
+        viewModel.getUser();
     }
 
     private void initView() {
         binding.tvQuit.setOnClickListener(view -> {
             RxToast.normal("退出成功");
             MmkvHelper.getInstance().getMmkv().clearAll();
-//            ARouter.getInstance().build(RouterActivityPath.User.PAGER_LOGIN).navigation();
-//            ActivityCompat.finishAfterTransition(this);
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-//            setResult(RESULT_OK);
-//            finish();
         });
 
+        binding.rlPay.setOnClickListener(view -> {
+            Intent intent = new Intent(UserSettingActivity.this, BindAliPayActivity.class);
+            String payNo="";
+            String loginName="";
+            if (userInfoBean!=null){
+                payNo = userInfoBean.getUser().getPayNo()+"";
+                loginName = userInfoBean.getUser().getLoginName()+"";
+            }
+            intent.putExtra("payNo",payNo);
+            intent.putExtra("loginName",loginName);
+            startActivity(intent);
+
+        });
+        binding.rlAddress.setOnClickListener(view -> {
+            startActivity(new Intent(UserSettingActivity.this, UserAddressActivity.class));
+        });
+//        binding.tvPhone.setText("");
+//        binding.tvPay.setText("");
+//        binding.tvAddress.setText("");
+
+        viewModel.userInfoLiveData.observe(this, userInfo -> {
+            if (userInfo != null) {
+                userInfoBean = userInfo;
+                binding.tvPhone.setText(userInfo.getUser().getPhonenumber());
+                binding.tvPay.setText(userInfo.getUser().getPayNo()==null?"未绑定":userInfo.getUser().getPayNo()+"");
+            } else {
+                Logger.e("获取用户信息失败");
+            }
+        });
     }
 
 
-    @Override
-    public void onDataLoadFinish(BaseCustomViewModel viewModel) {
-        RxToast.normal(((TestApi) viewModel).getMsg());
-    }
-
-
-    @Override
-    public void showFailure(String message) {
-        super.showFailure(message);
-        RxToast.normal(message);
-    }
 }

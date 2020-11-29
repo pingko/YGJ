@@ -3,7 +3,6 @@ package com.yzg.user;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextPaint;
@@ -12,10 +11,8 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -24,18 +21,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.storage.MmkvHelper;
-import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.router.RouterActivityPath;
-import com.yzg.user.bean.TokenBean;
 import com.yzg.user.databinding.UserActivityLoginBinding;
-
-import java.util.TreeMap;
 
 /**
  * @author darryrzhoong
  */
 @Route(path = RouterActivityPath.User.PAGER_LOGIN)
-public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, LoginViewModel> implements IUserLoginView {
+public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, LoginViewModel>  {
 
     @Autowired(name = "splashLogin")
     public int splashLogin;//是否是启动页跳转过来的
@@ -198,10 +191,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
     }
 
 
-    @Override
-    public void onDataLoadFinish(BaseCustomViewModel viewModel) {
 
-    }
 
     @Override
     public void showFailure(String message) {

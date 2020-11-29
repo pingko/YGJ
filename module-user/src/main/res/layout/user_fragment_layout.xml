@@ -205,7 +205,6 @@
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:text="卖出"
-                        android:visibility="invisible"
                         android:textColor="@color/common_colorWhite" />
 
                     <TextView
@@ -307,42 +306,42 @@
                 android:layout_marginLeft="45dp"
                 android:background="#f2f2f4" />
 
-            <LinearLayout
-                android:id="@+id/rl_help"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@color/common_colorWhite"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="12dp"
-                android:paddingRight="16dp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/rl_help"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="55dp"-->
+<!--                android:background="@color/common_colorWhite"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingLeft="12dp"-->
+<!--                android:paddingRight="16dp">-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/user_help" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginRight="16dp"-->
+<!--                    android:src="@drawable/user_help" />-->
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="帮助中心"
-                    android:textColor="#111111"
-                    android:textSize="14sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="帮助中心"-->
+<!--                    android:textColor="#111111"-->
+<!--                    android:textSize="14sp" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/user_arrow_right" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/user_arrow_right" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="45dp"
-                android:background="#f2f2f4" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginLeft="45dp"-->
+<!--                android:background="#f2f2f4" />-->
 
             <LinearLayout
                 android:id="@+id/rl_setting"
@@ -418,42 +417,42 @@
                 android:layout_marginLeft="45dp"
                 android:background="#f2f2f4" />
 
-            <LinearLayout
-                android:id="@+id/rl_about"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@color/common_colorWhite"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="12dp"
-                android:paddingRight="16dp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/rl_about"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="55dp"-->
+<!--                android:background="@color/common_colorWhite"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingLeft="12dp"-->
+<!--                android:paddingRight="16dp">-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/user_about" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginRight="16dp"-->
+<!--                    android:src="@drawable/user_about" />-->
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="关于我们"
-                    android:textColor="#111111"
-                    android:textSize="14sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="关于我们"-->
+<!--                    android:textColor="#111111"-->
+<!--                    android:textSize="14sp" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/user_arrow_right" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/user_arrow_right" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="45dp"
-                android:background="#f2f2f4" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginLeft="45dp"-->
+<!--                android:background="#f2f2f4" />-->
 
         </LinearLayout>
 

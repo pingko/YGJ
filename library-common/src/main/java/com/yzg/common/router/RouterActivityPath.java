@@ -73,6 +73,7 @@ public class RouterActivityPath
         public static final String PAGER_Address = USER + "/Address";
         public static final String PAGER_Address_add = USER + "/Address_add";
         public static final String PAGER_REGISTER = USER + "/REGISTER";
+        public static final String PAGER_BINDALIPAY = USER + "/BINDALIPAY";
 
         /** 关注页面 */
         public static final String PAGER_ATTENTION = USER + "/attention";

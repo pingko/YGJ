@@ -1,61 +1,61 @@
 package com.yzg.user.setting;
 
-import com.alibaba.fastjson.JSONException;
+import android.text.TextUtils;
+
+import androidx.lifecycle.MutableLiveData;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yzg.base.model.BaseModel;
-import com.yzg.common.contract.TestApi;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.yzg.base.activity.IBaseView;
+import com.yzg.base.http.HttpService;
+import com.yzg.base.storage.MmkvHelper;
+import com.yzg.base.viewmodel.MvvmBaseViewModel;
+import com.yzg.user.bean.UserInfoBean;
 
 import java.util.TreeMap;
 
-import io.reactivex.disposables.Disposable;
+public class UserSettingModel extends MvvmBaseViewModel<IBaseView> {
 
-public class UserSettingModel<T> extends BaseModel<T> {
+    public MutableLiveData<UserInfoBean> userInfoLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
-    private Disposable disposable;
+    public void getUser() {
+        TreeMap<String, String> map = new TreeMap<>();
+        String acctNo = MmkvHelper.getInstance().getMmkv().decodeString("acctNo");
+        map.put("loginName", acctNo);
+        OkGo.<String>get(HttpService.EB_getUser)
+                .params(map)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (!TextUtils.isEmpty(response.body())) {
+                            JSONObject jsonObject = JSON.parseObject(response.body());
+                            if (jsonObject != null && jsonObject.containsKey("code") && 0 == jsonObject.getIntValue("code")) {
+                                UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getString("data"), UserInfoBean.class);
+                                userInfoLiveData.setValue(userInfoBean);
+                            } else {
+                                errorLiveData.setValue(response.message());
+                            }
+                        }
+                    }
 
-    public TreeMap map = new TreeMap();
-
-    public void setMap(TreeMap map) {
-        this.map = map;
-    }
-
-    @Override
-    protected void load() {
-
-//        disposable = EasyHttp.get(HttpService.REGISTER)
-//                .params(map)
-//                .cacheKey(getClass().getSimpleName())
-//                .execute(new SimpleCallBack<String>() {
-//                    @Override
-//                    public void onError(ApiException e) {
-//                        loadFail(e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(String s) {
-//                        parseJson(s);
-//                    }
-//                });
-    }
-
-    private void parseJson(String s) {
-
-        try {
-            TestApi api = JSONObject.parseObject(s, TestApi.class);
-            if (api.getCode() == 0) {
-                loadSuccess((T) api);
-            } else {
-                loadFail(api.getMsg());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                    }
+                });
     }
 
 
     @Override
-    public void cancel() {
-        super.cancel();
-//        EasyHttp.cancelSubscription(disposable);
+    public void detachUi() {
+        super.detachUi();
+        OkGo.getInstance().cancelTag(this);
+
     }
 }

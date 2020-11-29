@@ -128,9 +128,9 @@ public class UserFragment
             }
         });
 
-        binding.rlHelp.setOnClickListener(view -> {
-            RxToast.normal("开发中");
-        });
+//        binding.rlHelp.setOnClickListener(view -> {
+//            RxToast.normal("开发中");
+//        });
         binding.rlSetting.setOnClickListener(view -> {
 
             startActivityForResult(new Intent(getContext(), UserSettingActivity.class), 1002);
@@ -141,9 +141,9 @@ public class UserFragment
         binding.rlFeedback.setOnClickListener(view -> {
             RxToast.normal("开发中");
         });
-        binding.rlAbout.setOnClickListener(view -> {
-            RxToast.normal("开发中");
-        });
+//        binding.rlAbout.setOnClickListener(view -> {
+//            RxToast.normal("开发中");
+//        });
 
 
         binding.tvBuy.setOnClickListener(this);

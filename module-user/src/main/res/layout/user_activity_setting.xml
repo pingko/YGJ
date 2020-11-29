@@ -41,77 +41,117 @@
         </RelativeLayout>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:background="@color/white"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/rl_title">
 
-
-            <TextView
-                android:id="@+id/tv_tip_version"
-                style="@style/user_seeting_item_bg"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:text="版本检查"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
-                android:text="已是最新版本"
-                app:layout_constraintBottom_toBottomOf="@id/tv_tip_version"
-                app:layout_constraintRight_toRightOf="@id/tv_tip_version"
-                app:layout_constraintTop_toTopOf="@id/tv_tip_version" />
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_tip_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="手机号"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_tip_phone"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:text="186xxxx4567" />
+            </RelativeLayout>
+
 
             <View
                 android:id="@+id/view_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#f2f2f4"
-                app:layout_constraintTop_toBottomOf="@id/tv_tip_version" />
+                android:background="#f2f2f4" />
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/rl_pay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/view_line">
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_tip_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支付宝"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_tip_pay"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:text="未绑定" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/user_arrow_right" />
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f2f2f4" />
+
+            <RelativeLayout
+                android:id="@+id/rl_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_tip_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我的收货地址"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_address"
-                    style="@style/user_seeting_item_bg"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_tip_address"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
-                    android:text="我的提货地址"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </LinearLayout>
+                    android:text="未绑定" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/user_arrow_right" />
+            </RelativeLayout>
 
 
-            <!--        <View-->
-            <!--            android:id="@+id/view_line_tel"-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="0.1dp"-->
-            <!--            android:background="#f2f2f4"-->
-            <!--            app:layout_constraintTop_toBottomOf="@id/tv_tip_tel" />-->
-
-
-            <!--        <TextView-->
-            <!--            android:id="@+id/tv_regis"-->
-            <!--            android:layout_width="match_parent"-->
-            <!--            android:layout_height="44dp"-->
-            <!--            android:layout_margin="15dp"-->
-            <!--            android:background="@drawable/user_shape_ic_login_bg"-->
-            <!--            android:gravity="center"-->
-            <!--            android:text="注册"-->
-            <!--            android:textColor="@color/white"-->
-            <!--            android:textSize="14sp"-->
-            <!--            app:layout_constraintTop_toBottomOf="@id/view_line_pwd2" />-->
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_quit"
