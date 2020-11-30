@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
@@ -19,6 +20,7 @@ import com.yzg.user.LoginActivity;
 import com.yzg.user.R;
 import com.yzg.user.address.UserAddressActivity;
 import com.yzg.user.databinding.UserActivitySettingBinding;
+import com.zhpan.idea.utils.LogUtils;
 
 /**
  * @author darryrzhoong
@@ -64,6 +66,11 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
     }
 
     private void initView() {
+        LiveEventBus
+                .get("editUser", Integer.class)
+                .observe(this, s -> {
+                    viewModel.getUser();
+                });
         binding.tvQuit.setOnClickListener(view -> {
             RxToast.normal("退出成功");
             MmkvHelper.getInstance().getMmkv().clearAll();
@@ -80,9 +87,6 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
                 payNo = userInfoBean.getUser().getPayNo() + "";
                 loginName = userInfoBean.getUser().getLoginName() + "";
             }
-//            intent.putExtra("payNo", payNo);
-//            intent.putExtra("loginName", loginName);
-//            startActivity(intent);
             ARouter.getInstance().build(RouterActivityPath.User.PAGER_BINDALIPAY)
                     .withString("loginName", loginName)
                     .withString("payNo", payNo)
