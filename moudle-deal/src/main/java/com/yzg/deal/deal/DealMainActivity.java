@@ -177,7 +177,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             if (!s.contains("error")) {
                 orderId = s;
                 payV2(s);
-            }else {
+            } else {
                 RxToast.showToastLong(s);
             }
         });
@@ -258,7 +258,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     RxToast.showToast("请输入提货重量");
                     return;
                 }
-                if (addressBean==null){
+                if (addressBean == null) {
                     RxToast.showToast("请添加提货地址");
                     return;
                 }
@@ -272,7 +272,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                 totalPrice = Integer.parseInt(s) * sirverPrice;
                 if (type == 0) {
                     viewModel.buySirver(sirverPrice, s, ddf.format(totalPrice), acctNo);
-                }else {
+                } else {
                     viewModel.sale(totalPrice + "");
 
                 }

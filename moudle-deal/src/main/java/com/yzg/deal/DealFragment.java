@@ -1,24 +1,37 @@
 package com.yzg.deal;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.tamsiree.rxkit.RxIntentTool;
 import com.tamsiree.rxkit.view.RxToast;
+import com.tamsiree.rxui.view.dialog.RxDialog;
+import com.tamsiree.rxui.view.dialog.RxDialogSure;
+import com.tamsiree.rxui.view.dialog.RxDialogSureCancel;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.http.HttpLog;
+import com.yzg.base.model.UserInfoBean;
 import com.yzg.base.storage.MmkvHelper;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.deal.databinding.DealFragmentMainBinding;
 import com.yzg.deal.deal.DealMainActivity;
+import com.yzg.deal.deal.UserStoreBean;
 import com.zhpan.idea.utils.LogUtils;
 
 /**
@@ -59,7 +72,7 @@ public class DealFragment
 //                acctNo = userStoreBean.getAcctNo();
             } else {
                 binding.tvCcMonney.setText("0");
-                binding.tvFe.setText( "0");
+                binding.tvFe.setText("0");
             }
 
             Log.e("DealFragment", acctNo + "");
@@ -91,6 +104,44 @@ public class DealFragment
             viewModel.loadData();
             viewModel.loadTodayPrice();
         }
+        viewModel.userInfoLiveData.observe(this, userInfoBean -> {
+            if (userInfoBean != null && userInfoBean.getUser() != null && userInfoBean.getUser().getPayNo() != null) {
+                Intent intent = new Intent(getContext(), DealMainActivity.class);
+                intent.putExtra("type", 1);
+                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
+                acctNo = MmkvHelper.getInstance().getMmkv().decodeString("accno");
+                intent.putExtra("acctNo", acctNo);
+                startActivity(intent);
+            } else {
+                initDialogSurePermission(userInfoBean, getContext(), "卖出需要绑定支付宝账号，是否绑定?");
+            }
+        });
+    }
+
+    public static void initDialogSurePermission(UserInfoBean userInfoBean, final Context mContext, String str) {
+        final RxDialogSureCancel rxDialogSure = new RxDialogSureCancel(mContext);
+        rxDialogSure.getLogoView().setVisibility(View.GONE);
+        rxDialogSure.getTitleView().setVisibility(View.GONE);
+        rxDialogSure.setContent(str);
+        rxDialogSure.getContentView().setTextSize(18);
+        rxDialogSure.getContentView().setTextColor(ContextCompat.getColor(mContext, R.color.common_color_main));
+        rxDialogSure.getContentView().setGravity(Gravity.CENTER);
+        rxDialogSure.setCanceledOnTouchOutside(true);
+        rxDialogSure.setSureListener(v -> {
+            rxDialogSure.cancel();
+            String loginName = "";
+            if (userInfoBean != null) {
+                loginName = userInfoBean.getUser().getLoginName() + "";
+            }
+            ARouter.getInstance().build(RouterActivityPath.User.PAGER_BINDALIPAY)
+                    .withString("loginName", loginName)
+                    .navigation();
+
+        });
+        rxDialogSure.setCancelListener(view -> {
+            rxDialogSure.cancel();
+        });
+        rxDialogSure.show();
     }
 
 
@@ -119,14 +170,16 @@ public class DealFragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take|| view.getId() == R.id.tv_sale) {
+        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take || view.getId() == R.id.tv_sale) {
             Intent intent = new Intent(getContext(), DealMainActivity.class);
             if (view.getId() == R.id.tv_buy) {
                 intent.putExtra("type", 0);
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_sale) {
-                intent.putExtra("type", 1);
-                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
+                viewModel.getUser();
+                return;
+//                intent.putExtra("type", 1);
+//                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_take) {
                 intent.putExtra("type", 2);
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());

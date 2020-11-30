@@ -7,15 +7,17 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.model.UserInfoBean;
 import com.yzg.base.storage.MmkvHelper;
+import com.yzg.common.router.RouterActivityPath;
 import com.yzg.user.BindAliPayActivity;
 import com.yzg.user.LoginActivity;
 import com.yzg.user.R;
 import com.yzg.user.address.UserAddressActivity;
-import com.yzg.user.bean.UserInfoBean;
 import com.yzg.user.databinding.UserActivitySettingBinding;
 
 /**
@@ -25,6 +27,7 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
 
     public static String token;
     UserInfoBean userInfoBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,29 +74,36 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
 
         binding.rlPay.setOnClickListener(view -> {
             Intent intent = new Intent(UserSettingActivity.this, BindAliPayActivity.class);
-            String payNo="";
-            String loginName="";
-            if (userInfoBean!=null){
-                payNo = userInfoBean.getUser().getPayNo()+"";
-                loginName = userInfoBean.getUser().getLoginName()+"";
+            String payNo = "";
+            String loginName = "";
+            if (userInfoBean != null) {
+                payNo = userInfoBean.getUser().getPayNo() + "";
+                loginName = userInfoBean.getUser().getLoginName() + "";
             }
-            intent.putExtra("payNo",payNo);
-            intent.putExtra("loginName",loginName);
-            startActivity(intent);
+//            intent.putExtra("payNo", payNo);
+//            intent.putExtra("loginName", loginName);
+//            startActivity(intent);
+            ARouter.getInstance().build(RouterActivityPath.User.PAGER_BINDALIPAY)
+                    .withString("loginName", loginName)
+                    .withString("payNo", payNo)
+                    .navigation();
 
         });
         binding.rlAddress.setOnClickListener(view -> {
             startActivity(new Intent(UserSettingActivity.this, UserAddressActivity.class));
         });
-//        binding.tvPhone.setText("");
-//        binding.tvPay.setText("");
-//        binding.tvAddress.setText("");
 
         viewModel.userInfoLiveData.observe(this, userInfo -> {
             if (userInfo != null) {
                 userInfoBean = userInfo;
-                binding.tvPhone.setText(userInfo.getUser().getPhonenumber());
-                binding.tvPay.setText(userInfo.getUser().getPayNo()==null?"未绑定":userInfo.getUser().getPayNo()+"");
+                binding.tvPhone.setText(userInfo.getUser().getPhonenumber().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+                Object payNo = userInfo.getUser().getPayNo();
+                if (payNo != null) {
+                    String[] s = payNo.toString().split("=");
+                    String payPhone = s[0].length() == 11 ? s[0] : s[1];
+                    binding.tvPay.setText(payPhone.replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
+                }
+
             } else {
                 Logger.e("获取用户信息失败");
             }

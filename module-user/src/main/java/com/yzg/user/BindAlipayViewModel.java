@@ -19,9 +19,9 @@ public class BindAlipayViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<Boolean> successData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
-    public void editUser(String loginName, String payNo) {
+    public void editUser(String account, String name, String loginName) {
         TreeMap<String, String> map = new TreeMap<>();
-        map.put("payNo", payNo);
+        map.put("payNo", account + "=" + name);
         map.put("loginName", loginName);
 
         OkGo.<String>post(HttpService.EB_editUser)

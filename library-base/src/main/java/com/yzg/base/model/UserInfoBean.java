@@ -1,4 +1,4 @@
-package com.yzg.user.bean;
+package com.yzg.base.model;
 
 import java.io.Serializable;
 import java.util.List;

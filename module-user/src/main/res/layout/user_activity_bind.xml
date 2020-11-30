@@ -61,8 +61,6 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:hint="请输入姓名"
-            android:inputType="number"
-            android:maxLength="11"
             android:paddingLeft="10dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"

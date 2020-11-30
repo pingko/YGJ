@@ -5,20 +5,25 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.tamsiree.rxkit.RxTool;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
+import com.yzg.base.model.MarkettBean;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.user.databinding.UserActivityBindBinding;
 
 @Route(path = RouterActivityPath.User.PAGER_BINDALIPAY)
 public class BindAliPayActivity extends MvvmBaseActivity<UserActivityBindBinding, BindAlipayViewModel> {
 
-    String payNo = "";
-    String loginName = "";
-
+//    String payNo = "";
+//    String loginName = "";
+    @Autowired(name = "loginName")
+    public String loginName;//
+    @Autowired(name = "payNo")
+    public String payNo;//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +55,11 @@ public class BindAliPayActivity extends MvvmBaseActivity<UserActivityBindBinding
     private void initView() {
         binding.ivBack.setOnClickListener(view -> finish());
 
-        loginName = getIntent().getStringExtra("loginName");
-        payNo = getIntent().getStringExtra("payNo");
-
-        binding.etName.setText(TextUtils.isEmpty(loginName) ? "" : loginName);
-        binding.etAccount.setText(TextUtils.isEmpty(payNo) || "null".equals(payNo) ? "" : payNo);
+        if (!TextUtils.isEmpty(payNo)){
+            String[] s=payNo.split("=");
+            binding.etAccount.setText(s[0]);
+            binding.etName.setText(s[1]);
+        }
         binding.tvSure.setOnClickListener(view -> {
             if (TextUtils.isEmpty(binding.etName.getText().toString())) {
                 RxToast.normal("请输入姓名");
@@ -64,12 +69,13 @@ public class BindAliPayActivity extends MvvmBaseActivity<UserActivityBindBinding
                 RxToast.normal("请输入账号");
                 return;
             }
-            viewModel.editUser(binding.etName.getText().toString(), binding.etAccount.getText().toString());
+            viewModel.editUser(binding.etAccount.getText().toString(), binding.etName.getText().toString(),loginName);
         });
 
 
         viewModel.successData.observe(this, tokenBean -> {
             RxToast.showToast("绑定成功");
+            finish();
         });
 
         viewModel.errorLiveData.observe(this, s -> RxToast.normal(s));
