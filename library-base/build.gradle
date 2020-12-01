@@ -81,5 +81,8 @@ dependencies {
     //    compile 'com.lzy.net:okrx2:2.0.2'//基于RxJava2的扩展项目
     api 'com.lzy.net:okserver:2.0.5'
     api 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+    api rootProject.ext.dependencies["arouter-api"]
+    api rootProject.ext.dependencies["RxKit"]
+    api rootProject.ext.dependencies["RxUI"]
     compile project(path: ':chartmodule')
 }

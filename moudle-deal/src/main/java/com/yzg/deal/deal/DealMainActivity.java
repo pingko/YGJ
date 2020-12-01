@@ -183,7 +183,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         });
 
         viewModel.buySuccessResponse.observe(this, aBoolean -> {
-            if (aBoolean) {
+            RxToast.showToastLong(aBoolean);
+            if (aBoolean.equals("buuSuccess")) {
                 LogUtils.e("购买成功");
                 LiveEventBus
                         .get("buySuccess")

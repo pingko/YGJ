@@ -1,7 +1,6 @@
 package com.yzg.deal;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -26,6 +25,7 @@ public class DealViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<UserStoreBean> successData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
     public MutableLiveData<Float> lastPrice = new MutableLiveData<>();
+
 
     protected void loadData() {
         TreeMap<String, String> map = new TreeMap<>();
@@ -93,7 +93,9 @@ public class DealViewModel extends MvvmBaseViewModel<IBaseView> {
                                 UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getString("data"), UserInfoBean.class);
                                 userInfoLiveData.setValue(userInfoBean);
                             } else {
-                                userInfoLiveData.setValue(null);
+                                if (jsonObject != null && jsonObject.containsKey("msg")) {
+                                    errorLiveData.setValue(jsonObject.getString("msg"));
+                                }
                             }
                         }
                     }
@@ -101,7 +103,6 @@ public class DealViewModel extends MvvmBaseViewModel<IBaseView> {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        userInfoLiveData.setValue(null);
                     }
                 });
     }

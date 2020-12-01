@@ -61,7 +61,7 @@ public class DealFragment
 
     private void initData() {
         binding.tvBuy.setOnClickListener(this);
-        binding.tvSale.setOnClickListener(this);
+        binding.tvSale.setOnClickListener(view -> viewModel.getUser());
         binding.tvTake.setOnClickListener(this);
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
 
@@ -104,6 +104,12 @@ public class DealFragment
             viewModel.loadData();
             viewModel.loadTodayPrice();
         }
+        viewModel.errorLiveData.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                RxToast.showToast(s);
+            }
+        });
         viewModel.userInfoLiveData.observe(this, userInfoBean -> {
             if (userInfoBean != null && userInfoBean.getUser() != null && userInfoBean.getUser().getPayNo() != null) {
                 Intent intent = new Intent(getContext(), DealMainActivity.class);
@@ -170,14 +176,14 @@ public class DealFragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take || view.getId() == R.id.tv_sale) {
+        if (view.getId() == R.id.tv_buy || view.getId() == R.id.tv_take) {
             Intent intent = new Intent(getContext(), DealMainActivity.class);
             if (view.getId() == R.id.tv_buy) {
                 intent.putExtra("type", 0);
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_sale) {
-                viewModel.getUser();
-                return;
+//                viewModel.getUser();
+//                return;
 //                intent.putExtra("type", 1);
 //                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_take) {

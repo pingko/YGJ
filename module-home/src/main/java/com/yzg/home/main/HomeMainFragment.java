@@ -138,17 +138,12 @@ public class HomeMainFragment
         textView.postDelayed(() -> handler.sendEmptyMessage(199), 1000);
 
         binding.llGdds.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.setClass(getContext(), HomeGddsListctivity.class);
-            getActivity().startActivity(intent);
-        });
-
-        binding.tvGdds.setOnClickListener(view -> {
             RxToast.showToast("功能正在开发中，敬请期待!");
 //            Intent intent = new Intent();
 //            intent.setClass(getContext(), HomeGddsListctivity.class);
 //            getActivity().startActivity(intent);
         });
+
         binding.llFerg.setOnClickListener(view -> {
             ARouter.getInstance()
                     .build(RouterActivityPath.Deal.PAGER_DEAL_BUY)

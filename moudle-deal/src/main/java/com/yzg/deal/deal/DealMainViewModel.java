@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -23,7 +22,8 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<String> saleResponse = new MutableLiveData<>();
     public MutableLiveData<String> takeResponse = new MutableLiveData<>();
     public MutableLiveData<String> buyResponse = new MutableLiveData<>();//买入操作
-    public MutableLiveData<Boolean> buySuccessResponse = new MutableLiveData<>();
+    public MutableLiveData<String> buySuccessResponse = new MutableLiveData<>();
+
 
     protected void paySuccess(String trade_no, String acctNo,String orderNo) {
         TreeMap<String, String> map = new TreeMap<>();
@@ -42,10 +42,45 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                             String code = jsonObject.getString("code");
                             String msg;
                             if ("0".equals(code)) {
-                                buySuccessResponse.setValue(true);
+                                buySuccessResponse.setValue("buuSuccess");
                             } else {
                                 if (jsonObject.containsKey("msg")) {
-                                    msg = jsonObject.getString("msg");
+                                    buySuccessResponse.setValue( jsonObject.getString("msg"));
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                    }
+                });
+    }
+
+    protected void paySuccess1(String trade_no, String acctNo,String orderNo) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
+        map.put("acctNo", acctNo);
+        map.put("custUm", trade_no);
+        map.put("orderNo", orderNo);
+        OkGo.<String>post(HttpService.EB_Pay_Success)
+                .params(map)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        if (jsonObject.containsKey("code")) {
+                            String code = jsonObject.getString("code");
+                            String msg;
+                            if ("0".equals(code)) {
+                                buySuccessResponse.setValue("buuSuccess");
+                            } else {
+                                if (jsonObject.containsKey("msg")) {
+                                    buySuccessResponse.setValue( jsonObject.getString("msg"));
                                 }
                             }
                         }
