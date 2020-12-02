@@ -1,14 +1,13 @@
 package com.yzg.user;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BaseModel;
-import com.yzg.user.bean.TokenBean;
+import com.yzg.user.bean.LoginResponseBean;
 
 import java.util.TreeMap;
 
@@ -35,7 +34,7 @@ public class UserLoginModel<T> extends BaseModel<T> {
                         String s = response.body();
                         Logger.e(s);
 
-                        TokenBean result = JSONObject.parseObject(JSONObject.parseObject(s).getString("data"), TokenBean.class);
+                        LoginResponseBean result = JSONObject.parseObject(JSONObject.parseObject(s).getString("data"), LoginResponseBean.class);
                         loadSuccess((T) result);
                     }
 

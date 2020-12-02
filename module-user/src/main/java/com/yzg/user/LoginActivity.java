@@ -28,7 +28,7 @@ import com.yzg.user.databinding.UserActivityLoginBinding;
  * @author darryrzhoong
  */
 @Route(path = RouterActivityPath.User.PAGER_LOGIN)
-public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, LoginViewModel>  {
+public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, LoginViewModel> {
 
     @Autowired(name = "splashLogin")
     public int splashLogin;//是否是启动页跳转过来的
@@ -81,12 +81,12 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
                 RxToast.normal("请输入验证码");
                 return;
             }
-            if (binding.ivChoose.getTag().equals("0")){
+            if (binding.ivChoose.getTag().equals("0")) {
                 RxToast.normal("请勾选协议");
                 return;
             }
 
-            viewModel.login(binding.etPhone.getText().toString(), binding.etPwd.getText().toString(),"1");
+            viewModel.login(binding.etPhone.getText().toString(), binding.etPwd.getText().toString(), "1");
 
         });
 
@@ -99,8 +99,12 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
 
         viewModel.successData.observe(this, tokenBean -> {
             MmkvHelper.getInstance().getMmkv().encode("token", tokenBean.getToken());
-            MmkvHelper.getInstance().getMmkv().encode("acctNo",  binding.etPhone.getText().toString());
+            MmkvHelper.getInstance().getMmkv().encode("acctNo", binding.etPhone.getText().toString());
             MmkvHelper.getInstance().getMmkv().encode("address", "");
+            MmkvHelper.getInstance().getMmkv().encode("sellPoint", Integer.parseInt(tokenBean.getSellPoint()));
+            MmkvHelper.getInstance().getMmkv().encode("buyPoint", Integer.parseInt(tokenBean.getBuyPoint()));
+            MmkvHelper.getInstance().getMmkv().encode("loginName", tokenBean.getLoginName());
+
             RxToast.normal("登录成功");
 //            if (splashLogin == 1) {
 //                Log.e("ss", "sss");
@@ -147,7 +151,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
 
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, AttentionActivity.class);
-                intent.putExtra("type",1);
+                intent.putExtra("type", 1);
                 startActivity(intent);
             }
 
@@ -164,7 +168,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, AttentionActivity.class);
-                intent.putExtra("type",2);
+                intent.putExtra("type", 2);
                 startActivity(intent);
             }
 
@@ -189,8 +193,6 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
             binding.ivChoose.setTag("0".equals(binding.ivChoose.getTag()) ? "1" : "0");
         });
     }
-
-
 
 
     @Override

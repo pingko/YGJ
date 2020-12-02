@@ -49,6 +49,12 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     private float sirverPrice = 0f;
     NumberFormat ddf;
 
+    int sellPoint = 20;
+    int buyPoint = 20;
+
+    int currPoint = 20;
+    private int currCanUse;
+
     @Override
     protected DealMainViewModel getViewModel() {
         return ViewModelProviders.of(this).get(DealMainViewModel.class);
@@ -91,6 +97,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sellPoint = MmkvHelper.getInstance().getMmkv().decodeInt("sellPoint", 20);
+        buyPoint = MmkvHelper.getInstance().getMmkv().decodeInt("buyPoint", 20);
+
         ddf = NumberFormat.getNumberInstance();
         ddf.setGroupingUsed(false);//设置不分组
         ddf.setMaximumFractionDigits(2);
@@ -101,18 +110,22 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         binding.rlAddress.setOnClickListener(this);
         binding.tvPrice.setText(sirverPrice + " 克/元");
         type = getIntent().getIntExtra("type", 0);
+        currCanUse = getIntent().getIntExtra("currCanUse", 0);
 //        acctNo = getIntent().getStringExtra("acctNo");
         if (type == 0) {
             binding.tvMoneyTip.setText("购买金额:");
             binding.tvFeTip.setText("购买份额(克):");
+            currPoint = buyPoint;
         } else if (type == 1) {
             binding.tvMoneyTip.setText("卖出金额:");
             binding.tvFeTip.setText("卖出份额(克):");
+            currPoint = sellPoint;
         } else if (type == 2) {
             binding.tvMoneyTip.setText("提货手续费(kg/500元):");
             binding.tvFeTip.setText("提货重量(kg):");
             binding.etWeight.setHint("请输入提货重量");
         }
+        binding.etWeight.setHint(currPoint + "克起，1克递增");
         binding.rlAddress.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
 
 
@@ -146,8 +159,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
 
                 if (s.length() > 0 && type != 2) {
                     int a = Integer.parseInt(s.toString());
-                    if (a < 20) {
-                        RxToast.showToast("20克起，1克递增");
+                    if (a < currPoint) {
+                        RxToast.showToast(currPoint + "克起，1克递增");
                         return;
                     }
                 }
@@ -264,17 +277,21 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     return;
                 }
                 int price = Integer.parseInt(s) * 500;
-                viewModel.take(price + "");
+                viewModel.take(ddf.format(price) + "");
             } else if (type == 0 || type == 1) {
-                if (TextUtils.isEmpty(s) || Integer.parseInt(s) < 20) {
-                    RxToast.showToast("20克起，1克递增");
+                if (TextUtils.isEmpty(s) || Integer.parseInt(s) < currPoint) {
+                    RxToast.showToast(currPoint + "克起，1克递增");
                     return;
                 }
                 totalPrice = Integer.parseInt(s) * sirverPrice;
                 if (type == 0) {
                     viewModel.buySirver(sirverPrice, s, ddf.format(totalPrice), acctNo);
                 } else {
-                    viewModel.sale(totalPrice + "");
+                    if (Integer.parseInt(s) > currCanUse) {
+                        RxToast.showToast("可用的活期份额不足");
+                        return;
+                    }
+                    viewModel.sale(s);
 
                 }
             }

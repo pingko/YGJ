@@ -18,10 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.jeremyliao.liveeventbus.LiveEventBus;
-import com.tamsiree.rxkit.RxIntentTool;
 import com.tamsiree.rxkit.view.RxToast;
-import com.tamsiree.rxui.view.dialog.RxDialog;
-import com.tamsiree.rxui.view.dialog.RxDialogSure;
 import com.tamsiree.rxui.view.dialog.RxDialogSureCancel;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.http.HttpLog;
@@ -31,7 +28,6 @@ import com.yzg.common.router.RouterActivityPath;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.deal.databinding.DealFragmentMainBinding;
 import com.yzg.deal.deal.DealMainActivity;
-import com.yzg.deal.deal.UserStoreBean;
 import com.zhpan.idea.utils.LogUtils;
 
 /**
@@ -46,6 +42,7 @@ public class DealFragment
 
     String acctNo;
     String token;
+    int currCanUse;
 
     @Override
     public int getLayoutId() {
@@ -61,21 +58,27 @@ public class DealFragment
 
     private void initData() {
         binding.tvBuy.setOnClickListener(this);
-        binding.tvSale.setOnClickListener(view -> viewModel.getUser());
+        binding.tvSale.setOnClickListener(view -> {
+            if (currCanUse == 0) {
+                RxToast.showToast("当前没有活期份额，请先买入");
+            } else {
+                viewModel.getUser();
+            }
+        });
         binding.tvTake.setOnClickListener(this);
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
 
         viewModel.successData.observe(this, userStoreBean -> {
             if (userStoreBean != null) {
+                currCanUse = userStoreBean.getCurrCanUse();
                 binding.tvCcMonney.setText(userStoreBean.getCurrAmt() + "");
-                binding.tvFe.setText(userStoreBean.getCurrCanUse() + "");
+                binding.tvFe.setText(currCanUse + "");
 //                acctNo = userStoreBean.getAcctNo();
             } else {
                 binding.tvCcMonney.setText("0");
                 binding.tvFe.setText("0");
             }
 
-            Log.e("DealFragment", acctNo + "");
         });
         LiveEventBus
                 .get("takeSuccess", Integer.class)
@@ -104,12 +107,7 @@ public class DealFragment
             viewModel.loadData();
             viewModel.loadTodayPrice();
         }
-        viewModel.errorLiveData.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                RxToast.showToast(s);
-            }
-        });
+        viewModel.errorLiveData.observe(this, s -> RxToast.showToast(s));
         viewModel.userInfoLiveData.observe(this, userInfoBean -> {
             if (userInfoBean != null && userInfoBean.getUser() != null && userInfoBean.getUser().getPayNo() != null) {
                 Intent intent = new Intent(getContext(), DealMainActivity.class);
@@ -117,6 +115,7 @@ public class DealFragment
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
                 acctNo = MmkvHelper.getInstance().getMmkv().decodeString("accno");
                 intent.putExtra("acctNo", acctNo);
+                intent.putExtra("currCanUse", currCanUse);
                 startActivity(intent);
             } else {
                 initDialogSurePermission(userInfoBean, getContext(), "卖出需要绑定支付宝账号，是否绑定?");

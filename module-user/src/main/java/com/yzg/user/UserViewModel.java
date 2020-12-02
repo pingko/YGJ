@@ -35,7 +35,9 @@ public class UserViewModel extends MvvmBaseViewModel<IBaseView> {
                             bean = JSONObject.parseObject(jsonObject.getString("data"),UserStoreBean.class);
                             userBean.setValue(bean);
                         } else {
-                            HttpLog.e("没有登录");
+                            if(jsonObject!=null &&jsonObject.containsKey("msg")){
+                                HttpLog.e(jsonObject.getString("msg"));
+                            }
                         }
                     }
 

@@ -56,6 +56,7 @@ public class UserFragment
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         token = MmkvHelper.getInstance().getMmkv().decodeString("token");
+
         Log.e("UserFragment", token + "");
         initView();
 //        viewModel.isLoginLivedata.setValue(TextUtils.isEmpty(token) ? false : true);
@@ -160,7 +161,8 @@ public class UserFragment
                 binding.tvMoney.setText(totalFE + "");
             }
         });
-
+        String loginName = MmkvHelper.getInstance().getMmkv().decodeString("loginName");
+        binding.tvName.setText(TextUtils.isEmpty(loginName) ? "" : loginName);
     }
 
 

@@ -19,6 +19,7 @@ import com.guannan.chartmodule.utils.LogUtils;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.orhanobut.logger.Logger;
 import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.tamsiree.rxkit.RxTimeTool;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.base.model.MarkettBean;
@@ -111,7 +112,7 @@ public class HomeMainFragment
                 .setRefreshHeader(new ClassicsHeader(getContext()));
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
             loadFinish();
-            viewModel.loadMarkets(1,10,"");//加载行情列表
+            viewModel.loadMarkets(1, 10, "");//加载行情列表
             viewModel.loadJlyt();//加载最近积利银条成交
             binding.refreshLayout.finishRefresh(true);
         });
@@ -134,7 +135,10 @@ public class HomeMainFragment
         binding.rvGdds.setAdapter(gddsAdapter);
 
         textView = binding.tvScroll;
-        textView.setText(strings[0]);
+        for (int i = 0; i < 10; i++) {
+            dealList.add("13" + i + "****8501  刘先生 产品名称  " + i + "50克   " + "2020-11-11  08:5" + i);
+        }
+        textView.setText(dealList.get(0));
         textView.postDelayed(() -> handler.sendEmptyMessage(199), 1000);
 
         binding.llGdds.setOnClickListener(view -> {
@@ -162,7 +166,7 @@ public class HomeMainFragment
                     .post(3);
         });
         getQuoList();
-        viewModel.loadMarkets(1,10,"");//加载行情列表
+        viewModel.loadMarkets(1, 10, "");//加载行情列表
         viewModel.loadJlyt();//加载最近积利银条成交
         loadFinish();
 //        if (!GsonUtils.isShowTrue()) {
@@ -223,10 +227,10 @@ public class HomeMainFragment
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
 //                if (GsonUtils.isShowTrue())
-                    ARouter.getInstance()
-                            .build(RouterActivityPath.Quotation.Quotation_main_chart)
-                            .withSerializable("MarkettBean", quotationBeans.get(i))
-                            .navigation();
+                ARouter.getInstance()
+                        .build(RouterActivityPath.Quotation.Quotation_main_chart)
+                        .withSerializable("MarkettBean", quotationBeans.get(i))
+                        .navigation();
             }
 
             @Override
@@ -263,11 +267,12 @@ public class HomeMainFragment
             if (msg.what == 199) {
                 textView.next();
                 number++;
-                textView.setText(strings[number % strings.length]);
+                textView.setText(dealList.get((number % dealList.size())));
                 handler.sendEmptyMessageDelayed(199, 2000);
             }
         }
     };
+
 
     @Override
     public void onDestroy() {
@@ -276,8 +281,8 @@ public class HomeMainFragment
             handler.removeCallbacksAndMessages(null);
     }
 
-    private String[] strings = {"135****0001  刘先生 产品名称  25克 300元", "135****0001  刘先生 产品名称  25克 300元"};
-    private String[] strings1 = {"135****0001  刘先生 产品名称  25豆 300元", "135****0001  刘先生 产品名称  25豆 300元"};
+    private ArrayList<String> dealList = new ArrayList<>();
+
     public int number = 0;
 
 
@@ -306,11 +311,11 @@ public class HomeMainFragment
      */
     public void loadFinish() {
 ////        if (GsonUtils.isShowTrue()) {
-            dataList.clear();
-            for (int i = 0; i < 4; i++) {
-                dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
-            }
-            gddsAdapter.setNewData(dataList);
+        dataList.clear();
+        for (int i = 0; i < 4; i++) {
+            dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
+        }
+        gddsAdapter.setNewData(dataList);
 //            showContent();
 //        }
     }

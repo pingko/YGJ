@@ -10,7 +10,6 @@ import com.lzy.okgo.model.Response;
 import com.yzg.base.activity.IBaseView;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
-import com.yzg.user.bean.TokenBean;
 
 import java.util.TreeMap;
 

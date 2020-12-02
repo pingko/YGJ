@@ -28,9 +28,9 @@ public class UserStoreBean implements Serializable {
     private ParamsBean params;
     private String acctNo;
     private int currAmt;
-    private int currCanUse;
+    private int currCanUse;//活期份额
     private int sellFrozAmt;
-    private int takeFrozAmt;
+    private int takeFrozAmt;//理财冻结份额
 
     public Object getSearchValue() {
         return searchValue;

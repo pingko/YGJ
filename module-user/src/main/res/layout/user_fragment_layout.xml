@@ -160,7 +160,7 @@
                     android:layout_alignLeft="@id/iv_head"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
-                    android:text="我的持仓"
+                    android:text="我的持仓(克)"
                     android:textColor="@color/common_colorWhite"
                     android:textSize="14sp" />
 

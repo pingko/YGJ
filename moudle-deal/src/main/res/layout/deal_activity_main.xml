@@ -193,7 +193,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:gravity="center"
                     android:background="@drawable/deal_r5_weight_bg"
-                    android:hint="20克起，1克递增"
                     android:inputType="number"
                     android:maxLength="5"
                     android:textSize="12sp"

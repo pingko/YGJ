@@ -10,13 +10,13 @@ import com.lzy.okgo.model.Response;
 import com.yzg.base.activity.IBaseView;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
-import com.yzg.user.bean.TokenBean;
+import com.yzg.user.bean.LoginResponseBean;
 
 import java.util.TreeMap;
 
 public class LoginViewModel extends MvvmBaseViewModel<IBaseView> {
 
-    public MutableLiveData<TokenBean> successData = new MutableLiveData<>();
+    public MutableLiveData<LoginResponseBean> successData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public void login(String username, String password, String rememberMe) {
@@ -35,7 +35,7 @@ public class LoginViewModel extends MvvmBaseViewModel<IBaseView> {
                         JSONObject jsonObject = JSON.parseObject(response.body());
 
                         if (jsonObject != null && jsonObject.getIntValue("code") == 0) {
-                            TokenBean result = JSONObject.parseObject(jsonObject.getString("data"), TokenBean.class);
+                            LoginResponseBean result = JSONObject.parseObject(jsonObject.getString("data"), LoginResponseBean.class);
                             successData.setValue(result);
                         } else {
                             errorLiveData.setValue(jsonObject.getString("msg"));
