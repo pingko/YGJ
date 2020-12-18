@@ -3,10 +3,12 @@ package com.yzg.user.register;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.tamsiree.rxkit.RxKeyboardTool;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.router.RouterActivityPath;
@@ -20,7 +22,7 @@ import java.util.TreeMap;
  * @author darryrzhoong
  */
 @Route(path = RouterActivityPath.User.PAGER_REGISTER)
-public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBinding, RegisterViewModel> implements IUserRegisterView {
+public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBinding, RegisterViewModel>  {
 
 
     @Override
@@ -87,6 +89,7 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
                 return;
             }
 
+            RxKeyboardTool.hideSoftInput(this);
             String recommenderName= binding.etRecommenderName.getText().toString();
             TreeMap map = new TreeMap();
             map.put("loginName",binding.etPhone.getText().toString());
@@ -102,19 +105,16 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
 //            finish();
         });
 
+        viewModel.successData.observe(this, aBoolean -> {
+            if (aBoolean){
+                RxToast.showToast("注册成功");
+                finish();
+            }
+        });
+
+        viewModel.errorLiveData.observe(this, s -> RxToast.showToast(s));
+
     }
 
 
-    @Override
-    public void onDataLoadFinish(String msg) {
-        RxToast.normal(msg);
-        finish();
-    }
-
-
-    @Override
-    public void showFailure(String message) {
-        super.showFailure(message);
-        RxToast.normal(message);
-    }
 }
