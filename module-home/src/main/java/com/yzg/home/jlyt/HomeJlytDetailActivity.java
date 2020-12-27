@@ -124,6 +124,9 @@ public class HomeJlytDetailActivity extends MvvmBaseActivity<HomeActivityJlytDet
                 binding.tvRate.setText(bean.getRate() + "%");
                 binding.tvStart.setText(bean.getPoint() + "克起购");
                 binding.buyRule1.setText(bean.getPoint() + "克起购," + bean.getLength() + "克递增，用户持有上限" + bean.getProductLimit() + "克");
+                binding.tvStartdate.setText(bean.getProductStart());
+                binding.tvRaisedate.setText(bean.getRaiseStart());
+                binding.tvEnddate.setText(bean.getProductEnd());
             }
         });
 

@@ -119,6 +119,44 @@
                 android:background="#f2f2f4" />
 
             <RelativeLayout
+                android:id="@+id/rl_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_tip_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改密码"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_tip_pwd"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:text="******" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingRight="15dp"
+                    android:src="@drawable/user_arrow_right" />
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f2f2f4" />
+
+            <RelativeLayout
                 android:id="@+id/rl_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

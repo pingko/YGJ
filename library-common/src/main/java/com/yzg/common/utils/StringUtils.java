@@ -35,7 +35,7 @@ import android.text.TextUtils;
 public class StringUtils {
 
     private StringUtils() {
-           /* cannot be instantiated */
+        /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
@@ -1142,6 +1142,16 @@ public class StringUtils {
         Pattern pattern = Pattern.compile(reg);
         Matcher matcher = pattern.matcher(checkString.replaceAll(" ", ""));
         return matcher.matches();
+    }
+
+
+    public static boolean checkPwd(String pwd) {
+//        String regExp = "/(?!^\\d+$)(?!^[A-Za-z]+$)(?!^[^A-Za-z0-9]+$)(?!^.*[\\u4E00-\\u9FA5].*$)^\\S{6,10}$";
+        String regExp = "^(?![A-Z]+$)(?![a-z]+$)(?!\\d+$)(?![\\W_]+$)\\S{6,10}$";
+        if (pwd.matches(regExp)) {
+            return true;
+        }
+        return false;
     }
 
 }

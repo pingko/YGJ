@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="登录"
+                android:text="修改密码"
                 android:textColor="@color/common_color_title_text"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -43,30 +43,31 @@
 
         <TextView
             android:id="@+id/tv_code"
-            android:layout_width="55dp"
+            android:layout_width="100dp"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
             android:background="@color/white"
-            android:gravity="center"
-            android:text="+86"
+            android:gravity="center_vertical"
+            android:text="旧密码"
             android:textColor="#111111"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rl_title" />
 
         <EditText
-            android:id="@+id/et_phone"
+            android:id="@+id/et_old"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="手机号码"
-            android:inputType="number"
-            android:maxLength="11"
+            android:hint="请输入旧密码"
             android:paddingLeft="10dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textColor="#111111"
             android:textSize="14sp"
+            android:singleLine="true"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_code"
             app:layout_constraintStart_toEndOf="@id/tv_code"
@@ -81,11 +82,22 @@
 
 
         <RelativeLayout
-            android:id="@+id/rl_pwd"
+            android:id="@+id/rl_account"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@id/view_line">
+
+            <TextView
+                android:id="@+id/tv_acc"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:paddingLeft="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="新密码"
+                android:textColor="#111111"
+                android:textSize="14sp"/>
 
 
             <EditText
@@ -93,13 +105,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="55dp"
                 android:background="@color/white"
-                android:hint="输入密码"
+                android:paddingLeft="10dp"
+                android:layout_toRightOf="@id/tv_acc"
+                android:singleLine="true"
                 android:inputType="textPassword"
-                android:maxLength="11"
+                android:hint="请输入新密码"
                 android:textColor="#111111"
                 android:textSize="14sp" />
+
 
         </RelativeLayout>
         <View
@@ -107,74 +121,64 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#f2f2f4"
-            app:layout_constraintTop_toBottomOf="@id/rl_pwd" />
-
+            app:layout_constraintTop_toBottomOf="@id/rl_account" />
         <RelativeLayout
-            android:id="@+id/rl_recommenderName"
+            android:id="@+id/rl_pwd1"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/white"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/view_line1">
+
+            <TextView
+                android:id="@+id/tv_pwd1"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:paddingLeft="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:text="再次输入"
+                android:textColor="#111111"
+                android:textSize="14sp"/>
 
 
             <EditText
-                android:id="@+id/et_recommenderName"
+                android:id="@+id/et_pwd1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="55dp"
                 android:background="@color/white"
-                android:hint="请输入推荐人(选填)"
+                android:layout_toRightOf="@id/tv_pwd1"
+                android:hint="请再次输入新密码"
+                android:paddingLeft="10dp"
                 android:singleLine="true"
+                android:inputType="textPassword"
                 android:textColor="#111111"
                 android:textSize="14sp" />
 
-        </RelativeLayout>
 
+        </RelativeLayout>
+        <View
+            android:id="@+id/view_line2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#f2f2f4"
+            app:layout_constraintTop_toBottomOf="@id/rl_pwd1" />
 
         <TextView
-            android:id="@+id/tv_login"
+            android:id="@+id/tv_sure"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/user_shape_ic_login_bg"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:enabled="true"
+            android:background="@drawable/user_sure_bg"
             android:gravity="center"
-            android:text="登录"
+            android:text="确定"
             android:textColor="@color/white"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/rl_recommenderName" />
+            app:layout_constraintTop_toBottomOf="@id/view_line2" />
 
-        <TextView
-            android:id="@+id/tv_register"
-            app:layout_constraintRight_toRightOf="@id/tv_login"
-            app:layout_constraintTop_toBottomOf="@id/tv_login"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:text="新用户注册"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-        <ImageView
-            android:id="@+id/iv_choose"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/user_ic_match_normal"
-            app:layout_constraintTop_toTopOf="@id/tv_register"
-            app:layout_constraintBottom_toBottomOf="@id/tv_register"
-            app:layout_constraintStart_toStartOf="@id/tv_login"/>
-
-        <TextView
-            android:id="@+id/tv_pri"
-            android:textSize="12sp"
-            app:layout_constraintTop_toTopOf="@id/tv_register"
-            app:layout_constraintBottom_toBottomOf="@id/tv_register"
-            app:layout_constraintLeft_toRightOf="@id/iv_choose"
-            android:layout_marginLeft="2dp"
-            android:text="已阅读《用户协议》和《隐私政策》"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@
         <activity android:name=".address.UserAddressAddActivity"/>
         <activity android:name=".UserDealAccountActivity"/>
         <activity android:name=".BindAliPayActivity"/>
+        <activity android:name=".UserEditPwdActivity"/>
     </application>
 
 </manifest>

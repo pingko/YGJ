@@ -93,6 +93,8 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
                     .navigation();
 
         });
+        binding.rlPwd.setOnClickListener(view -> ARouter.getInstance().build(RouterActivityPath.User.PAGER_EDITPASSWORD)
+                .navigation());
         binding.rlAddress.setOnClickListener(view -> {
             startActivity(new Intent(UserSettingActivity.this, UserAddressActivity.class));
         });

@@ -240,6 +240,103 @@
 
         </LinearLayout>
 
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="55dp"
+                  android:layout_marginTop="10dp"
+                  android:orientation="horizontal"
+                  android:background="@color/white">
+
+                  <RelativeLayout
+                      android:id="@+id/ll_start"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:paddingTop="5dp"
+                      android:paddingBottom="5dp"
+                      android:gravity="center_horizontal"
+                      android:orientation="vertical">
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textColor="#444444"
+                          android:textSize="12sp"
+                          android:text="成立日" />
+
+                      <TextView
+                          android:id="@+id/tv_startdate"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textSize="14sp"
+                          android:layout_alignParentBottom="true"
+                          android:textColor="@color/black"
+                          android:text="" />
+                  </RelativeLayout>
+
+                  <RelativeLayout
+                      android:id="@+id/ll_raise"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:paddingTop="5dp"
+                      android:paddingBottom="5dp"
+                      android:gravity="center_horizontal"
+                      android:orientation="vertical">
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textColor="#444444"
+                          android:textSize="12sp"
+                          android:text="生效日" />
+
+                      <TextView
+                          android:id="@+id/tv_raisedate"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textSize="14sp"
+                          android:layout_alignParentBottom="true"
+                          android:textColor="@color/black"
+                          android:text="" />
+                  </RelativeLayout>
+                  <RelativeLayout
+                      android:id="@+id/ll_enddate"
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:paddingTop="5dp"
+                      android:paddingBottom="5dp"
+                      android:gravity="center_horizontal"
+                      android:orientation="vertical">
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textColor="#444444"
+                          android:textSize="12sp"
+                          android:text="到期日" />
+
+                      <TextView
+                          android:id="@+id/tv_enddate"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:textSize="14sp"
+                          android:layout_alignParentBottom="true"
+                          android:textColor="@color/black"
+                          android:text="" />
+                  </RelativeLayout>
+
+
+              </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rl_progress"
             android:layout_marginTop="8dp"

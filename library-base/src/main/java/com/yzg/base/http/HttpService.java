@@ -25,5 +25,7 @@ public class HttpService {
     public static final String EB_LOGOUT = BASE_URL+ "app/token/logout";//退出
     public static final String EB_getUser = BASE_URL+ "getUser";//查询信息
     public static final String EB_editUser = BASE_URL+ "editUser";//修改信息
+    public static final String EB_sendCode = BASE_URL+ "sendSMS";//发送验证码
+    public static final String EB_editPwd = BASE_URL+ "system/user/profile/resetPwd";//修改密码
 
 }
