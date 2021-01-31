@@ -140,12 +140,8 @@ public class HomeMainFragment
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
                 ARouter.getInstance()
-                        .build(RouterFragmentPath.Home.PAGER_GDDSRANKLIST)
+                        .build(RouterActivityPath.Home.PAGER_HOME_GDDSLIST)
                         .navigation();
-//            Intent intent = new Intent();
-//            intent.setClass(getContext(), HomeGddsDetailActivity.class);
-//            getContext().startActivity(intent);
-//            HomeItemCategoryItemSubjectGddsViewBinding
             }
 
             @Override
@@ -153,6 +149,7 @@ public class HomeMainFragment
                 return false;
             }
         });
+
 
         textView = binding.tvScroll;
         for (int i = 0; i < 10; i++) {
@@ -171,10 +168,6 @@ public class HomeMainFragment
             ARouter.getInstance()
                     .build(RouterActivityPath.Home.PAGER_HOME_GDDSLIST)
                     .navigation();
-
-//            Intent intent = new Intent();
-//            intent.setClass(getContext(), HomeGddsListctivity.class);
-//            getActivity().startActivity(intent);
         });
 
         binding.llFerg.setOnClickListener(view -> {
@@ -183,6 +176,9 @@ public class HomeMainFragment
                     .navigation();
 
         });
+        binding.tvGddss.setOnClickListener(view -> ARouter.getInstance()
+                .build(RouterActivityPath.Home.PAGER_HOME_GDDSLIST)
+                .navigation());
         binding.tvJlyts.setOnClickListener(view -> {
             startActivity(new Intent(getContext(), HomeJlytActivity.class));
         });
