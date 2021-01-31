@@ -2,22 +2,9 @@ package com.yzg.home.gdds.gddslist;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.yzg.base.activity.IBaseView;
-import com.yzg.base.http.HttpService;
-import com.yzg.base.model.BasePagingModel;
-import com.yzg.base.model.IPagingModelListener;
-import com.yzg.base.viewmodel.MvmBaseViewModel;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
-import com.yzg.common.contract.BaseCustomViewModel;
-import com.yzg.home.gdds.IHomeGDDSListView;
-
-import java.util.List;
-import java.util.TreeMap;
 
 
 /**

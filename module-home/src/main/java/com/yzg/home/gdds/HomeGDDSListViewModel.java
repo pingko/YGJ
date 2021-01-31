@@ -55,7 +55,6 @@ public class HomeGDDSListViewModel
     public void detachUi() {
         super.detachUi();
         OkGo.getInstance().cancelTag(this);
-
-
     }
+
 }

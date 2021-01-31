@@ -1,52 +1,58 @@
 package com.yzg.home.gdds;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.lzy.okgo.OkGo;
+import com.yzg.base.activity.IBaseView;
 import com.yzg.base.model.BaseModel;
 import com.yzg.base.model.IModelListener;
 import com.yzg.base.viewmodel.MvmBaseViewModel;
+import com.yzg.base.viewmodel.MvvmBaseViewModel;
 import com.yzg.common.contract.BaseCustomViewModel;
 
 import java.util.ArrayList;
 
 public class HomeGddsDetailIDealViewModel
-        extends MvmBaseViewModel<IHomeGDDSListView, HomeGddsDetailIDealModel>
-        implements IModelListener<ArrayList<BaseCustomViewModel>> {
+        extends MvvmBaseViewModel<IBaseView> {
+    public MutableLiveData<Boolean> successData = new MutableLiveData<>();
+    public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
-    @Override
-    public void onLoadFinish(BaseModel model,
-                             ArrayList<BaseCustomViewModel> data) {
-        if (getPageView() != null) {
-            if (data != null && data.size() > 0) {
-                getPageView().onDataLoadFinish(data, false);
-            } else {
-                getPageView().showEmpty();
-            }
-        }
+    public void getList(String account, String name, String loginName) {
+        successData.setValue(true);
+//        TreeMap<String, String> map = new TreeMap<>();
+//        map.put("payNo", account + "=" + name);
+//        map.put("loginName", loginName);
+//
+//        OkGo.<String>post(HttpService.EB_editUser)
+//                .params(map)
+//                .tag(this)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//
+//                        JSONObject jsonObject = JSON.parseObject(response.body());
+//
+//                        if (jsonObject != null && jsonObject.getIntValue("code") == 0) {
+//                            successData.setValue(true);
+//                        } else {
+//                            errorLiveData.setValue(jsonObject.getString("msg"));
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        super.onError(response);
+//                        errorLiveData.setValue(response.message());
+//                    }
+//                });
     }
 
-    @Override
-    public void onLoadFail(BaseModel model, String prompt) {
-        if (getPageView() != null) {
-            getPageView().showFailure(prompt);
-        }
-    }
-
-    public void tryToRefresh() {
-        model.load();
-    }
-
-    @Override
-    public void initModel() {
-        model = new HomeGddsDetailIDealModel();
-        model.register(this);
-        model.getCacheDataAndLoad();
-    }
 
     @Override
     public void detachUi() {
         super.detachUi();
-        if (model != null) {
-            model.unRegister(this);
-        }
-
+        OkGo.getInstance().cancelTag(this);
     }
 }
