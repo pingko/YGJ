@@ -32,9 +32,11 @@ import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.common.utils.DensityUtils;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeFragmentMainBinding;
+import com.yzg.home.databinding.HomeItemCategoryItemSubjectGddsViewBinding;
 import com.yzg.home.discover.adapter.GDDSItemAdapter;
 import com.yzg.home.discover.adapter.HomeMainJLYTAdapter;
 import com.yzg.home.discover.bean.SquareCard;
+import com.yzg.home.gdds.gddslist.GddsBean;
 import com.yzg.home.jlyt.HomeJlytActivity;
 import com.yzg.home.jlyt.HomeJlytDetailActivity;
 import com.yzg.home.jlyt.JlytBean;
@@ -57,7 +59,8 @@ import java.util.List;
 @Route(path = RouterFragmentPath.Home.PAGER_HOMES)
 public class HomeMainFragment
         extends MvvmLazyFragment<HomeFragmentMainBinding, HomeMainViewModel> {
-    GDDSItemAdapter gddsAdapter;
+    CommonAdapter gddsAdapter;
+    private List<GddsBean> gddsBeans = new ArrayList<>();
     AutoVerticalScrollTextView textView;
     ArrayList<SquareCard> dataList = new ArrayList<>();
     List<JlytBean> jlytBeans = new ArrayList<>();
@@ -124,25 +127,51 @@ public class HomeMainFragment
         binding.rvGdds.setLayoutManager(layoutManager);
         binding.rvGdds.addItemDecoration(new RecyclerItemDecoration(0,
                 0, DensityUtils.dip2px(getContext(), 16), 0));
-        gddsAdapter = new GDDSItemAdapter(
-                R.layout.home_item_category_item_subject_gdds_view);
-        gddsAdapter.setOnItemClickListener((adapter1, view, position) -> {
-            RxToast.showToast("功能正在开发中，敬请期待!");
+
+
+        gddsAdapter = new CommonAdapter<GddsBean>(getContext(), R.layout.home_item_category_item_subject_gdds_view, gddsBeans) {
+            @Override
+            protected void convert(ViewHolder holder, GddsBean bean, int position) {
+            }
+        };
+
+
+        gddsAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                ARouter.getInstance()
+                        .build(RouterFragmentPath.Home.PAGER_GDDSRANKLIST)
+                        .navigation();
 //            Intent intent = new Intent();
 //            intent.setClass(getContext(), HomeGddsDetailActivity.class);
 //            getContext().startActivity(intent);
+//            HomeItemCategoryItemSubjectGddsViewBinding
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                return false;
+            }
         });
-        binding.rvGdds.setAdapter(gddsAdapter);
 
         textView = binding.tvScroll;
         for (int i = 0; i < 10; i++) {
             dealList.add("13" + i + "****8501  刘先生 产品名称  " + i + "50克   " + "2020-11-11  08:5" + i);
+            gddsBeans.add(new GddsBean());
         }
+
+//        adapter.addFooterView(getFooterView());
+        binding.rvGdds.setAdapter(gddsAdapter);
+
+
         textView.setText(dealList.get(0));
         textView.postDelayed(() -> handler.sendEmptyMessage(199), 1000);
 
         binding.llGdds.setOnClickListener(view -> {
-            RxToast.showToast("功能正在开发中，敬请期待!");
+            ARouter.getInstance()
+                    .build(RouterActivityPath.Home.PAGER_HOME_GDDSLIST)
+                    .navigation();
+
 //            Intent intent = new Intent();
 //            intent.setClass(getContext(), HomeGddsListctivity.class);
 //            getActivity().startActivity(intent);
@@ -315,7 +344,7 @@ public class HomeMainFragment
         for (int i = 0; i < 4; i++) {
             dataList.add(new SquareCard("1个月,100豆起", "", "成长经验"));
         }
-        gddsAdapter.setNewData(dataList);
+//        gddsAdapter.setNewData(dataList);
 //            showContent();
 //        }
     }

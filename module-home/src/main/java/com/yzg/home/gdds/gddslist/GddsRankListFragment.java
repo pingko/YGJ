@@ -5,11 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.yzg.base.fragment.MvvmLazyFragment;
-import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.common.router.RouterFragmentPath;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeFragmentRanklistBinding;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +24,11 @@ import java.util.List;
  * @since 2020-02-23
  */
 @Route(path = RouterFragmentPath.Home.PAGER_GDDSRANKLIST)
-public class GddsRankListFragment
-        extends MvvmLazyFragment<HomeFragmentRanklistBinding, GddsRankListViewModel>
-        implements IGddsRankListView {
+public class GddsRankListFragment extends MvvmLazyFragment<HomeFragmentRanklistBinding, GddsRankListViewModel> {
 
-    private GddsRankListAdapter adapter;
+    private CommonAdapter adapter;
+
+    private List<GddsBean> gddsBeans = new ArrayList<>();
 
     public static GddsRankListFragment newInstance() {
         return new GddsRankListFragment();
@@ -44,24 +46,30 @@ public class GddsRankListFragment
     }
 
     private void initView() {
-        binding.rvTopicView.setHasFixedSize(true);
         binding.rvTopicView
                 .setLayoutManager(new LinearLayoutManager(getContext()));
-//        binding.refreshLayout
-//                .setRefreshHeader(new ClassicsHeader(getContext()));
-//        binding.refreshLayout
-//                .setRefreshFooter(new ClassicsFooter(getContext()));
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
-            viewModel.tryRefresh();
+            binding.refreshLayout.finishRefresh(500);
         });
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
-            viewModel.loadMore();
+            binding.refreshLayout.finishLoadMore(500);
         });
-        adapter = new GddsRankListAdapter(R.layout.home_item_gdds_rank_view);
+
+        adapter = new CommonAdapter<GddsBean>(getContext(), R.layout.home_item_gdds_rank_view, gddsBeans) {
+            @Override
+            protected void convert(ViewHolder holder, GddsBean bean, int position) {
+            }
+        };
+
         binding.rvTopicView.setAdapter(adapter);
-        setLoadSir(binding.refreshLayout);
-        showLoading();
-        viewModel.initModel();
+        viewModel.getList("", "", "");
+        viewModel.successData.observe(this, aBoolean -> {
+            for (int i = 0; i < 9; i++) {
+                gddsBeans.add(new GddsBean());
+            }
+            adapter.notifyDataSetChanged();
+        });
+
     }
 
     @Override
@@ -79,40 +87,4 @@ public class GddsRankListFragment
 
     }
 
-//    private View getFooterView() {
-//        return LayoutInflater.from(getContext())
-//                .inflate(R.layout.more_item_foote_view,
-//                        binding.rvTopicView,
-//                        false);
-//    }
-
-    @Override
-    public void onDataLoaded(List<BaseCustomViewModel> data,
-                             boolean isFirstPage) {
-        if (data == null) {
-            return;
-        }
-        if (isFirstPage) {
-            adapter.setNewData(data);
-            showContent();
-            binding.refreshLayout.finishRefresh(true);
-
-        } else {
-            adapter.addData(data);
-            showContent();
-            binding.refreshLayout.finishLoadMore(true);
-        }
-
-    }
-
-    @Override
-    public void onLoadMoreFailure(String message) {
-        binding.refreshLayout.finishLoadMore(false);
-    }
-
-    @Override
-    public void onLoadMoreEmpty() {
-//        adapter.addFooterView(getFooterView());
-        binding.refreshLayout.finishLoadMoreWithNoMoreData();
-    }
 }

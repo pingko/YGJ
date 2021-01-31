@@ -54,6 +54,5 @@ public class BindAlipayViewModel extends MvvmBaseViewModel<IBaseView> {
     public void detachUi() {
         super.detachUi();
         OkGo.getInstance().cancelTag(this);
-
     }
 }

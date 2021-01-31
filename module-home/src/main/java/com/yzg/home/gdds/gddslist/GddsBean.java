@@ -22,15 +22,15 @@ public class GddsBean implements Serializable {
     public String subscribeNum;
     public boolean isSubs;
 
-    public GddsBean(String headUrl, String name, String rate, String fans, String time, String subscribeNum, boolean isSubs) {
-        this.headUrl = headUrl;
-        this.name = name;
-        this.rate = rate;
-        this.fans = fans;
-        this.time = time;
-        this.subscribeNum = subscribeNum;
-        this.isSubs = isSubs;
-    }
+//    public GddsBean(String headUrl, String name, String rate, String fans, String time, String subscribeNum, boolean isSubs) {
+//        this.headUrl = headUrl;
+//        this.name = name;
+//        this.rate = rate;
+//        this.fans = fans;
+//        this.time = time;
+//        this.subscribeNum = subscribeNum;
+//        this.isSubs = isSubs;
+//    }
 
     public String getHeadUrl() {
         return headUrl;

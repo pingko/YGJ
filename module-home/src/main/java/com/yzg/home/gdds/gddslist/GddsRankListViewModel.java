@@ -1,12 +1,23 @@
 package com.yzg.home.gdds.gddslist;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.yzg.base.activity.IBaseView;
+import com.yzg.base.http.HttpService;
 import com.yzg.base.model.BasePagingModel;
 import com.yzg.base.model.IPagingModelListener;
 import com.yzg.base.viewmodel.MvmBaseViewModel;
+import com.yzg.base.viewmodel.MvvmBaseViewModel;
 import com.yzg.common.contract.BaseCustomViewModel;
 import com.yzg.home.gdds.IHomeGDDSListView;
 
 import java.util.List;
+import java.util.TreeMap;
 
 
 /**
@@ -19,56 +30,48 @@ import java.util.List;
  * @since 2020-02-23
  */
 public class GddsRankListViewModel
-        extends MvmBaseViewModel<IGddsRankListView, GddsRankListModel>
-        implements IPagingModelListener<List<BaseCustomViewModel>> {
-    @Override
-    protected void initModel() {
-        model = new GddsRankListModel();
-        model.register(this);
-        model.getCacheDataAndLoad();
+        extends MvvmBaseViewModel<IBaseView>  {
+
+    public MutableLiveData<Boolean> successData = new MutableLiveData<>();
+    public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+
+    public void getList(String account, String name, String loginName) {
+        successData.setValue(true);
+//        TreeMap<String, String> map = new TreeMap<>();
+//        map.put("payNo", account + "=" + name);
+//        map.put("loginName", loginName);
+//
+//        OkGo.<String>post(HttpService.EB_editUser)
+//                .params(map)
+//                .tag(this)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+//
+//                        JSONObject jsonObject = JSON.parseObject(response.body());
+//
+//                        if (jsonObject != null && jsonObject.getIntValue("code") == 0) {
+//                            successData.setValue(true);
+//                        } else {
+//                            errorLiveData.setValue(jsonObject.getString("msg"));
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        super.onError(response);
+//                        errorLiveData.setValue(response.message());
+//                    }
+//                });
     }
 
-    @Override
-    public void onLoadFinish(BasePagingModel model,
-                             List<BaseCustomViewModel> data, boolean isEmpty, boolean isFirstPage) {
-        if (getPageView() != null) {
-            if (isEmpty) {
-                if (isFirstPage) {
-                    getPageView().showEmpty();
-                } else {
-                    getPageView().onLoadMoreEmpty();
-                }
-            } else {
-                getPageView().onDataLoaded(data, isFirstPage);
-            }
-        }
-    }
-
-    @Override
-    public void onLoadFail(BasePagingModel model, String prompt,
-                           boolean isFirstPage) {
-        if (getPageView() != null) {
-            if (isFirstPage) {
-                getPageView().showFailure(prompt);
-            } else {
-                getPageView().onLoadMoreFailure(prompt);
-            }
-        }
-    }
 
     @Override
     public void detachUi() {
         super.detachUi();
-        if (model != null) {
-            model.unRegister(this);
-        }
+        OkGo.getInstance().cancelTag(this);
     }
 
-    public void tryRefresh() {
-        model.refresh();
-    }
-
-    public void loadMore() {
-        model.loadMore();
-    }
 }
