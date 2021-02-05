@@ -84,10 +84,6 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
                 RxToast.normal("请输入验证码");
                 return;
             }
-            if (!StringUtils.checkPwd(binding.etPwd.getText().toString())) {
-                RxToast.normal("密码数字、字母、符号6-10位,必须包含其中至少两种");
-                return;
-            }
             if (binding.ivChoose.getTag().equals("0")) {
                 RxToast.normal("请勾选协议");
                 return;
