@@ -71,6 +71,7 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
 //        binding.etPwd2.setText("123456");
 //        binding.etName.setText("大富翁");
         binding.tvRegis.setOnClickListener(view -> {
+            RxKeyboardTool.hideSoftInput(this);
             if (TextUtils.isEmpty(binding.etName.getText().toString())) {
                 RxToast.normal("请输入昵称");
                 return;
@@ -102,7 +103,7 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
                 RxToast.normal("密码数字、字母、符号6-10位,必须包含其中至少两种");
                 return;
             }
-            RxKeyboardTool.hideSoftInput(this);
+
             viewModel.sendCode(binding.etPhone.getText().toString(), code);
         });
 
