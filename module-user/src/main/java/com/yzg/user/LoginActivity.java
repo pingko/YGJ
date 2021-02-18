@@ -18,10 +18,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.tamsiree.rxkit.RxKeyboardTool;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.router.RouterActivityPath;
+import com.yzg.common.utils.StringUtils;
 import com.yzg.user.databinding.UserActivityLoginBinding;
 
 /**
@@ -73,6 +75,7 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
 //        binding.etPhone.setText("1861234567");
 //        binding.etPwd.setText("123456");
         binding.tvLogin.setOnClickListener(view -> {
+            RxKeyboardTool.hideSoftInput(this);
             if (TextUtils.isEmpty(binding.etPhone.getText().toString())) {
                 RxToast.normal("请输入手机号");
                 return;
@@ -95,6 +98,9 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
                     .build(RouterActivityPath.User.PAGER_REGISTER)
                     .navigation();
         });
+
+        binding.tvForget.setOnClickListener(view -> ARouter.getInstance().build(RouterActivityPath.User.PAGER_EDITPASSWORD)
+                .navigation());
 
 
         viewModel.successData.observe(this, tokenBean -> {
