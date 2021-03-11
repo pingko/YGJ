@@ -99,8 +99,14 @@ public class LoginActivity extends MvvmBaseActivity<UserActivityLoginBinding, Lo
                     .navigation();
         });
 
-        binding.tvForget.setOnClickListener(view -> ARouter.getInstance().build(RouterActivityPath.User.PAGER_EDITPASSWORD)
-                .navigation());
+        binding.tvForget.setOnClickListener(view ->
+                {
+                    ARouter.getInstance()
+                            .build(RouterActivityPath.User.PAGER_REGISTER)
+                            .withInt("type",1)
+                            .navigation();
+                }
+        );
 
 
         viewModel.successData.observe(this, tokenBean -> {

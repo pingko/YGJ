@@ -1,7 +1,9 @@
 package com.yzg.user.register;
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import androidx.databinding.ObservableInt;
 import androidx.lifecycle.MutableLiveData;
 
 import com.alibaba.fastjson.JSON;
@@ -17,12 +19,14 @@ import java.util.TreeMap;
 
 public class RegisterViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<Boolean> successData = new MutableLiveData<>();
+    public MutableLiveData<Boolean> editSuccessData = new MutableLiveData<>();
     public MutableLiveData<Boolean> successCheckCodeData = new MutableLiveData<>();
     public MutableLiveData<Boolean> successSendCodeData = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+    public MutableLiveData<String> codeLiveData = new MutableLiveData<>();
 
-    protected void loadData(TreeMap map) {
-        OkGo.<String>get(HttpService.REGISTER)
+    protected void loadData(TreeMap map, String url) {
+        OkGo.<String>get(url)
                 .params(map)
                 .tag(this)
                 .execute(new StringCallback() {
@@ -30,7 +34,11 @@ public class RegisterViewModel extends MvvmBaseViewModel<IBaseView> {
                     public void onSuccess(Response<String> response) {
                         JSONObject jsonObject = JSON.parseObject(response.body());
                         if (jsonObject.containsKey("code") && jsonObject.getString("code").equals("0")) {
-                            successData.setValue(true);
+                            if (url.equals(HttpService.REGISTER)) {
+                                successData.setValue(true);
+                            } else {
+                                editSuccessData.setValue(true);
+                            }
                         } else {
                             if (jsonObject.containsKey("msg")) {
                                 errorLiveData.setValue(jsonObject.getString("msg"));
@@ -50,12 +58,13 @@ public class RegisterViewModel extends MvvmBaseViewModel<IBaseView> {
 
     }
 
-    protected void sendCode(String phone, String code) {
+    protected void sendCode(int type, String phone, String code) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("phone", phone);
         if (!TextUtils.isEmpty(code))
             map.put("num", code);
-        OkGo.<String>get(HttpService.EB_sendCode)
+        map.put("type", type == 1 ? "2" : "1");
+        OkGo.<String>get(TextUtils.isEmpty(code) ? HttpService.EB_sendCode : HttpService.EB_checkCode)
                 .tag(this)
                 .params(map)
                 .execute(new StringCallback() {
@@ -63,9 +72,11 @@ public class RegisterViewModel extends MvvmBaseViewModel<IBaseView> {
                     public void onSuccess(Response<String> response) {
                         JSONObject jsonObject = JSON.parseObject(response.body());
                         if (jsonObject.containsKey("code") && jsonObject.getString("code").equals("0")) {
+                            Log.e("aaa", code);
                             if (TextUtils.isEmpty(code)) {
                                 successSendCodeData.setValue(true);
                             } else {
+                                codeLiveData.setValue(code);
                                 successCheckCodeData.setValue(true);
                             }
                         } else {

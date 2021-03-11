@@ -8,6 +8,7 @@ public class HttpService {
 //    public static final String BASE_URL="http://admin.zitic.net:8088/";
     public static final String BASE_URL="https://admin.zitic.net/";
     public static final String REGISTER = BASE_URL+ "custAdd";//注册
+    public static final String FORGOTPASSWORD = BASE_URL+ "forgotPassword";//注册
     public static final String LOGIN = BASE_URL+ "login";//登录
     public static final String Gold_info_list = BASE_URL+ "system/aipGoldInfo/list";//产品列表
     public static final String Gold_info_detail = BASE_URL+ "system/aipGoldInfo/getInfo";//产品详情
@@ -26,6 +27,7 @@ public class HttpService {
     public static final String EB_getUser = BASE_URL+ "getUser";//查询信息
     public static final String EB_editUser = BASE_URL+ "editUser";//修改信息
     public static final String EB_sendCode = BASE_URL+ "sendSMS";//发送验证码
+    public static final String EB_checkCode = BASE_URL+ "smsOK";//校验验证码
     public static final String EB_editPwd = BASE_URL+ "system/user/profile/resetPwd";//修改密码
 
 }
