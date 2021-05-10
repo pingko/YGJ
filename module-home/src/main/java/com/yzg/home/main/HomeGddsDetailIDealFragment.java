@@ -1,13 +1,19 @@
 package com.yzg.home.main;
 
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.yzg.base.fragment.MvvmBaseFragment;
+import com.yzg.base.fragment.MvvmLazyFragment;
 import com.yzg.home.R;
 import com.yzg.home.databinding.HomeFragmentGddsDetailIdealBinding;
 import com.yzg.home.gdds.HomeGddsDetailIDealViewModel;
 
-public class HomeGddsDetailIDealFragment extends MvvmBaseFragment<HomeFragmentGddsDetailIdealBinding, HomeGddsDetailIDealViewModel> {
+public class HomeGddsDetailIDealFragment extends MvvmLazyFragment<HomeFragmentGddsDetailIdealBinding, HomeGddsDetailIDealViewModel> {
 
     public static HomeGddsDetailIDealFragment newInstance() {
         return new HomeGddsDetailIDealFragment();
@@ -30,5 +36,11 @@ public class HomeGddsDetailIDealFragment extends MvvmBaseFragment<HomeFragmentGd
     @Override
     protected void onRetryBtnClick() {
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+//        viewModel.getDetail("2");
     }
 }

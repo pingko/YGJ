@@ -33,7 +33,6 @@ import com.yzg.common.contract.AddressBean;
 import com.yzg.common.router.RouterActivityPath;
 import com.yzg.deal.R;
 import com.yzg.deal.databinding.DealActivityMainBinding;
-import com.zhpan.idea.utils.LogUtils;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -198,7 +197,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         viewModel.buySuccessResponse.observe(this, aBoolean -> {
             RxToast.showToastLong(aBoolean);
             if (aBoolean.equals("buuSuccess")) {
-                LogUtils.e("购买成功");
+                HttpLog.e("购买成功");
                 LiveEventBus
                         .get("buySuccess")
                         .post(0);

@@ -20,7 +20,6 @@ import com.yzg.user.LoginActivity;
 import com.yzg.user.R;
 import com.yzg.user.address.UserAddressActivity;
 import com.yzg.user.databinding.UserActivitySettingBinding;
-import com.zhpan.idea.utils.LogUtils;
 
 /**
  * @author darryrzhoong

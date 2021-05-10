@@ -3,6 +3,7 @@ package com.yzg.home.main;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -125,6 +126,16 @@ public class HomeGDDSListFragment
             }
             syAdapter.notifyDataSetChanged();
             subAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.gddsBeanMutableLiveData.observe(this, new Observer<List<GddsBean>>() {
+            @Override
+            public void onChanged(List<GddsBean> gddsBeans) {
+                gddsSubBeans.addAll(gddsBeans);
+                gddsSYBeans.addAll(gddsBeans);
+            syAdapter.notifyDataSetChanged();
+            subAdapter.notifyDataSetChanged();
+            }
         });
     }
 //    GDDSSubscribeItemAdapter adapter = new GDDSSubscribeItemAdapter(
