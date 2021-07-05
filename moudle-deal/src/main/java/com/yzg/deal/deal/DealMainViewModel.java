@@ -21,6 +21,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<String> errorLiveData = new MutableLiveData<>();
     public MutableLiveData<String> saleResponse = new MutableLiveData<>();
     public MutableLiveData<String> takeResponse = new MutableLiveData<>();
+    public MutableLiveData<String> takeOrderNo = new MutableLiveData<>();//提货交易流水号
     public MutableLiveData<String> buyResponse = new MutableLiveData<>();//买入操作
     public MutableLiveData<String> buySuccessResponse = new MutableLiveData<>();
 
@@ -42,7 +43,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                             String code = jsonObject.getString("code");
                             String msg;
                             if ("0".equals(code)) {
-                                buySuccessResponse.setValue("buuSuccess");
+                                buySuccessResponse.setValue("buySuccess");
                             } else {
                                 if (jsonObject.containsKey("msg")) {
                                     buySuccessResponse.setValue( jsonObject.getString("msg"));
@@ -60,48 +61,15 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                 });
     }
 
-    protected void paySuccess1(String trade_no, String acctNo,String orderNo) {
+    protected void takeSuccess(String trade_no, String acctNo,String orderNo,String weight) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
         map.put("acctNo", acctNo);
-        map.put("custUm", trade_no);
+        map.put("tradeNo", trade_no);
         map.put("orderNo", orderNo);
-        OkGo.<String>post(HttpService.EB_Pay_Success)
+        map.put("aipAmount", weight);
+        OkGo.<String>post(HttpService.EB_Take_Success)
                 .params(map)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        JSONObject jsonObject = JSON.parseObject(response.body());
-                        if (jsonObject.containsKey("code")) {
-                            String code = jsonObject.getString("code");
-                            String msg;
-                            if ("0".equals(code)) {
-                                buySuccessResponse.setValue("buuSuccess");
-                            } else {
-                                if (jsonObject.containsKey("msg")) {
-                                    buySuccessResponse.setValue( jsonObject.getString("msg"));
-                                }
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        errorLiveData.setValue(response.body());
-                    }
-                });
-    }
-
-
-    protected void take(String aipAmount) {
-        TreeMap<String, String> map = new TreeMap<>();
-        map.put("aipAmount", aipAmount);
-        OkGo.<String>post(HttpService.EB_Take)
-                .params(map)
-//                .upJson(jsonObject.toJSONString())
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override
@@ -114,8 +82,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                                 takeResponse.setValue("提货成功");
                             } else {
                                 if (jsonObject.containsKey("msg")) {
-                                    msg = jsonObject.getString("msg");
-                                    takeResponse.setValue(msg);
+                                    takeResponse.setValue( jsonObject.getString("msg"));
                                 }
                             }
                         }
@@ -126,6 +93,47 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                     public void onError(Response<String> response) {
                         super.onError(response);
                         errorLiveData.setValue(response.body());
+                    }
+                });
+    }
+
+
+    protected void take(String aipAmount,TreeMap treeMap) {
+        TreeMap<String, String> map = treeMap;
+//        map.put("aipAmount", aipAmount);
+
+        OkGo.<String>post(HttpService.EB_Take)
+                .params(treeMap)
+//                .upJson(jsonObject.toJSONString())
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        JSONObject jsonObject = JSON.parseObject(response.body());
+                        if (jsonObject.containsKey("code")) {
+                            String code = jsonObject.getString("code");
+                            String msg;
+                            if ("0".equals(code)) {
+//                                takeResponse.setValue("提货成功");
+                                String data = jsonObject.getString("data");
+                                JSONObject jsonObject1 = JSON.parseObject(data);
+                                String orderNo = jsonObject1.getString("orderNo");
+                                takeOrderNo.setValue(orderNo);
+                            } else {
+                                if (jsonObject.containsKey("msg")) {
+                                    msg = jsonObject.getString("msg");
+//                                    takeResponse.setValue(msg);
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        errorLiveData.setValue(response.body());
+                        takeOrderNo.setValue("error");
                     }
                 });
     }

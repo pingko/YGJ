@@ -38,6 +38,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Route(path = RouterActivityPath.Deal.PAGER_DEAL_BUY)
 public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, DealMainViewModel> implements View.OnClickListener {
@@ -114,17 +115,22 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         if (type == 0) {
             binding.tvMoneyTip.setText("购买金额:");
             binding.tvFeTip.setText("购买份额(克):");
+            binding.etWeight.setHint(currPoint + "克起，1克递增");
             currPoint = buyPoint;
         } else if (type == 1) {
             binding.tvMoneyTip.setText("卖出金额:");
             binding.tvFeTip.setText("卖出份额(克):");
+            binding.etWeight.setHint(currPoint + "克起，1克递增");
             currPoint = sellPoint;
         } else if (type == 2) {
             binding.tvMoneyTip.setText("提货手续费(kg/500元):");
             binding.tvFeTip.setText("提货重量(kg):");
             binding.etWeight.setHint("请输入提货重量");
+            binding.tvCanuse.setText(currCanUse + "克");
         }
-        binding.etWeight.setHint(currPoint + "克起，1克递增");
+
+        binding.tvCanuseTip.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
+        binding.tvCanuse.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
         binding.rlAddress.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
 
 
@@ -145,12 +151,10 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     if (type == 2) {
                         price = (float) (a * 500);
                     } else {
-
                         price = a * sirverPrice;
                     }
                     binding.tvMoney.setText(ddf.format(price) + "元");
                 }
-
             }
 
             @Override
@@ -168,8 +172,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
         });
 
         viewModel.takeResponse.observe(this, s -> {
-            RxToast.showToastLong(s);
             if (s.equals("提货成功")) {
+                RxToast.showToastLong("已提货成功" + (takeCharge / 500) + "公斤");
                 LiveEventBus
                         .get("takeSuccess")
                         .post(0);
@@ -193,10 +197,19 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                 RxToast.showToastLong(s);
             }
         });
+        viewModel.takeOrderNo.observe(this, s -> {
+            if (!s.contains("error")) {
+                takeOrId = s;
+                Log.e("aaaa",s);
+//                payV2(takeOrId);
+            } else {
+                RxToast.showToastLong("无法获取交易流水号,请重试！");
+            }
+        });
 
         viewModel.buySuccessResponse.observe(this, aBoolean -> {
             RxToast.showToastLong(aBoolean);
-            if (aBoolean.equals("buuSuccess")) {
+            if (aBoolean.equals("buySuccess")) {
                 HttpLog.e("购买成功");
                 LiveEventBus
                         .get("buySuccess")
@@ -250,7 +263,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
     }
 
     float price;
-    String orderId;
+    String orderId, takeOrId;
 
     @Override
     public void showFailure(String message) {
@@ -267,16 +280,33 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             RxKeyboardTool.hideSoftInput(binding.etWeight);
             String s = binding.etWeight.getText().toString();
             if (type == 2) {
-                if (TextUtils.isEmpty(s)) {
-                    RxToast.showToast("请输入提货重量");
-                    return;
-                }
                 if (addressBean == null) {
                     RxToast.showToast("请添加提货地址");
                     return;
                 }
-                int price = Integer.parseInt(s) * 500;
-                viewModel.take(ddf.format(price) + "");
+                if (TextUtils.isEmpty(s)) {
+                    RxToast.showToast("请输入提货重量");
+                    return;
+                }
+                if (Integer.parseInt(s) > (currCanUse / 1000)) {
+                    RxToast.showToast("卖出份额不能大于可用份额");
+                    return;
+                }
+
+                takeCharge = Integer.parseInt(s) * 500;
+//
+                TreeMap<String, String> map = new TreeMap<>();
+                map.put("aipAmount", (Integer.parseInt(s) * 1000) + "");
+                map.put("weight", (Integer.parseInt(s) * 1000) + "");
+                map.put("charge", ddf.format(takeCharge));
+                map.put("price", sirverPrice + "");
+                map.put("receiveUserName", addressBean.getName());
+                map.put("receivePhone", addressBean.getPhone());
+                map.put("receiveProvince", addressBean.getProvince());
+                map.put("receiveCity", addressBean.getCity());
+                map.put("receiveArea", addressBean.getDistrict());
+                map.put("receiveDetail", addressBean.getArea() + addressBean.getAddress());
+                viewModel.take(ddf.format(takeCharge) + "", map);
             } else if (type == 0 || type == 1) {
                 if (TextUtils.isEmpty(s) || Integer.parseInt(s) < currPoint) {
                     RxToast.showToast(currPoint + "克起，1克递增");
@@ -304,7 +334,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
 
     }
 
-    double totalPrice;
+    double totalPrice, takeCharge = 0;//takeCharge 手续费
 
     /**
      * 用于支付宝支付业务的入参 app_id。
@@ -348,14 +378,19 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     if (TextUtils.equals(resultStatus, "9000")) {
                         AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
                         String trade_no = resultBean.getAlipay_trade_app_pay_response().getTrade_no();
-                        viewModel.paySuccess(trade_no, acctNo, orderId);
+                        if (TextUtils.isEmpty(takeOrId)) {
+
+                            viewModel.paySuccess(trade_no, acctNo, orderId);
+                        } else {
+                            viewModel.takeSuccess(trade_no, acctNo, takeOrId, (takeCharge / 500 * 1000) + "");
+                        }
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
-                        RxToast.showToast("支付成功");
+                        RxToast.showToast(TextUtils.isEmpty(takeOrId) ? "支付成功" : "");
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_failed) + payResult);
-                        RxToast.showToast("支付失败");
+                        RxToast.showToast(TextUtils.isEmpty(takeOrId) ? "支付成功" : "");
                     }
                     break;
                 }
@@ -401,7 +436,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          * orderInfo 的获取必须来自服务端；
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, orderId, ddf.format(totalPrice), "订单金额");
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, TextUtils.isEmpty(takeOrId) ? orderId : takeOrId,
+                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(0.01), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;

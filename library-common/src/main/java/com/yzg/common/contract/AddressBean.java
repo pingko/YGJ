@@ -7,8 +7,17 @@ public class AddressBean extends BaseCustomViewModel {
     String province;
     String city;
     String area;
+    String district;
     boolean isNormal;
     String phone;
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
 
     public String getPhone() {
         return phone;

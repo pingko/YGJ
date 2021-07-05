@@ -19,6 +19,7 @@ import com.lljjcoder.bean.DistrictBean;
 import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.style.cityjd.JDCityConfig;
 import com.lljjcoder.style.cityjd.JDCityPicker;
+import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.base.storage.MmkvHelper;
 import com.yzg.common.contract.AddressBean;
@@ -65,9 +66,30 @@ public class UserAddressAddActivity extends MvvmBaseActivity<UserActivityAddress
         binding.ivBack.setOnClickListener(view -> finish());
         binding.tvAdd.setOnClickListener(view -> {
             AddressBean bean = new AddressBean();
+            if (TextUtils.isEmpty(binding.etName.getText().toString().trim())){
+                RxToast.normal("请输入姓名");
+                return;
+            }
+            if (TextUtils.isEmpty(binding.etPhone.getText().toString().trim())){
+                RxToast.normal("请输入电话");
+                return;
+            }
+            if (TextUtils.isEmpty(binding.tvArea.getText().toString().trim())){
+                RxToast.normal("请输入地区");
+                return;
+            }
+            if (TextUtils.isEmpty(binding.etDetail.getText().toString().trim())){
+                RxToast.normal("请输入详细地址");
+                return;
+            }
             bean.setName(binding.etName.getText().toString());
             bean.setPhone(binding.etPhone.getText().toString());
-            bean.setArea(binding.tvArea.getText().toString());
+            String area = binding.tvArea.getText().toString();
+            bean.setArea(area);
+            String[] p = area.split(" ");
+            bean.setProvince(p[0]);
+            bean.setCity(p[1]);
+            bean.setDistrict(p[2]);
             bean.setAddress(binding.etDetail.getText().toString());
             addressList.add(bean);
             String a = JSONArray.toJSONString(addressList);
@@ -115,7 +137,7 @@ public class UserAddressAddActivity extends MvvmBaseActivity<UserActivityAddress
         }
     }
 
-    private void initPicker(){
+    private void initPicker() {
 
         mWheelType = JDCityConfig.ShowType.PRO_CITY_DIS;
 //        setWheelType(mWheelType);
@@ -146,7 +168,7 @@ public class UserAddressAddActivity extends MvvmBaseActivity<UserActivityAddress
                     districtData = "name:  " + district.getName() + "   id:  " + district.getId();
                 }
 
-                binding.tvArea.setText(province.getName()+city.getName()+district.getName());
+                binding.tvArea.setText(province.getName() + " " + city.getName() + " " + district.getName());
 //
 //                if (mWheelType == JDCityConfig.ShowType.PRO_CITY_DIS) {
 //                    binding.tvArea.setText("城市选择结果：\n" + proData + "\n"
@@ -179,8 +201,6 @@ public class UserAddressAddActivity extends MvvmBaseActivity<UserActivityAddress
     protected void onRetryBtnClick() {
 
     }
-
-
 
 
 }

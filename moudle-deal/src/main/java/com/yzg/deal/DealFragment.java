@@ -186,6 +186,7 @@ public class DealFragment
 //                intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             } else if (view.getId() == R.id.tv_take) {
                 intent.putExtra("type", 2);
+                intent.putExtra("currCanUse", viewModel.successData.getValue().getCurrCanUse());
                 intent.putExtra("sirverPrice", viewModel.lastPrice.getValue());
             }
             acctNo = MmkvHelper.getInstance().getMmkv().decodeString("accno");
