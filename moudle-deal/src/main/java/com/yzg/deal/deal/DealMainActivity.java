@@ -296,17 +296,17 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                 takeCharge = Integer.parseInt(s) * 500;
 //
                 TreeMap<String, String> map = new TreeMap<>();
-                map.put("aipAmount", (Integer.parseInt(s) * 1000) + "");
-                map.put("weight", (Integer.parseInt(s) * 1000) + "");
-                map.put("charge", ddf.format(takeCharge));
-                map.put("price", sirverPrice + "");
-                map.put("receiveUserName", addressBean.getName());
-                map.put("receivePhone", addressBean.getPhone());
-                map.put("receiveProvince", addressBean.getProvince());
-                map.put("receiveCity", addressBean.getCity());
-                map.put("receiveArea", addressBean.getDistrict());
-                map.put("receiveDetail", addressBean.getArea() + addressBean.getAddress());
-                viewModel.take(ddf.format(takeCharge) + "", map);
+//                map.put("aipAmount", (Integer.parseInt(s) * 1000) + "");
+//                map.put("weight", (Integer.parseInt(s) * 1000) + "");
+//                map.put("charge", ddf.format(takeCharge));
+//                map.put("price", sirverPrice + "");
+//                map.put("receiveUserName", addressBean.getName());
+//                map.put("receivePhone", addressBean.getPhone());
+//                map.put("receiveProvince", addressBean.getProvince());
+//                map.put("receiveCity", addressBean.getCity());
+//                map.put("receiveArea", addressBean.getDistrict());
+//                map.put("receiveDetail", addressBean.getArea() + addressBean.getAddress());
+                viewModel.take((Integer.parseInt(s) * 1000) + "",ddf.format(takeCharge) + "", ddf.format(sirverPrice) + "",addressBean);
             } else if (type == 0 || type == 1) {
                 if (TextUtils.isEmpty(s) || Integer.parseInt(s) < currPoint) {
                     RxToast.showToast(currPoint + "克起，1克递增");

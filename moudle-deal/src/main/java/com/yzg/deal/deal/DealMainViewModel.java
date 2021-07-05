@@ -1,5 +1,6 @@
 package com.yzg.deal.deal;
 
+import android.net.MacAddress;
 import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
@@ -13,6 +14,7 @@ import com.yzg.base.activity.IBaseView;
 import com.yzg.base.http.HttpLog;
 import com.yzg.base.http.HttpService;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
+import com.yzg.common.contract.AddressBean;
 
 import java.util.TreeMap;
 
@@ -26,7 +28,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
     public MutableLiveData<String> buySuccessResponse = new MutableLiveData<>();
 
 
-    protected void paySuccess(String trade_no, String acctNo,String orderNo) {
+    protected void paySuccess(String trade_no, String acctNo, String orderNo) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
         map.put("acctNo", acctNo);
@@ -46,7 +48,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                                 buySuccessResponse.setValue("buySuccess");
                             } else {
                                 if (jsonObject.containsKey("msg")) {
-                                    buySuccessResponse.setValue( jsonObject.getString("msg"));
+                                    buySuccessResponse.setValue(jsonObject.getString("msg"));
                                 }
                             }
                         }
@@ -61,7 +63,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                 });
     }
 
-    protected void takeSuccess(String trade_no, String acctNo,String orderNo,String weight) {
+    protected void takeSuccess(String trade_no, String acctNo, String orderNo, String weight) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
         map.put("acctNo", acctNo);
@@ -82,7 +84,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                                 takeResponse.setValue("提货成功");
                             } else {
                                 if (jsonObject.containsKey("msg")) {
-                                    takeResponse.setValue( jsonObject.getString("msg"));
+                                    takeResponse.setValue(jsonObject.getString("msg"));
                                 }
                             }
                         }
@@ -98,12 +100,22 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
     }
 
 
-    protected void take(String aipAmount,TreeMap treeMap) {
-        TreeMap<String, String> map = treeMap;
-//        map.put("aipAmount", aipAmount);
+    protected void take(String aipAmount, String takeCharge, String sirverPrice, AddressBean addressBean) {
+        TreeMap<String, String> map = new TreeMap<>();
+        map.put("aipAmount", aipAmount);
+        map.put("weight", aipAmount);
+        map.put("charge", takeCharge);
+        map.put("price", sirverPrice + "");
+        map.put("receiveUserName", addressBean.getName());
+        map.put("receivePhone", addressBean.getPhone());
+        map.put("receiveProvince", addressBean.getProvince());
+        map.put("receiveCity", addressBean.getCity());
+        map.put("receiveArea", addressBean.getDistrict());
+        map.put("receiveDetail", addressBean.getProvince() + addressBean.getCity() + addressBean.getDistrict() + addressBean.getAddress());
+
 
         OkGo.<String>post(HttpService.EB_Take)
-                .params(treeMap)
+                .params(map)
 //                .upJson(jsonObject.toJSONString())
                 .tag(this)
                 .execute(new StringCallback() {
@@ -137,6 +149,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                     }
                 });
     }
+
     protected void sale(String aipAmount) {
         TreeMap<String, String> map = new TreeMap<>();
         map.put("aipAmount", aipAmount);
@@ -171,15 +184,14 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
     }
 
     /**
-     *
-     * @param sirverPrice  近日实时银价
-     * @param weight  购买多少克
-     * @param money   总价多少钱
-     * @param acctNo  账号
+     * @param sirverPrice 近日实时银价
+     * @param weight      购买多少克
+     * @param money       总价多少钱
+     * @param acctNo      账号
      */
-    protected void buySirver(double sirverPrice,String weight, String money, String acctNo) {
+    protected void buySirver(double sirverPrice, String weight, String money, String acctNo) {
         TreeMap<String, String> map = new TreeMap<>();
-        map.put("aipPrice", sirverPrice+"");
+        map.put("aipPrice", sirverPrice + "");
         map.put("aipAmount", weight);
         map.put("acctNo", acctNo);
         map.put("aipAmountFare", "0");
