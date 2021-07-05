@@ -16,6 +16,7 @@ import com.yzg.base.http.HttpService;
 import com.yzg.base.viewmodel.MvvmBaseViewModel;
 import com.yzg.common.contract.AddressBean;
 
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
@@ -101,7 +102,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
 
 
     protected void take(String aipAmount, String takeCharge, String sirverPrice, AddressBean addressBean) {
-        TreeMap<String, String> map = new TreeMap<>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("aipAmount", aipAmount);
         map.put("weight", aipAmount);
         map.put("charge", takeCharge);
@@ -115,8 +116,8 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
 
 
         OkGo.<String>post(HttpService.EB_Take)
-                .params(map)
-//                .upJson(jsonObject.toJSONString())
+//                .params(map)
+                .upJson(JSON.toJSONString(map))
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

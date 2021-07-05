@@ -174,7 +174,7 @@ public class RegisterActivity extends MvvmBaseActivity<UserActivityRegisterBindi
             map.put("userName", binding.etName.getText().toString());
             map.put("password", binding.etPwd.getText().toString());
             if (!TextUtils.isEmpty(recommenderName)) {
-                map.put("avatar", recommenderName);
+                map.put("userId", recommenderName);
             }
             viewModel.loadData(map, HttpService.REGISTER);
         } else {

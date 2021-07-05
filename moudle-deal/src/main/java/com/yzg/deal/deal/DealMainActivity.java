@@ -201,7 +201,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
             if (!s.contains("error")) {
                 takeOrId = s;
                 Log.e("aaaa",s);
-//                payV2(takeOrId);
+                payV2(takeOrId);
             } else {
                 RxToast.showToastLong("无法获取交易流水号,请重试！");
             }
@@ -292,20 +292,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     RxToast.showToast("卖出份额不能大于可用份额");
                     return;
                 }
-
                 takeCharge = Integer.parseInt(s) * 500;
-//
-                TreeMap<String, String> map = new TreeMap<>();
-//                map.put("aipAmount", (Integer.parseInt(s) * 1000) + "");
-//                map.put("weight", (Integer.parseInt(s) * 1000) + "");
-//                map.put("charge", ddf.format(takeCharge));
-//                map.put("price", sirverPrice + "");
-//                map.put("receiveUserName", addressBean.getName());
-//                map.put("receivePhone", addressBean.getPhone());
-//                map.put("receiveProvince", addressBean.getProvince());
-//                map.put("receiveCity", addressBean.getCity());
-//                map.put("receiveArea", addressBean.getDistrict());
-//                map.put("receiveDetail", addressBean.getArea() + addressBean.getAddress());
                 viewModel.take((Integer.parseInt(s) * 1000) + "",ddf.format(takeCharge) + "", ddf.format(sirverPrice) + "",addressBean);
             } else if (type == 0 || type == 1) {
                 if (TextUtils.isEmpty(s) || Integer.parseInt(s) < currPoint) {
@@ -379,10 +366,9 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                         AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
                         String trade_no = resultBean.getAlipay_trade_app_pay_response().getTrade_no();
                         if (TextUtils.isEmpty(takeOrId)) {
-
                             viewModel.paySuccess(trade_no, acctNo, orderId);
                         } else {
-                            viewModel.takeSuccess(trade_no, acctNo, takeOrId, (takeCharge / 500 * 1000) + "");
+                            viewModel.takeSuccess(trade_no, acctNo, takeOrId, ((int)(takeCharge / 500 * 1000)) + "");
                         }
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
@@ -437,7 +423,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
         Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, TextUtils.isEmpty(takeOrId) ? orderId : takeOrId,
-                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(0.01), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
+                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(takeCharge), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
