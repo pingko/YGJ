@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.orhanobut.logger.Logger;
 import com.tamsiree.rxkit.view.RxToast;
 import com.yzg.base.activity.MvvmBaseActivity;
 import com.yzg.common.router.RouterActivityPath;
@@ -55,7 +56,8 @@ public class BindAliPayActivity extends MvvmBaseActivity<UserActivityBindBinding
     private void initView() {
         binding.ivBack.setOnClickListener(view -> finish());
 
-        if (!TextUtils.isEmpty(payNo)) {
+        if (!TextUtils.isEmpty(payNo)&&!"null".equals(payNo)) {
+            Logger.e("支付宝账号:"+payNo);
             String[] s = payNo.split("=");
             binding.etAccount.setText(s[0]);
             binding.etName.setText(s[1]);

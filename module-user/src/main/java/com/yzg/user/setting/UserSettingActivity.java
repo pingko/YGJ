@@ -79,7 +79,6 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
         });
 
         binding.rlPay.setOnClickListener(view -> {
-            Intent intent = new Intent(UserSettingActivity.this, BindAliPayActivity.class);
             String payNo = "";
             String loginName = "";
             if (userInfoBean != null) {
@@ -103,6 +102,7 @@ public class UserSettingActivity extends MvvmBaseActivity<UserActivitySettingBin
                 userInfoBean = userInfo;
                 binding.tvPhone.setText(userInfo.getUser().getPhonenumber().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2"));
                 Object payNo = userInfo.getUser().getPayNo();
+                Logger.e("支付宝账号:"+payNo);
                 if (payNo != null) {
                     String[] s = payNo.toString().split("=");
                     String payPhone = s[0].length() == 11 ? s[0] : s[1];

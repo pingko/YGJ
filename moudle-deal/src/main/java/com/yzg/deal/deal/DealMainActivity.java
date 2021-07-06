@@ -423,7 +423,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
         Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, TextUtils.isEmpty(takeOrId) ? orderId : takeOrId,
-                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(takeCharge), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
+                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(0.01), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;
