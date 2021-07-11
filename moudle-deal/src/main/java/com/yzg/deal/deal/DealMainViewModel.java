@@ -72,7 +72,7 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
         map.put("orderNo", orderNo);
         map.put("aipAmount", weight);
         OkGo.<String>post(HttpService.EB_Take_Success)
-                .params(map)
+                .upJson(JSON.toJSONString(map))
                 .tag(this)
                 .execute(new StringCallback() {
                     @Override

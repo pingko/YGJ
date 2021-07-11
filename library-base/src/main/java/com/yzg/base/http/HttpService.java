@@ -32,6 +32,6 @@ public class HttpService {
     public static final String EB_editPwd = BASE_URL+ "system/user/profile/resetPwd";//修改密码
     public static final String EB_jslist = BASE_URL+ "system/military/list";//修改密码
     public static final String EB_js_detail = BASE_URL+ "system/military/get";//修改密码
-    public static final String EB_Take_Success = BASE_URL+ "system/takeDelivery/upStorage";//提货成功
+    public static final String EB_Take_Success = BASE_URL+ "system/takeDelivery/upStorage";//提货成功  Json传参
 
 }

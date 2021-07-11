@@ -82,7 +82,7 @@ public class DealFragment
         LiveEventBus
                 .get("takeSuccess", Integer.class)
                 .observe(this, s -> {
-                    HttpLog.e("检测到买出成功");
+                    HttpLog.e("检测到提货成功");
                     viewModel.loadData();
                 });
         LiveEventBus
