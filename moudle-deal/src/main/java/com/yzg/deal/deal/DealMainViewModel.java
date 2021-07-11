@@ -116,7 +116,6 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
 
 
         OkGo.<String>post(HttpService.EB_Take)
-//                .params(map)
                 .upJson(JSON.toJSONString(map))
                 .tag(this)
                 .execute(new StringCallback() {
