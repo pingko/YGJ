@@ -64,13 +64,13 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                 });
     }
 
-    protected void takeSuccess(String trade_no, String acctNo, String orderNo, String weight) {
+    protected void takeSuccess(String trade_no, String acctNo, String orderNo, String weight, boolean isSucc) {
         TreeMap<String, String> map = new TreeMap<>();
-        map.put("dealStat", trade_no.length() > 0 ? "1" : "0");
+        map.put("dealStat", isSucc ? (trade_no.length() > 0 ? "1" : "0") : "0");
         map.put("acctNo", acctNo);
         map.put("tradeNo", trade_no);
-        map.put("orderNo", orderNo);
         map.put("aipAmount", weight);
+        map.put("orderNo", isSucc ? orderNo : trade_no);
         OkGo.<String>post(HttpService.EB_Take_Success)
                 .upJson(JSON.toJSONString(map))
                 .tag(this)
@@ -89,7 +89,6 @@ public class DealMainViewModel extends MvvmBaseViewModel<IBaseView> {
                                 }
                             }
                         }
-
                     }
 
                     @Override

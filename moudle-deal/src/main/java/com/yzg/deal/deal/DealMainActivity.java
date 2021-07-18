@@ -178,6 +178,8 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                         .get("takeSuccess")
                         .post(0);
                 finish();
+            }else {
+                RxToast.showToast(s);
             }
         });
         viewModel.saleResponse.observe(this, s -> {
@@ -361,14 +363,14 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     String resultInfo = payResult.getResult();// 同步返回需要验证的信息
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
-                    HttpLog.e(resultInfo);
+                    HttpLog.e(resultInfo+",,"+resultStatus);
                     if (TextUtils.equals(resultStatus, "9000")) {
                         AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
                         String trade_no = resultBean.getAlipay_trade_app_pay_response().getTrade_no();
                         if (TextUtils.isEmpty(takeOrId)) {
                             viewModel.paySuccess(trade_no, acctNo, orderId);
                         } else {
-                            viewModel.takeSuccess(trade_no, acctNo, takeOrId, ((int)(takeCharge / 500 * 1000)) + "");
+                            viewModel.takeSuccess(trade_no, acctNo, takeOrId, ((int)(takeCharge / 500 * 1000)) + "",true);
                         }
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_success) + payResult);
@@ -376,7 +378,13 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
 //                        showAlert(DealMainActivity.this, getString(R.string.pay_failed) + payResult);
-                        RxToast.showToast(TextUtils.isEmpty(takeOrId) ? "支付成功" : "");
+//                        RxToast.showToast(TextUtils.isEmpty(takeOrId) ? "支付成功" : "");
+                        AliPayResultBean resultBean = JSONObject.parseObject(resultInfo, AliPayResultBean.class);
+                        if (TextUtils.isEmpty(takeOrId)) {
+//                            viewModel.paySuccess(trade_no, acctNo, orderId);
+                        } else {
+                            viewModel.takeSuccess(takeOrId, acctNo, takeOrId, ((int)(takeCharge / 500 * 1000)) + "",false);
+                        }
                     }
                     break;
                 }
@@ -423,7 +431,7 @@ public class DealMainActivity extends MvvmBaseActivity<DealActivityMainBinding, 
          */
         boolean rsa2 = (RSA2_PRIVATE.length() > 0);
         Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap(APPID, rsa2, TextUtils.isEmpty(takeOrId) ? orderId : takeOrId,
-                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(takeCharge), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
+                TextUtils.isEmpty(takeOrId) ? ddf.format(totalPrice) : ddf.format(0.01), TextUtils.isEmpty(takeOrId) ? "订单金额" : "手续费金额");
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = rsa2 ? RSA2_PRIVATE : RSA_PRIVATE;

@@ -47,7 +47,7 @@ public class LoginViewModel extends MvvmBaseViewModel<IBaseView> {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        errorLiveData.setValue(response.message());
+                        errorLiveData.setValue("登录失败");
                     }
                 });
     }
